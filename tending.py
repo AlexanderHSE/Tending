@@ -23,6 +23,7 @@ def get_accounts(self: str) -> GetAccountsResponse:
 
 
 TOKEN = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
+"chanhefsfsfsfsfsfsffs"
 if __name__ == "__main__":
     port = Portfolio.Portfolio()
     print(port.token)
