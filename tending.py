@@ -1,6 +1,9 @@
+import tinkoff.invest
 from tinkoff.invest import Client, PositionsResponse, MoneyValue, GetAccountsResponse, RequestError, Account
 import pandas as pd
+import ApiParsing
 import Portfolio
+import AllPortfolio
 from tinkoff.invest.services import Services
 
 
@@ -21,20 +24,42 @@ def get_accounts(self: str) -> GetAccountsResponse:
     except RequestError:
         print("error!")
 
+def choice_parsing():
+    print("Выберите способ парсинга")
+    print("1. api")
+    print("2. Excel")
 
-TOKEN = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
-"chanhefsfsfsfsfsfsffs"
+
+'''
+t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
+'''
 if __name__ == "__main__":
-    port = Portfolio.Portfolio()
-    print(port.token)
-    print()
-    print(port.accounts)
+    choice_parsing()
+    choice = int(input())
+    if choice == 1:
+        # pars with api
+        # получение всех аккаунтов
+        api = ApiParsing.ApiParsing()
+        api.get_accounts()
+        # Получение одного аккаунта
+        port = Portfolio.Portfolio(api.accounts.accounts)
+        port.get_one_acc()
+        # Добавление аккаунта в список аккаунтов
+        all_ports = AllPortfolio.AllPortfolio()
+        all_ports.add(port.account)
+        print(all_ports.list_ports)
+        # Добавление еще одного портфеля
+        # Получение одного аккаунта
+        port1 = Portfolio.Portfolio(api.accounts.accounts)
+        port1.get_one_acc()
+        # Добавление аккаунта в список аккаунтов
+        all_ports.add(port1.account)
+        print(all_ports.list_ports)
+
+    else :
+        # pars with xlsx
+        pass
     print("************************")
-    portfolio = Portfolio.Portfolio()
-    token = portfolio.__get_token()
-    print(token)
-    accounts = get_accounts(token)
-    print(accounts)
     ''' with Client(TOKEN) as client:
         print(type(client))
         x = client.users.get_accounts()
