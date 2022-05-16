@@ -1,5 +1,4 @@
-from tinkoff.invest import Client, GetAccountsResponse, RequestError
-from tinkoff.invest.services import Services
+from tinkoff.invest import Client, RequestError
 
 
 class ApiParsing:

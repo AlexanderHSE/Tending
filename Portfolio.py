@@ -5,16 +5,7 @@ import tinkoff
 
 
 class Portfolio:
-    __slots__ = ('__id', '__port_name', '__account', '__analytics', '__accounts')
-
-    # Получаем id аккаунта
-    @property
-    def id(self):
-        return self.__id
-
-    @id.setter
-    def id(self, _id):
-        self.__id = _id
+    __slots__ = ('__port_name', '__account', '__analytics', '__accounts', '__token')
 
     # Получаем название аккаунта
     @property
@@ -34,35 +25,61 @@ class Portfolio:
     def account(self, _account):
         self.__account = _account
 
+    # Получаем токен
+    @property
+    def token(self):
+        return self.__token
+
+    @token.setter
+    def token(self, _token):
+        self.__token = _token
+
+    # Получаем аналитику
+    @property
+    def analytics(self):
+        return self.__analytics
+
+    @analytics.setter
+    def analytics(self, _analytics):
+        self.__analytics = _analytics
+
+
     def get_one_acc(self):
         if (len(self.__accounts)) == 1:
-            self.__account = self.__accounts[0].name
+            if self.__accounts[0].status == 2 and 1 == self.__accounts[0].type:
+                self.account = self.__accounts[0].name
+                self.port_name = self.__accounts[0].name
+            else:
+                print("no on can be added")
         else:
             names = [acc.name for acc in self.__accounts if acc.status == 2 and 1 == acc.type]
-            print("Какой брокерский счет добавлять")
-            for i in range(len(names)):
-                print(f"{i + 1}  {names[i]}")
-            choice = HelpFunc.Input_number(1, len(names))
-            name_choice = names[choice - 1]
-            acc = None
-            for enum_acc in self.__accounts:
-                if enum_acc.name == name_choice:
-                    acc = enum_acc
-                    break
-            self.account = acc
-            self.id = self.__accounts[choice - 1].id
-            self.port_name = self.__accounts[choice - 1].name
+            if len(names):
+                print("Какой брокерский счет добавлять")
+                for i in range(len(names)):
+                    print(f"{i + 1}  {names[i]}")
+                choice = HelpFunc.Input_number(1, len(names))
+                name_choice = names[choice - 1]
+                acc = None
+                for enum_acc in self.__accounts:
+                    if enum_acc.name == name_choice:
+                        acc = enum_acc
+                        break
+                self.account = acc
+                self.port_name = self.__accounts[choice - 1].name
+            else:
+                print("no on can be added")
 
     def rename_port(self, new_name):
         self.port_name = new_name
 
     def get_analytics(self):
         if self.account:
-            self.__analytics = Analytics.Analytics()
+            self.analytics = Analytics.Analytics(self.account, self.token)
+            self.analytics.create_df()
 
-    def __init__(self, accounts):
+    def __init__(self, accounts, token):
         self.__accounts = accounts
-        self.__id = None
         self.__analytics = None
         self.__account = None
         self.__port_name = None
+        self.__token = token
