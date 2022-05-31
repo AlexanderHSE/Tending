@@ -93,7 +93,7 @@ class Ui_MainWindow(object):
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(10, 20, 341, 41))
         self.label_4.setMinimumSize(QSize(341, 41))
-        self.label_4.setPixmap(QPixmap(u"../../Frame_13.jpg"))
+        self.label_4.setPixmap(QPixmap(u"Frame_13.jpg"))
 
         self.horizontalLayout_5.addWidget(self.frame_5)
 
@@ -341,7 +341,7 @@ class Ui_MainWindow(object):
         self.label_7.setObjectName(u"label_7")
         self.label_7.setGeometry(QRect(10, 20, 341, 41))
         self.label_7.setMinimumSize(QSize(341, 41))
-        self.label_7.setPixmap(QPixmap(u"../../Frame_13.jpg"))
+        self.label_7.setPixmap(QPixmap(u"Frame_13.jpg"))
 
         self.horizontalLayout_8.addWidget(self.frame_8)
 

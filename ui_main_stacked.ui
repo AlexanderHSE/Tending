@@ -251,7 +251,7 @@ border-radius: 40;</string>
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../../Frame_13.jpg</pixmap>
+                      <pixmap>Frame_13.jpg</pixmap>
                      </property>
                     </widget>
                    </widget>
@@ -848,7 +848,7 @@ border-radius: 40</string>
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../../Frame_13.jpg</pixmap>
+                      <pixmap>Frame_13.jpg</pixmap>
                      </property>
                     </widget>
                    </widget>
