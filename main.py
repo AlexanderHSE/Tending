@@ -6,7 +6,7 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFo
 from PySide2.QtWidgets import *
 
 from ui_main_stacked import Ui_MainWindow
-from ui_main import Ui_MainWindowBase
+from ui_mainworkspace import Ui_MainWindowBig
 
 from ui_functions import *
 
@@ -36,14 +36,114 @@ class CMainState:
 
 class MainWindow(QMainWindow):
     def __init__(self):
+        QFontDatabase.addApplicationFont('Ubuntu-Regular.ttf')
         QMainWindow.__init__(self)
-        self.uiMain = Ui_MainWindowBase()
-        self.uiMain.setupUi(self)
+        self.dragPos = None
+        self.ui = Ui_MainWindowBig()
+        self.ui.setupUi(self)
+        # ScrollArea страницы добавления
+        self.scroll_layout = QVBoxLayout(self.ui.scrollAreaWidgetContents_3)
+        # ScrollArea страницы со списком портфелей
+        self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
 
-        self.uiMain.to_login.clicked.connect(self.btn_to_login)
+        # self.ui.to_login_2.clicked.connect(self.btn_to_login)
+        # self.ui.to_login_2.clicked.connect(self.close)
 
+        def moveWindow(event):
+            # If left click - move window
+            if event.buttons() == Qt.LeftButton:
+                self.move(self.pos() + event.globalPos() - self.dragPos)
+                self.dragPos = event.globalPos()
+                event.accept()
+
+        self.ui.title_bar_2.mouseMoveEvent = moveWindow
+
+        self.ui.btn_addToList.clicked.connect(self.get_token_btn)
+
+        UIFuncs.uiDefinitions(self)
+
+        # Смена окон в MainWindow Login
+
+        # Adding list
+        self.ui.btn_addCase.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_add_case))
+
+        # List of portfolios
+        self.ui.btn_case.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_caseList))
+
+        # Analytics page
+        self.ui.btn_analtics.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_analytics))
+
+        # Portfolio page
+        self.ui.btn_casemain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
+
+    # Движение окна
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPos()
+
+    # Переход из окна Портфель (пока что) на окно входа
     def btn_to_login(self):
         app.procNextState(STATE_LOGIN)
+
+    # Получение данных по токену из строки ввода
+    def get_token_btn(self):
+        count = int(self.ui.edit_token.text())
+        print('inside get token func')
+        self.clear_layout()
+        self.create_new_widget(count)
+
+    # Создание кнопок-полей счетов
+    def create_new_widget(self, count):
+        self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
+        for i in range(count):
+            btn_text = 'btn' + str(i)
+            btn = QPushButton(btn_text, self.ui.scrollAreaWidgetContents_3)
+            btn.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
+                                "background-color: rgb(148, 148, 152);\n"
+                                "height: 60px;\n }"
+                                "QPushButton:hover {\n"
+                                "	background-color:rgb(234, 234, 234);}\n")
+            btn.setFlat(True)
+            btn.setObjectName(btn_text)
+            btn.clicked.connect(self.add_portfolio_to_list)
+            btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
+            self.scroll_layout.addWidget(btn)
+
+    # Добавление портфеля в список портфелей
+    def add_portfolio_to_list(self):
+        sender = self.sender()
+        self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
+        btn_text_list = sender.text() + '_' + 'list'
+        btn_list = QPushButton(btn_text_list, self.ui.scrollAreaWidgetContents_caseList)
+        btn_list.setObjectName(btn_text_list)
+        btn_list.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
+                                "background-color: rgb(148, 148, 152);\n"
+                                "height: 60px;\n }"
+                                "QPushButton:hover {\n"
+                                "	background-color:rgb(234, 234, 234);}\n")
+        btn_list.setFlat(True)
+        btn_list.clicked.connect(self.check_presence)
+        if self.check_presence():
+            self.scroll_layout_list.addWidget(btn_list)
+        else:
+            btn_list.setParent(None)
+        btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
+
+    # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
+    def check_presence(self):
+        sender = self.sender()
+        elem_inside = False
+        for i in range(self.scroll_layout_list.count()):
+            item = self.scroll_layout_list.itemAt(i).widget()
+            if item.text() == sender.text() + '_' + 'list':
+                elem_inside = True
+        if elem_inside:
+            return False
+        return True
+
+    # Очистка перед последующим выводом счетов
+    def clear_layout(self):
+        for i in reversed(range(self.scroll_layout.count())):
+            self.scroll_layout.takeAt(i).widget().setParent(None)
 
 
 class LogWindow(QMainWindow):
