@@ -50,6 +50,8 @@ class MainWindow(QMainWindow):
         # self.ui.to_login_2.clicked.connect(self.close)
 
         def moveWindow(event):
+            if UIFuncs.returnStatus(self) == 1:
+                UIFuncs.maximize_restore(self)
             # If left click - move window
             if event.buttons() == Qt.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.dragPos)

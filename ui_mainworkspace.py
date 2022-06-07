@@ -28,8 +28,9 @@ class Ui_MainWindowBig(object):
         self.frame = QFrame(self.centralwidget)
         self.frame.setObjectName(u"frame")
         self.frame.setMinimumSize(QSize(0, 637))
+        self.frame.setLayoutDirection(Qt.LeftToRight)
         self.frame.setStyleSheet(u".QFrame#frame {\n"
-"border-radius: 40;\n"
+"border-radius: 30;\n"
 "}\n"
 "* {\n"
 "background-color: rgb(37,37,40);\n"
@@ -40,7 +41,7 @@ class Ui_MainWindowBig(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(-1, 0, -1, -1)
+        self.verticalLayout_2.setContentsMargins(-1, 0, -1, 0)
         self.title_bar_2 = QFrame(self.frame)
         self.title_bar_2.setObjectName(u"title_bar_2")
         self.title_bar_2.setMinimumSize(QSize(905, 70))
@@ -78,7 +79,7 @@ class Ui_MainWindowBig(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.label_4 = QLabel(self.frame_head)
         self.label_4.setObjectName(u"label_4")
-        self.label_4.setMinimumSize(QSize(341, 41))
+        self.label_4.setMinimumSize(QSize(300, 41))
         self.label_4.setPixmap(QPixmap(u"Frame_13.jpg"))
 
         self.horizontalLayout_3.addWidget(self.label_4)
@@ -86,11 +87,14 @@ class Ui_MainWindowBig(object):
         self.frame_tagLine = QFrame(self.frame_head)
         self.frame_tagLine.setObjectName(u"frame_tagLine")
         self.frame_tagLine.setMinimumSize(QSize(433, 48))
+        self.frame_tagLine.setMaximumSize(QSize(433, 16777215))
         self.frame_tagLine.setFrameShape(QFrame.StyledPanel)
         self.frame_tagLine.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_7 = QHBoxLayout(self.frame_tagLine)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.btn_casemain = QPushButton(self.frame_tagLine)
         self.btn_casemain.setObjectName(u"btn_casemain")
-        self.btn_casemain.setGeometry(QRect(80, 10, 96, 24))
+        self.btn_casemain.setMaximumSize(QSize(115, 16777215))
         self.btn_casemain.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
@@ -103,9 +107,12 @@ class Ui_MainWindowBig(object):
 "}")
         self.btn_casemain.setCheckable(False)
         self.btn_casemain.setFlat(True)
+
+        self.horizontalLayout_7.addWidget(self.btn_casemain)
+
         self.btn_analtics = QPushButton(self.frame_tagLine)
         self.btn_analtics.setObjectName(u"btn_analtics")
-        self.btn_analtics.setGeometry(QRect(210, 10, 100, 24))
+        self.btn_analtics.setMaximumSize(QSize(120, 16777215))
         self.btn_analtics.setFocusPolicy(Qt.NoFocus)
         self.btn_analtics.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
@@ -118,9 +125,12 @@ class Ui_MainWindowBig(object):
 "	color: rgb(234, 234, 234);\n"
 "}")
         self.btn_analtics.setFlat(True)
+
+        self.horizontalLayout_7.addWidget(self.btn_analtics)
+
         self.btn_currency = QPushButton(self.frame_tagLine)
         self.btn_currency.setObjectName(u"btn_currency")
-        self.btn_currency.setGeometry(QRect(330, 10, 21, 24))
+        self.btn_currency.setMaximumSize(QSize(30, 16777215))
         self.btn_currency.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
@@ -132,9 +142,12 @@ class Ui_MainWindowBig(object):
 "	color: rgb(234, 234, 234);\n"
 "}")
         self.btn_currency.setFlat(True)
+
+        self.horizontalLayout_7.addWidget(self.btn_currency)
+
         self.btn_case = QPushButton(self.frame_tagLine)
         self.btn_case.setObjectName(u"btn_case")
-        self.btn_case.setGeometry(QRect(380, 5, 41, 31))
+        self.btn_case.setMaximumSize(QSize(40, 16777215))
         self.btn_case.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
@@ -152,6 +165,9 @@ class Ui_MainWindowBig(object):
         self.btn_case.setCheckable(False)
         self.btn_case.setFlat(True)
 
+        self.horizontalLayout_7.addWidget(self.btn_case)
+
+
         self.horizontalLayout_3.addWidget(self.frame_tagLine)
 
 
@@ -162,7 +178,7 @@ class Ui_MainWindowBig(object):
 
         self.frame_btns_2 = QFrame(self.title_bar_2)
         self.frame_btns_2.setObjectName(u"frame_btns_2")
-        self.frame_btns_2.setMaximumSize(QSize(100, 16777215))
+        self.frame_btns_2.setMaximumSize(QSize(150, 16777215))
         self.frame_btns_2.setFrameShape(QFrame.StyledPanel)
         self.frame_btns_2.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_6 = QHBoxLayout(self.frame_btns_2)
@@ -184,6 +200,16 @@ class Ui_MainWindowBig(object):
 "}")
 
         self.horizontalLayout_6.addWidget(self.btn_minimize_2)
+
+        self.btn_maximize_restore = QPushButton(self.frame_btns_2)
+        self.btn_maximize_restore.setObjectName(u"btn_maximize_restore")
+        icon1 = QIcon()
+        icon1.addFile(u"maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_maximize_restore.setIcon(icon1)
+        self.btn_maximize_restore.setIconSize(QSize(20, 20))
+        self.btn_maximize_restore.setFlat(True)
+
+        self.horizontalLayout_6.addWidget(self.btn_maximize_restore)
 
         self.btn_close_2 = QPushButton(self.frame_btns_2)
         self.btn_close_2.setObjectName(u"btn_close_2")
@@ -219,7 +245,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 607))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 591))
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout_7.addWidget(self.scrollArea_2)
@@ -266,9 +292,9 @@ class Ui_MainWindowBig(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.btn_addCase = QPushButton(self.frame_addCase)
         self.btn_addCase.setObjectName(u"btn_addCase")
-        icon1 = QIcon()
-        icon1.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_addCase.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_addCase.setIcon(icon2)
         self.btn_addCase.setIconSize(QSize(50, 50))
         self.btn_addCase.setCheckable(False)
         self.btn_addCase.setFlat(True)
@@ -362,6 +388,17 @@ class Ui_MainWindowBig(object):
 
         self.verticalLayout_2.addWidget(self.stackedWidget)
 
+        self.frame_grip = QFrame(self.frame)
+        self.frame_grip.setObjectName(u"frame_grip")
+        self.frame_grip.setMinimumSize(QSize(10, 20))
+        self.frame_grip.setMaximumSize(QSize(20, 17))
+        self.frame_grip.setLayoutDirection(Qt.RightToLeft)
+        self.frame_grip.setStyleSheet(u"border-bottom-right-radius: 10px; margin-right: 20px;")
+        self.frame_grip.setFrameShape(QFrame.StyledPanel)
+        self.frame_grip.setFrameShadow(QFrame.Raised)
+
+        self.verticalLayout_2.addWidget(self.frame_grip)
+
 
         self.verticalLayout.addWidget(self.frame)
 
@@ -383,6 +420,7 @@ class Ui_MainWindowBig(object):
         self.btn_currency.setText(QCoreApplication.translate("MainWindowBig", u"\u20bd", None))
         self.btn_case.setText("")
         self.btn_minimize_2.setText(QCoreApplication.translate("MainWindowBig", u"\u2013", None))
+        self.btn_maximize_restore.setText("")
         self.btn_close_2.setText(QCoreApplication.translate("MainWindowBig", u"\u00d7", None))
         self.lineEdit.setText(QCoreApplication.translate("MainWindowBig", u"Analytics", None))
         self.btn_addCase.setText("")
