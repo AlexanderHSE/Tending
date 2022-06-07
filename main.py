@@ -112,7 +112,8 @@ class MainWindow(QMainWindow):
                                 "	background-color:rgb(234, 234, 234);}\n")
             btn.setFlat(True)
             btn.setObjectName(btn_text)
-            btn.clicked.connect(lambda checked, acc=accounts.accounts[i]: self.add_portfolio_to_list(acc))
+            btn.clicked.connect(lambda *args, acc=accounts.accounts[i]: self.add_portfolio_to_list(acc))
+            btn.clicked.connect(lambda *args, acc=accounts.accounts[i]: self.fill_instruments_close_to_pie_chart(acc))
             # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
             btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
             #btn.clicked.connect(self.fill_instruments_close_to_pie_chart(accounts.accounts[i]))
@@ -121,9 +122,10 @@ class MainWindow(QMainWindow):
     # Добавление портфеля в список портфелей
     def add_portfolio_to_list(self, acc=None):
         sender = self.sender()
+        print(acc.name)
         self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
-        btn_text_list = sender.text()
-        # btn_text_list = acc.name
+        # btn_text_list = sender.text()
+        btn_text_list = acc.name
         btn_list = QPushButton(btn_text_list, self.ui.scrollAreaWidgetContents_caseList)
         btn_list.setObjectName(btn_text_list)
         btn_list.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
@@ -132,21 +134,22 @@ class MainWindow(QMainWindow):
                                 "QPushButton:hover {\n"
                                 "	background-color:rgb(234, 234, 234);}\n")
         btn_list.setFlat(True)
-        btn_list.clicked.connect(self.check_presence)
-        if self.check_presence():
+        btn_list.clicked.connect(lambda *args, acc_=acc: self.check_presence(acc_))
+        if self.check_presence(acc):
             self.scroll_layout_list.addWidget(btn_list)
         else:
             btn_list.setParent(None)
+        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_instruments_close_to_pie_chart(acc_))
         btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
         btn_list.clicked.connect(self.fill_instruments_close_to_pie_chart(acc))
 
     # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
-    def check_presence(self):
+    def check_presence(self, acc=None):
         sender = self.sender()
         elem_inside = False
         for i in range(self.scroll_layout_list.count()):
             item = self.scroll_layout_list.itemAt(i).widget()
-            if item.text() == sender.text():
+            if item.text() == acc.name:
                 elem_inside = True
         if elem_inside:
             return False
@@ -157,7 +160,9 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.takeAt(i).widget().setParent(None)
     def fill_instruments_close_to_pie_chart(self,account):
+        print('Данные переданы', account.name)
         sender = self.sender()
+
        # self.ui.cost_number_all.setText()
       #  self.ui.cost_number_all.setStyleSheet()
 
