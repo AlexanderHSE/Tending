@@ -415,7 +415,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_caseList = QWidget()
         self.scrollAreaWidgetContents_caseList.setObjectName(u"scrollAreaWidgetContents_caseList")
-        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 57, 16))
+        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 543))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_caseList)
 
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -516,7 +516,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 55, 16))
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 881, 514))
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
 
         self.horizontalLayout_15.addWidget(self.scrollArea_3)
@@ -546,7 +546,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)
@@ -579,7 +579,7 @@ class Ui_MainWindowBig(object):
         self.column_tittle_percentage.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
         self.lineEdit.setText(QCoreApplication.translate("MainWindowBig", u"Analytics", None))
         self.btn_addCase.setText("")
-        self.edit_token.setPlaceholderText(QCoreApplication.translate("MainWindowBig", u"Token", None))
+        self.edit_token.setPlaceholderText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u043e\u043a\u0435\u043d", None))
         self.btn_addToList.setText(QCoreApplication.translate("MainWindowBig", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))
     # retranslateUi
 
