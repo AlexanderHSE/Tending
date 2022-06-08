@@ -3,6 +3,7 @@ import ApiParsing
 import AllPortfolio
 import Portfolio
 from tinkoff.invest.services import Services
+from tinkoff.invest.schemas import PortfolioResponse, Quotation
 
 
 def cast_money(money_value: MoneyValue):
@@ -14,6 +15,30 @@ def cast_money(money_value: MoneyValue):
     return money_value.units + money_value.nano / 1e9
 
 
+def cast_yield(quotation: Quotation):
+    return quotation.units + quotation.nano / 1e9
+
+
+def get_invested_money(total_yield_percentage: float, total_cost: float):
+    total_cost_percentage = 100 + total_yield_percentage
+    return total_cost / total_cost_percentage * 100
+
+
+def get_total_profit(total_yield_percentage: float, total_cost: float):
+    invested_money = get_invested_money(total_yield_percentage, total_cost)
+    return round(total_cost - invested_money, 2)
+
+
+def get_total_cost_portfolio(portfolio: PortfolioResponse):
+    total_amount_shares = cast_money(portfolio.total_amount_shares)
+    total_amount_bonds = cast_money(portfolio.total_amount_bonds)
+    total_amount_etf = cast_money(portfolio.total_amount_etf)
+    total_amount_currencies = cast_money(portfolio.total_amount_currencies)
+    total_amount_futures = cast_money(portfolio.total_amount_futures)
+    return round(total_amount_shares + total_amount_bonds + total_amount_etf +
+                 total_amount_currencies + total_amount_futures, 2)
+
+
 def get_accounts(self: str) -> GetAccountsResponse:
     client: Services
     try:
@@ -21,6 +46,7 @@ def get_accounts(self: str) -> GetAccountsResponse:
             return client.users.get_accounts()
     except RequestError:
         print("error!")
+
 
 def choice_parsing():
     print("Выберите способ парсинга")
@@ -31,7 +57,7 @@ def choice_parsing():
 '''
 t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 '''
-token  = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
+token = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
 if __name__ == "__main__":
     # with Client(token) as client:
     #     dic = dict()
@@ -182,7 +208,7 @@ if __name__ == "__main__":
         # Добавление аккаунта в список аккаунтов
         all_ports.add(port1.account)
         port.get_analytics()
-    else :
+    else:
         # pars with xlsx
         pass
     # print("************************")
@@ -202,5 +228,5 @@ if __name__ == "__main__":
     #         'nkd': cast_money(r.current_nkd)
     #     } for p in r.positions])
     #     print(df.head(2))
-#2096003229
-#2095996597
+# 2096003229
+# 2095996597

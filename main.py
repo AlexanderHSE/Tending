@@ -1,15 +1,22 @@
 import sys
 import platform
 from PySide2 import QtCore, QtGui, QtWidgets
-from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
+from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect,
+                            QSize, QTime, QUrl, Qt, QEvent)
+from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence,
+                           QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 
 from ui_main_stacked import Ui_MainWindow
 from ui_mainworkspace import Ui_MainWindowBig
 
 from ui_functions import *
-from tinkoff.invest import Client, RequestError
+from tinkoff.invest import Client, RequestError, PortfolioPosition
+from tinkoff.invest.schemas import PortfolioResponse
+
+from tending import get_total_cost_portfolio, cast_yield, get_total_profit
+
+
 # # APP STATES
 #
 # STATE_LOGIN = 0
@@ -99,30 +106,33 @@ class MainWindow(QMainWindow):
                 print("Ошибка, введите токен заново!")
                 break
         self.clear_layout()
-        self.create_new_widget(accounts)
+        self.create_new_widget(token, accounts)
 
     # Создание кнопок-полей счетов
-    def create_new_widget(self, accounts):
+    def create_new_widget(self, token, accounts):
         self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
         for i in range(len(accounts.accounts)):
             btn_text = accounts.accounts[i].name
             btn = QPushButton(btn_text, self.ui.scrollAreaWidgetContents_3)
             btn.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
-                                "background-color: rgb(148, 148, 152);\n"
-                                "height: 60px;\n }"
-                                "QPushButton:hover {\n"
-                                "	background-color:rgb(234, 234, 234);}\n")
+                              "background-color: rgb(148, 148, 152);\n"
+                              "height: 60px;\n }"
+                              "QPushButton:hover {\n"
+                              "	background-color:rgb(234, 234, 234);}\n")
             btn.setFlat(True)
             btn.setObjectName(btn_text)
-            btn.clicked.connect(lambda *args, acc=accounts.accounts[i]: self.add_portfolio_to_list(acc))
-            btn.clicked.connect(lambda *args, acc=accounts.accounts[i]: self.fill_instruments_close_to_pie_chart(acc))
+            btn.clicked.connect(
+                lambda *args, add_new_port=True, tok=token, acc=accounts.accounts[i]: self.add_portfolio_to_list(
+                    add_new_port, tok, acc))
+            btn.clicked.connect(
+                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_instruments_close_to_pie_chart(tok, acc))
             # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
             btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-            #btn.clicked.connect(self.fill_instruments_close_to_pie_chart(accounts.accounts[i]))
+            # btn.clicked.connect(self.fill_instruments_close_to_pie_chart(accounts.accounts[i]))
             self.scroll_layout.addWidget(btn)
 
     # Добавление портфеля в список портфелей
-    def add_portfolio_to_list(self, acc=None):
+    def add_portfolio_to_list(self, add_new_port=False, token=None, acc=None):
         sender = self.sender()
         print(acc.name)
         self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
@@ -131,19 +141,19 @@ class MainWindow(QMainWindow):
         btn_list = QPushButton(btn_text_list, self.ui.scrollAreaWidgetContents_caseList)
         btn_list.setObjectName(btn_text_list)
         btn_list.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
-                                "background-color: rgb(148, 148, 152);\n"
-                                "height: 60px;\n }"
-                                "QPushButton:hover {\n"
-                                "	background-color:rgb(234, 234, 234);}\n")
+                               "background-color: rgb(148, 148, 152);\n"
+                               "height: 60px;\n }"
+                               "QPushButton:hover {\n"
+                               "	background-color:rgb(234, 234, 234);}\n")
         btn_list.setFlat(True)
         btn_list.clicked.connect(lambda *args, acc_=acc: self.check_presence(acc_))
         if self.check_presence(acc):
             self.scroll_layout_list.addWidget(btn_list)
         else:
             btn_list.setParent(None)
-        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_instruments_close_to_pie_chart(acc_))
+        # Надо как то убрать двойное выполнение функции
+        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_instruments_close_to_pie_chart(token, acc_))
         btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-        btn_list.clicked.connect(self.fill_instruments_close_to_pie_chart(acc))
 
     # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
     def check_presence(self, acc=None):
@@ -162,12 +172,46 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.takeAt(i).widget().setParent(None)
 
-    def fill_instruments_close_to_pie_chart(self, account):
+    def fill_total_cost(self, portfolio: PortfolioResponse):
+        total_cost = str(get_total_cost_portfolio(portfolio)) + "₽"
+        self.ui.cost_number_all.setText(total_cost)
+        self.ui.cost_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #F9F9FB")
+
+    def fill_total_yield(self, portfolio: PortfolioResponse):
+        total_yield = portfolio.expected_yield
+        total_yield_percentage = cast_yield(total_yield)
+        self.ui.yield_number_all.setText(str(total_yield_percentage) + "%")
+        if total_yield_percentage < 0:
+            self.ui.yield_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #FAA2A2")
+        elif total_yield_percentage == 0:
+            self.ui.yield_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #F9F9FB")
+        elif total_yield_percentage > 0:
+            self.ui.yield_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #47F19F")
+
+    def fill_total_profit(self, portfolio: PortfolioResponse):
+        total_yield = portfolio.expected_yield
+        total_yield_percentage = cast_yield(total_yield)
+        total_cost = get_total_cost_portfolio(portfolio)
+        total_profit = get_total_profit(total_yield_percentage, total_cost)
+        self.ui.profit_number_all.setText(str(total_profit) + "₽")
+        if total_yield_percentage < 0:
+            self.ui.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #FAA2A2")
+        elif total_yield_percentage == 0:
+            self.ui.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #F9F9FB")
+        elif total_yield_percentage > 0:
+            self.ui.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #47F19F")
+
+    def fill_instruments_close_to_pie_chart(self, token, account):
         print('Данные переданы', account.name)
         sender = self.sender()
+        with Client(token) as client:
+            portfolio = client.operations.get_portfolio(account_id=account.id)
+        self.fill_total_cost(portfolio)
+        self.fill_total_yield(portfolio)
+        self.fill_total_profit(portfolio)
+        print(token)
 
-       # self.ui.cost_number_all.setText()
-       # self.ui.cost_number_all.setStyleSheet()
+
 #
 # class LogWindow(QMainWindow):
 #     def __init__(self):
