@@ -3,15 +3,20 @@ import ApiParsing
 import AllPortfolio
 import Portfolio
 from tinkoff.invest.services import Services
-from tinkoff.invest.schemas import PortfolioResponse, Quotation
+from tinkoff.invest.schemas import PortfolioResponse, Quotation, PortfolioPosition
+from Instr import Instr
+
+dict_sector = dict(government="Государтсвенные бумаги", energy="Энергетика", ecomaterials="Промышленность",
+                   green_energy="Зелёная энергетика", financial="Финансы", utilities="Коммунальные услуги",
+                   materials="Материалы", green_buildings="Промышленность", municipal="Муниципальные бумаги",
+                   other="Другое", industrials="Промышленность", it="Информационные технологии",
+                   health_care="Здравоохранение", telecom="Услуги связи", consumer="Потребительский сектор",
+                   real_estate="Недвижимость", electrocars="Промышленность", currency="Валюта", etf="ETF",
+                   bond="Облигация")
+dict_instrument_type = dict(share="Акция", bond="Облигация", etf="Фонд", currency="Валюта", future="Фьючерс")
 
 
 def cast_money(money_value: MoneyValue):
-    """
-    Получение стоимости актива в определенной валюте.
-    :param money_value: Денежная сумма в определенной валюте.
-    :return: Получает стоимость актива в определенной валюте.
-    """
     return money_value.units + money_value.nano / 1e9
 
 
@@ -39,6 +44,57 @@ def get_total_cost_portfolio(portfolio: PortfolioResponse):
                  total_amount_currencies + total_amount_futures, 2)
 
 
+def get_instrument(token, position):
+    ins = Instr(token, position.figi, position.instrument_type)
+    return ins.instr
+
+
+def convert_position_to_dict(token, position: PortfolioPosition, usdrur):
+    instr = get_instrument(token, position)
+    r = {
+        'name': instr.name,
+        'ticker': "",
+        'country': instr.country_of_risk_name,
+        'sector': "",
+        'quantity': cast_money(position.quantity),
+        'expected_yield': cast_money(position.expected_yield),
+        'instrument_type': position.instrument_type,
+        'average_buy_price': cast_money(position.average_position_price),
+        """
+        нужно сделать парсинг текущей цены
+        """
+        'current_buy_price': cast_money(position.average_position_price) + cast_money(position.expected_yield)/cast_money(position.quantity),
+        'currency': position.average_position_price.currency,
+        'nkd': cast_money(position.current_nkd),
+    }
+    if position.instrument_type == 'currency' or position.instrument_type == 'bond':
+        r['ticker'] = ""
+        if position.instrument_type == 'currency':
+            r['sector'] = "currency"
+        else:
+            r['sector'] = "bond"
+    elif position.instrument_type == 'etf':
+        r['sector'] = 'etf'
+        r['ticker'] = instr.ticker
+    else:
+        r['ticker'] = instr.ticker
+        r['sector'] = instr.sector
+    if r['currency'] != 'rub':
+        # если бы expected_yield быk бы тоже MoneyValue,
+        # то конвертацию валюты можно было бы вынести в cast_money
+        r['expected_yield'] *= usdrur
+        r['average_buy_price'] *= usdrur
+        r['nkd'] *= usdrur
+    r['currency'] = 'Рубль'
+    r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
+    r['comissixon'] = r['sell_sum'] * 0.003
+    r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
+    if len(r['sector']) != 0:
+        r['sector'] = dict_sector[r['sector']]
+    r['instrument_type'] = dict_instrument_type[r['instrument_type']]
+    return r
+
+
 def get_accounts(self: str) -> GetAccountsResponse:
     client: Services
     try:
@@ -57,7 +113,8 @@ def choice_parsing():
 '''
 t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 '''
-token = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
+#
+#   token = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
 if __name__ == "__main__":
     # with Client(token) as client:
     #     dic = dict()

@@ -120,6 +120,9 @@ class Analytics:
         instr = self.get_instrument(p)
         r = {
             'name': instr.name,
+            'trading_status': instr.trading_status,
+            'buy_available_flag': instr.buy_available_flag,
+            "sell_available_flag": instr.sell_available_flag,
             'ticker': "",
             'country': instr.country_of_risk_name,
             'sector': "",

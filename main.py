@@ -14,7 +14,8 @@ from ui_functions import *
 from tinkoff.invest import Client, RequestError, PortfolioPosition
 from tinkoff.invest.schemas import PortfolioResponse
 
-from tending import get_total_cost_portfolio, cast_yield, get_total_profit
+from tending import get_total_cost_portfolio, cast_yield, get_total_profit, cast_money, dict_sector, \
+    dict_instrument_type, convert_position_to_dict
 
 
 # # APP STATES
@@ -125,10 +126,10 @@ class MainWindow(QMainWindow):
                 lambda *args, add_new_port=True, tok=token, acc=accounts.accounts[i]: self.add_portfolio_to_list(
                     add_new_port, tok, acc))
             btn.clicked.connect(
-                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_instruments_close_to_pie_chart(tok, acc))
+                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_main_portfolio(tok, acc))
             # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
             btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-            # btn.clicked.connect(self.fill_instruments_close_to_pie_chart(accounts.accounts[i]))
+            # btn.clicked.connect(self.fill_main_portfolio(accounts.accounts[i]))
             self.scroll_layout.addWidget(btn)
 
     # Добавление портфеля в список портфелей
@@ -152,7 +153,7 @@ class MainWindow(QMainWindow):
         else:
             btn_list.setParent(None)
         # Надо как то убрать двойное выполнение функции
-        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_instruments_close_to_pie_chart(token, acc_))
+        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_main_portfolio(token, acc_))
         btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
 
     # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
@@ -201,14 +202,31 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #47F19F")
 
-    def fill_instruments_close_to_pie_chart(self, token, account):
+    def fill_total_stats(self, portfolio):
+        self.fill_total_cost(portfolio)
+        self.fill_total_yield(portfolio)
+        self.fill_total_profit(portfolio)
+
+
+    def fill_area_pie_based(self, token, client, portfolio):
+        u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
+        usdrur = cast_money(u.last_prices[0].price)
+        list_dict_instruments = list()
+        names_dict_pose = dict()
+        for pose in portfolio.positions:
+            dict_pose = convert_position_to_dict(token, pose, usdrur)
+            if dict_pose['average_buy_price'] != 0:
+                print(dict_pose)
+                list_dict_instruments.append(dict_pose)
+
+    def fill_main_portfolio(self, token, account):
         print('Данные переданы', account.name)
         sender = self.sender()
         with Client(token) as client:
             portfolio = client.operations.get_portfolio(account_id=account.id)
-        self.fill_total_cost(portfolio)
-        self.fill_total_yield(portfolio)
-        self.fill_total_profit(portfolio)
+            self.fill_total_stats(portfolio)
+            self.fill_area_pie_based(token, client, portfolio)
+
         print(token)
 
 

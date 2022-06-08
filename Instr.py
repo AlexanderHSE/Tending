@@ -1,4 +1,4 @@
-from tinkoff.invest import Client, PortfolioPosition, InstrumentIdType, InstrumentStatus
+from tinkoff.invest import Client,InstrumentIdType
 
 
 class Instr:
