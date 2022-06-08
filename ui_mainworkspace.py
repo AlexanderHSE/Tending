@@ -18,6 +18,11 @@ class Ui_MainWindowBig(object):
         if not MainWindowBig.objectName():
             MainWindowBig.setObjectName(u"MainWindowBig")
         MainWindowBig.resize(947, 739)
+        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(MainWindowBig.sizePolicy().hasHeightForWidth())
+        MainWindowBig.setSizePolicy(sizePolicy)
         MainWindowBig.setMinimumSize(QSize(947, 739))
         self.centralwidget = QWidget(MainWindowBig)
         self.centralwidget.setObjectName(u"centralwidget")
@@ -203,6 +208,13 @@ class Ui_MainWindowBig(object):
 
         self.btn_maximize_restore = QPushButton(self.frame_btns_2)
         self.btn_maximize_restore.setObjectName(u"btn_maximize_restore")
+        self.btn_maximize_restore.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Ubuntu;\n"
+"	font-size: 16px;\n"
+"	font-weight: bold;\n"
+"}")
         icon1 = QIcon()
         icon1.addFile(u"maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_maximize_restore.setIcon(icon1)
@@ -246,146 +258,284 @@ class Ui_MainWindowBig(object):
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
         self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 591))
-        self.cost_all = QFrame(self.scrollAreaWidgetContents)
+        self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.frame_2 = QFrame(self.scrollAreaWidgetContents)
+        self.frame_2.setObjectName(u"frame_2")
+        self.frame_2.setMaximumSize(QSize(16777215, 101))
+        self.frame_2.setFrameShape(QFrame.StyledPanel)
+        self.frame_2.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_8 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.cost_all = QFrame(self.frame_2)
         self.cost_all.setObjectName(u"cost_all")
-        self.cost_all.setGeometry(QRect(80, 20, 171, 81))
+        self.cost_all.setMaximumSize(QSize(171, 81))
         self.cost_all.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
         self.cost_all.setFrameShape(QFrame.StyledPanel)
         self.cost_all.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_9 = QVBoxLayout(self.cost_all)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.cost_text_all = QLabel(self.cost_all)
+        self.cost_text_all.setObjectName(u"cost_text_all")
+        self.cost_text_all.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.cost_text_all.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_9.addWidget(self.cost_text_all)
+
         self.cost_number_all = QLabel(self.cost_all)
         self.cost_number_all.setObjectName(u"cost_number_all")
-        self.cost_number_all.setGeometry(QRect(0, 50, 161, 21))
         self.cost_number_all.setLayoutDirection(Qt.RightToLeft)
         self.cost_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
 "")
         self.cost_number_all.setAlignment(Qt.AlignCenter)
-        self.cost_text_all = QLabel(self.cost_all)
-        self.cost_text_all.setObjectName(u"cost_text_all")
-        self.cost_text_all.setGeometry(QRect(0, 10, 171, 21))
-        self.cost_text_all.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.cost_text_all.setAlignment(Qt.AlignCenter)
-        self.profit_all = QFrame(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_9.addWidget(self.cost_number_all)
+
+
+        self.horizontalLayout_8.addWidget(self.cost_all)
+
+        self.profit_all = QFrame(self.frame_2)
         self.profit_all.setObjectName(u"profit_all")
-        self.profit_all.setGeometry(QRect(350, 20, 181, 81))
+        self.profit_all.setMaximumSize(QSize(171, 81))
         self.profit_all.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
         self.profit_all.setFrameShape(QFrame.StyledPanel)
         self.profit_all.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_8 = QVBoxLayout(self.profit_all)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.profit_text_all = QLabel(self.profit_all)
         self.profit_text_all.setObjectName(u"profit_text_all")
-        self.profit_text_all.setGeometry(QRect(10, 0, 171, 41))
         self.profit_text_all.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color : #F9F9FB")
         self.profit_text_all.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_8.addWidget(self.profit_text_all)
+
         self.profit_number_all = QLabel(self.profit_all)
         self.profit_number_all.setObjectName(u"profit_number_all")
-        self.profit_number_all.setGeometry(QRect(10, 50, 161, 21))
         self.profit_number_all.setLayoutDirection(Qt.RightToLeft)
         self.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
 "")
         self.profit_number_all.setAlignment(Qt.AlignCenter)
-        self.yield_all = QFrame(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_8.addWidget(self.profit_number_all)
+
+
+        self.horizontalLayout_8.addWidget(self.profit_all)
+
+        self.yield_all = QFrame(self.frame_2)
         self.yield_all.setObjectName(u"yield_all")
-        self.yield_all.setGeometry(QRect(630, 20, 201, 81))
+        self.yield_all.setMaximumSize(QSize(200, 81))
         self.yield_all.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
         self.yield_all.setFrameShape(QFrame.StyledPanel)
         self.yield_all.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.yield_all)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.yield_text_all = QLabel(self.yield_all)
         self.yield_text_all.setObjectName(u"yield_text_all")
-        self.yield_text_all.setGeometry(QRect(20, 0, 171, 31))
         self.yield_text_all.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color : #F9F9FB\n"
 "")
         self.yield_text_all.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_5.addWidget(self.yield_text_all)
+
         self.yield_number_all = QLabel(self.yield_all)
         self.yield_number_all.setObjectName(u"yield_number_all")
-        self.yield_number_all.setGeometry(QRect(20, 40, 161, 21))
         self.yield_number_all.setLayoutDirection(Qt.RightToLeft)
         self.yield_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
 "")
         self.yield_number_all.setAlignment(Qt.AlignCenter)
-        self.pie_chart_area = QFrame(self.scrollAreaWidgetContents)
+
+        self.verticalLayout_5.addWidget(self.yield_number_all)
+
+
+        self.horizontalLayout_8.addWidget(self.yield_all)
+
+
+        self.verticalLayout_10.addWidget(self.frame_2)
+
+        self.frame_3 = QFrame(self.scrollAreaWidgetContents)
+        self.frame_3.setObjectName(u"frame_3")
+        self.frame_3.setStyleSheet(u"")
+        self.frame_3.setFrameShape(QFrame.StyledPanel)
+        self.frame_3.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_3)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.pie_chart_area = QFrame(self.frame_3)
         self.pie_chart_area.setObjectName(u"pie_chart_area")
-        self.pie_chart_area.setGeometry(QRect(20, 120, 371, 381))
+        self.pie_chart_area.setMinimumSize(QSize(366, 0))
         self.pie_chart_area.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
         self.pie_chart_area.setFrameShape(QFrame.StyledPanel)
         self.pie_chart_area.setFrameShadow(QFrame.Raised)
-        self.pie_chart_name = QLabel(self.pie_chart_area)
+        self.verticalLayout_14 = QVBoxLayout(self.pie_chart_area)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.frame_5 = QFrame(self.pie_chart_area)
+        self.frame_5.setObjectName(u"frame_5")
+        self.frame_5.setMaximumSize(QSize(16777215, 51))
+        self.frame_5.setFrameShape(QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.frame_5)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.pie_chart_name = QLabel(self.frame_5)
         self.pie_chart_name.setObjectName(u"pie_chart_name")
-        self.pie_chart_name.setGeometry(QRect(100, 10, 171, 21))
         self.pie_chart_name.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #F9F9FB\n"
 "")
         self.pie_chart_name.setAlignment(Qt.AlignCenter)
-        self.instruments_close_pie_area = QFrame(self.scrollAreaWidgetContents)
+
+        self.horizontalLayout_11.addWidget(self.pie_chart_name)
+
+
+        self.verticalLayout_14.addWidget(self.frame_5)
+
+        self.frame_6 = QFrame(self.pie_chart_area)
+        self.frame_6.setObjectName(u"frame_6")
+        self.frame_6.setFrameShape(QFrame.StyledPanel)
+        self.frame_6.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_15 = QVBoxLayout(self.frame_6)
+        self.verticalLayout_15.setSpacing(0)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.verticalLayout_15.addItem(self.horizontalSpacer_3)
+
+
+        self.verticalLayout_14.addWidget(self.frame_6)
+
+
+        self.horizontalLayout_9.addWidget(self.pie_chart_area)
+
+        self.horizontalSpacer = QSpacerItem(30, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_9.addItem(self.horizontalSpacer)
+
+        self.instruments_close_pie_area = QFrame(self.frame_3)
         self.instruments_close_pie_area.setObjectName(u"instruments_close_pie_area")
-        self.instruments_close_pie_area.setGeometry(QRect(410, 120, 461, 381))
+        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.instruments_close_pie_area.sizePolicy().hasHeightForWidth())
+        self.instruments_close_pie_area.setSizePolicy(sizePolicy1)
         self.instruments_close_pie_area.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
         self.instruments_close_pie_area.setFrameShape(QFrame.StyledPanel)
         self.instruments_close_pie_area.setFrameShadow(QFrame.Raised)
-        self.column_title_name = QLabel(self.instruments_close_pie_area)
+        self.verticalLayout_13 = QVBoxLayout(self.instruments_close_pie_area)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.frame_4 = QFrame(self.instruments_close_pie_area)
+        self.frame_4.setObjectName(u"frame_4")
+        sizePolicy1.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
+        self.frame_4.setSizePolicy(sizePolicy1)
+        self.frame_4.setMaximumSize(QSize(16777215, 83))
+        self.frame_4.setFrameShape(QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame_4)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.column_title_name = QLabel(self.frame_4)
         self.column_title_name.setObjectName(u"column_title_name")
-        self.column_title_name.setGeometry(QRect(0, 10, 91, 21))
-        self.column_title_name.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_name.setMaximumSize(QSize(56, 16777215))
+        self.column_title_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
 "")
         self.column_title_name.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_10.addWidget(self.column_title_name)
+
+        self.column_title_type = QLabel(self.frame_4)
+        self.column_title_type.setObjectName(u"column_title_type")
+        self.column_title_type.setMaximumSize(QSize(37, 16777215))
+        self.column_title_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.column_title_type.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_10.addWidget(self.column_title_type)
+
+        self.column_title_quantity = QLabel(self.frame_4)
+        self.column_title_quantity.setObjectName(u"column_title_quantity")
+        self.column_title_quantity.setMaximumSize(QSize(68, 16777215))
+        self.column_title_quantity.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.column_title_quantity.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_10.addWidget(self.column_title_quantity)
+
+        self.column_title_price = QFrame(self.frame_4)
+        self.column_title_price.setObjectName(u"column_title_price")
+        self.column_title_price.setMaximumSize(QSize(79, 16777215))
+        self.column_title_price.setFrameShape(QFrame.StyledPanel)
+        self.column_title_price.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_11 = QVBoxLayout(self.column_title_price)
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.price_now = QLabel(self.column_title_price)
+        self.price_now.setObjectName(u"price_now")
+        self.price_now.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.price_now.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_11.addWidget(self.price_now)
+
+        self.price_average = QLabel(self.column_title_price)
+        self.price_average.setObjectName(u"price_average")
+        self.price_average.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.price_average.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_11.addWidget(self.price_average)
+
+
+        self.horizontalLayout_10.addWidget(self.column_title_price)
+
+        self.column_title_res = QFrame(self.frame_4)
+        self.column_title_res.setObjectName(u"column_title_res")
+        self.column_title_res.setMaximumSize(QSize(91, 16777215))
+        self.column_title_res.setFrameShape(QFrame.StyledPanel)
+        self.column_title_res.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_12 = QVBoxLayout(self.column_title_res)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.column_title_yeild = QLabel(self.column_title_res)
+        self.column_title_yeild.setObjectName(u"column_title_yeild")
+        self.column_title_yeild.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.column_title_yeild.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_12.addWidget(self.column_title_yeild)
+
+        self.column_title_profit = QLabel(self.column_title_res)
+        self.column_title_profit.setObjectName(u"column_title_profit")
+        self.column_title_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.column_title_profit.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_12.addWidget(self.column_title_profit)
+
+
+        self.horizontalLayout_10.addWidget(self.column_title_res)
+
+        self.column_tittle_percentage = QLabel(self.frame_4)
+        self.column_tittle_percentage.setObjectName(u"column_tittle_percentage")
+        self.column_tittle_percentage.setMaximumSize(QSize(37, 16777215))
+        self.column_tittle_percentage.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB;\n"
+"")
+        self.column_tittle_percentage.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_10.addWidget(self.column_tittle_percentage)
+
+
+        self.verticalLayout_13.addWidget(self.frame_4)
+
         self.instruments_cpa_scrollArea = QScrollArea(self.instruments_close_pie_area)
         self.instruments_cpa_scrollArea.setObjectName(u"instruments_cpa_scrollArea")
-        self.instruments_cpa_scrollArea.setGeometry(QRect(10, 50, 441, 331))
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 441, 331))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 325))
         self.instruments_cpa_scrollArea.setWidget(self.scrollAreaWidgetContents_4)
-        self.column_title_type = QLabel(self.instruments_close_pie_area)
-        self.column_title_type.setObjectName(u"column_title_type")
-        self.column_title_type.setGeometry(QRect(80, 10, 51, 21))
-        self.column_title_type.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.column_title_type.setAlignment(Qt.AlignCenter)
-        self.column_title_quantity = QLabel(self.instruments_close_pie_area)
-        self.column_title_quantity.setObjectName(u"column_title_quantity")
-        self.column_title_quantity.setGeometry(QRect(130, 10, 91, 21))
-        self.column_title_quantity.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.column_title_quantity.setAlignment(Qt.AlignCenter)
-        self.column_title_price = QFrame(self.instruments_close_pie_area)
-        self.column_title_price.setObjectName(u"column_title_price")
-        self.column_title_price.setGeometry(QRect(230, 0, 71, 41))
-        self.column_title_price.setFrameShape(QFrame.StyledPanel)
-        self.column_title_price.setFrameShadow(QFrame.Raised)
-        self.price_average = QLabel(self.column_title_price)
-        self.price_average.setObjectName(u"price_average")
-        self.price_average.setGeometry(QRect(0, 20, 61, 21))
-        self.price_average.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.price_average.setAlignment(Qt.AlignCenter)
-        self.price_now = QLabel(self.column_title_price)
-        self.price_now.setObjectName(u"price_now")
-        self.price_now.setGeometry(QRect(0, 0, 81, 21))
-        self.price_now.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.price_now.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-        self.column_title_res = QFrame(self.instruments_close_pie_area)
-        self.column_title_res.setObjectName(u"column_title_res")
-        self.column_title_res.setGeometry(QRect(310, 0, 91, 41))
-        self.column_title_res.setFrameShape(QFrame.StyledPanel)
-        self.column_title_res.setFrameShadow(QFrame.Raised)
-        self.column_title_profit = QLabel(self.column_title_res)
-        self.column_title_profit.setObjectName(u"column_title_profit")
-        self.column_title_profit.setGeometry(QRect(0, 20, 91, 21))
-        self.column_title_profit.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.column_title_profit.setAlignment(Qt.AlignCenter)
-        self.column_title_yeild = QLabel(self.column_title_res)
-        self.column_title_yeild.setObjectName(u"column_title_yeild")
-        self.column_title_yeild.setGeometry(QRect(0, 0, 81, 21))
-        self.column_title_yeild.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.column_title_yeild.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignVCenter)
-        self.column_tittle_percentage = QLabel(self.instruments_close_pie_area)
-        self.column_tittle_percentage.setObjectName(u"column_tittle_percentage")
-        self.column_tittle_percentage.setGeometry(QRect(400, 10, 61, 21))
-        self.column_tittle_percentage.setStyleSheet(u"font-size : 16px; font-family : Open Sans; color : #F9F9FB\n"
-"")
-        self.column_tittle_percentage.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_13.addWidget(self.instruments_cpa_scrollArea)
+
+
+        self.horizontalLayout_9.addWidget(self.instruments_close_pie_area)
+
+
+        self.verticalLayout_10.addWidget(self.frame_3)
+
         self.scrollArea_2.setWidget(self.scrollAreaWidgetContents)
 
         self.verticalLayout_7.addWidget(self.scrollArea_2)
@@ -465,11 +615,11 @@ class Ui_MainWindowBig(object):
         self.edit_token = QLineEdit(self.frame_7)
         self.edit_token.setObjectName(u"edit_token")
         self.edit_token.setEnabled(True)
-        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.edit_token.sizePolicy().hasHeightForWidth())
-        self.edit_token.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.edit_token.sizePolicy().hasHeightForWidth())
+        self.edit_token.setSizePolicy(sizePolicy2)
         self.edit_token.setMinimumSize(QSize(0, 50))
         self.edit_token.setStyleSheet(u"border-radius: 20px; background-color: rgb(73, 73, 77); color: rgb(180, 180, 189); padding-left: 12px;")
         self.edit_token.setMaxLength(1000)
@@ -478,13 +628,17 @@ class Ui_MainWindowBig(object):
 
         self.horizontalLayout_2.addWidget(self.edit_token)
 
+        self.horizontalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
         self.btn_addToList = QPushButton(self.frame_7)
         self.btn_addToList.setObjectName(u"btn_addToList")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.btn_addToList.sizePolicy().hasHeightForWidth())
-        self.btn_addToList.setSizePolicy(sizePolicy1)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.btn_addToList.sizePolicy().hasHeightForWidth())
+        self.btn_addToList.setSizePolicy(sizePolicy3)
         self.btn_addToList.setMinimumSize(QSize(100, 50))
         self.btn_addToList.setStyleSheet(u"QPushButton {\n"
 "border-radius: 25px; \n"
@@ -562,8 +716,8 @@ class Ui_MainWindowBig(object):
         self.btn_minimize_2.setText(QCoreApplication.translate("MainWindowBig", u"\u2013", None))
         self.btn_maximize_restore.setText("")
         self.btn_close_2.setText(QCoreApplication.translate("MainWindowBig", u"\u00d7", None))
-        self.cost_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
         self.cost_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c", None))
+        self.cost_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
         self.profit_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
         self.profit_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
         self.yield_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
@@ -572,10 +726,10 @@ class Ui_MainWindowBig(object):
         self.column_title_name.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
         self.column_title_type.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0438\u043f", None))
         self.column_title_quantity.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e", None))
-        self.price_average.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0440. \u0446\u0435\u043d\u0430", None))
         self.price_now.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0435\u043a. \u0446\u0435\u043d\u0430", None))
-        self.column_title_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
+        self.price_average.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0440. \u0446\u0435\u043d\u0430", None))
         self.column_title_yeild.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
+        self.column_title_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
         self.column_tittle_percentage.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
         self.lineEdit.setText(QCoreApplication.translate("MainWindowBig", u"Analytics", None))
         self.btn_addCase.setText("")

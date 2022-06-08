@@ -10,6 +10,12 @@
     <height>739</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>947</width>
@@ -406,6 +412,15 @@ QPushButton:hover {
              </item>
              <item>
               <widget class="QPushButton" name="btn_maximize_restore">
+               <property name="styleSheet">
+                <string notr="true">QPushButton {
+	border: none;
+	color: rgb(155, 156, 151);
+	font-family: Ubuntu;
+	font-size: 16px;
+	font-weight: bold;
+}</string>
+               </property>
                <property name="text">
                 <string/>
                </property>
@@ -484,464 +499,539 @@ QPushButton:hover {
                 <height>591</height>
                </rect>
               </property>
-              <widget class="QFrame" name="cost_all">
-               <property name="geometry">
-                <rect>
-                 <x>80</x>
-                 <y>20</y>
-                 <width>171</width>
-                 <height>81</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="cost_number_all">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>50</y>
-                  <width>161</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 20px; font-family : Open Sans; 
-</string>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QLabel" name="cost_text_all">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>10</y>
-                  <width>171</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Стоимость</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QFrame" name="profit_all">
-               <property name="geometry">
-                <rect>
-                 <x>350</x>
-                 <y>20</y>
-                 <width>181</width>
-                 <height>81</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="profit_text_all">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>0</y>
-                  <width>171</width>
-                  <height>41</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB</string>
-                </property>
-                <property name="text">
-                 <string>Прибыль</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QLabel" name="profit_number_all">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>50</y>
-                  <width>161</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 20px; font-family : Open Sans; 
-</string>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QFrame" name="yield_all">
-               <property name="geometry">
-                <rect>
-                 <x>630</x>
-                 <y>20</y>
-                 <width>201</width>
-                 <height>81</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="yield_text_all">
-                <property name="geometry">
-                 <rect>
-                  <x>20</x>
-                  <y>0</y>
-                  <width>171</width>
-                  <height>31</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Доходность</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QLabel" name="yield_number_all">
-                <property name="geometry">
-                 <rect>
-                  <x>20</x>
-                  <y>40</y>
-                  <width>161</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="layoutDirection">
-                 <enum>Qt::RightToLeft</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 20px; font-family : Open Sans; 
-</string>
-                </property>
-                <property name="text">
-                 <string>TextLabel</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QFrame" name="pie_chart_area">
-               <property name="geometry">
-                <rect>
-                 <x>20</x>
-                 <y>120</y>
-                 <width>371</width>
-                 <height>381</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="pie_chart_name">
-                <property name="geometry">
-                 <rect>
-                  <x>100</x>
-                  <y>10</y>
-                  <width>171</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 20px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Все активы</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </widget>
-              <widget class="QFrame" name="instruments_close_pie_area">
-               <property name="geometry">
-                <rect>
-                 <x>410</x>
-                 <y>120</y>
-                 <width>461</width>
-                 <height>381</height>
-                </rect>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
-               </property>
-               <property name="frameShape">
-                <enum>QFrame::StyledPanel</enum>
-               </property>
-               <property name="frameShadow">
-                <enum>QFrame::Raised</enum>
-               </property>
-               <widget class="QLabel" name="column_title_name">
-                <property name="geometry">
-                 <rect>
-                  <x>0</x>
-                  <y>10</y>
-                  <width>91</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Название</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QScrollArea" name="instruments_cpa_scrollArea">
-                <property name="geometry">
-                 <rect>
-                  <x>10</x>
-                  <y>50</y>
-                  <width>441</width>
-                  <height>331</height>
-                 </rect>
-                </property>
-                <property name="widgetResizable">
-                 <bool>true</bool>
-                </property>
-                <widget class="QWidget" name="scrollAreaWidgetContents_4">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>441</width>
-                   <height>331</height>
-                  </rect>
+              <layout class="QVBoxLayout" name="verticalLayout_10">
+               <item>
+                <widget class="QFrame" name="frame_2">
+                 <property name="maximumSize">
+                  <size>
+                   <width>16777215</width>
+                   <height>101</height>
+                  </size>
                  </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_8">
+                  <item>
+                   <widget class="QFrame" name="cost_all">
+                    <property name="maximumSize">
+                     <size>
+                      <width>171</width>
+                      <height>81</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_9">
+                     <item>
+                      <widget class="QLabel" name="cost_text_all">
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB
+</string>
+                       </property>
+                       <property name="text">
+                        <string>Стоимость</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="cost_number_all">
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 20px; font-family : Open Sans; 
+</string>
+                       </property>
+                       <property name="text">
+                        <string>TextLabel</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="profit_all">
+                    <property name="maximumSize">
+                     <size>
+                      <width>171</width>
+                      <height>81</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_8">
+                     <item>
+                      <widget class="QLabel" name="profit_text_all">
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB</string>
+                       </property>
+                       <property name="text">
+                        <string>Прибыль</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="profit_number_all">
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 20px; font-family : Open Sans; 
+</string>
+                       </property>
+                       <property name="text">
+                        <string>TextLabel</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="yield_all">
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>81</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_5">
+                     <item>
+                      <widget class="QLabel" name="yield_text_all">
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 24px; font-family : Open Sans; color : #F9F9FB
+</string>
+                       </property>
+                       <property name="text">
+                        <string>Доходность</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="yield_number_all">
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-size : 20px; font-family : Open Sans; 
+</string>
+                       </property>
+                       <property name="text">
+                        <string>TextLabel</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignCenter</set>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
-               </widget>
-               <widget class="QLabel" name="column_title_type">
-                <property name="geometry">
-                 <rect>
-                  <x>80</x>
-                  <y>10</y>
-                  <width>51</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Тип</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QLabel" name="column_title_quantity">
-                <property name="geometry">
-                 <rect>
-                  <x>130</x>
-                  <y>10</y>
-                  <width>91</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Количество</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-               <widget class="QFrame" name="column_title_price">
-                <property name="geometry">
-                 <rect>
-                  <x>230</x>
-                  <y>0</y>
-                  <width>71</width>
-                  <height>41</height>
-                 </rect>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <widget class="QLabel" name="price_average">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>20</y>
-                   <width>61</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
+               </item>
+               <item>
+                <widget class="QFrame" name="frame_3">
                  <property name="styleSheet">
-                  <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
+                  <string notr="true"/>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Raised</enum>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_9">
+                  <item>
+                   <widget class="QFrame" name="pie_chart_area">
+                    <property name="minimumSize">
+                     <size>
+                      <width>366</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_14">
+                     <item>
+                      <widget class="QFrame" name="frame_5">
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>51</height>
+                        </size>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_11">
+                        <item>
+                         <widget class="QLabel" name="pie_chart_name">
+                          <property name="styleSheet">
+                           <string notr="true">font-size : 20px; font-family : Open Sans; color : #F9F9FB
 </string>
-                 </property>
-                 <property name="text">
-                  <string>Ср. цена</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
+                          </property>
+                          <property name="text">
+                           <string>Все активы</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QFrame" name="frame_6">
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
+                       <layout class="QVBoxLayout" name="verticalLayout_15">
+                        <property name="spacing">
+                         <number>0</number>
+                        </property>
+                        <property name="leftMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="topMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="rightMargin">
+                         <number>0</number>
+                        </property>
+                        <property name="bottomMargin">
+                         <number>0</number>
+                        </property>
+                        <item>
+                         <spacer name="horizontalSpacer_3">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>40</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer name="horizontalSpacer">
+                    <property name="orientation">
+                     <enum>Qt::Horizontal</enum>
+                    </property>
+                    <property name="sizeType">
+                     <enum>QSizePolicy::Fixed</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0">
+                     <size>
+                      <width>30</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                  <item>
+                   <widget class="QFrame" name="instruments_close_pie_area">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: #2A2A2C; border-radius: 10</string>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::StyledPanel</enum>
+                    </property>
+                    <property name="frameShadow">
+                     <enum>QFrame::Raised</enum>
+                    </property>
+                    <layout class="QVBoxLayout" name="verticalLayout_13">
+                     <item>
+                      <widget class="QFrame" name="frame_4">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>83</height>
+                        </size>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
+                       <layout class="QHBoxLayout" name="horizontalLayout_10">
+                        <item>
+                         <widget class="QLabel" name="column_title_name">
+                          <property name="maximumSize">
+                           <size>
+                            <width>56</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                          </property>
+                          <property name="text">
+                           <string>Название</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="column_title_type">
+                          <property name="maximumSize">
+                           <size>
+                            <width>37</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                          </property>
+                          <property name="text">
+                           <string>Тип</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="column_title_quantity">
+                          <property name="maximumSize">
+                           <size>
+                            <width>68</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                          </property>
+                          <property name="text">
+                           <string>Количество</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QFrame" name="column_title_price">
+                          <property name="maximumSize">
+                           <size>
+                            <width>79</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Raised</enum>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_11">
+                           <item>
+                            <widget class="QLabel" name="price_now">
+                             <property name="styleSheet">
+                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                             </property>
+                             <property name="text">
+                              <string>Тек. цена</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="price_average">
+                             <property name="styleSheet">
+                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                             </property>
+                             <property name="text">
+                              <string>Ср. цена</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QFrame" name="column_title_res">
+                          <property name="maximumSize">
+                           <size>
+                            <width>91</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::StyledPanel</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Raised</enum>
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_12">
+                           <item>
+                            <widget class="QLabel" name="column_title_yeild">
+                             <property name="styleSheet">
+                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                             </property>
+                             <property name="text">
+                              <string>Прибыль</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QLabel" name="column_title_profit">
+                             <property name="styleSheet">
+                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+</string>
+                             </property>
+                             <property name="text">
+                              <string>Доходность</string>
+                             </property>
+                             <property name="alignment">
+                              <set>Qt::AlignCenter</set>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QLabel" name="column_tittle_percentage">
+                          <property name="maximumSize">
+                           <size>
+                            <width>37</width>
+                            <height>16777215</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB;
+</string>
+                          </property>
+                          <property name="text">
+                           <string>Доля</string>
+                          </property>
+                          <property name="alignment">
+                           <set>Qt::AlignCenter</set>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QScrollArea" name="instruments_cpa_scrollArea">
+                       <property name="widgetResizable">
+                        <bool>true</bool>
+                       </property>
+                       <widget class="QWidget" name="scrollAreaWidgetContents_4">
+                        <property name="geometry">
+                         <rect>
+                          <x>0</x>
+                          <y>0</y>
+                          <width>403</width>
+                          <height>325</height>
+                         </rect>
+                        </property>
+                       </widget>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                 </layout>
                 </widget>
-                <widget class="QLabel" name="price_now">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>81</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                 </property>
-                 <property name="text">
-                  <string>Тек. цена</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </widget>
-               <widget class="QFrame" name="column_title_res">
-                <property name="geometry">
-                 <rect>
-                  <x>310</x>
-                  <y>0</y>
-                  <width>91</width>
-                  <height>41</height>
-                 </rect>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <widget class="QLabel" name="column_title_profit">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>20</y>
-                   <width>91</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                 </property>
-                 <property name="text">
-                  <string>Доходность</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignCenter</set>
-                 </property>
-                </widget>
-                <widget class="QLabel" name="column_title_yeild">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>81</width>
-                   <height>21</height>
-                  </rect>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                 </property>
-                 <property name="text">
-                  <string>Прибыль</string>
-                 </property>
-                 <property name="alignment">
-                  <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-                 </property>
-                </widget>
-               </widget>
-               <widget class="QLabel" name="column_tittle_percentage">
-                <property name="geometry">
-                 <rect>
-                  <x>400</x>
-                  <y>10</y>
-                  <width>61</width>
-                  <height>21</height>
-                 </rect>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-size : 16px; font-family : Open Sans; color : #F9F9FB
-</string>
-                </property>
-                <property name="text">
-                 <string>Доля</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignCenter</set>
-                </property>
-               </widget>
-              </widget>
+               </item>
+              </layout>
              </widget>
             </widget>
            </item>
@@ -1143,6 +1233,22 @@ QPushButton:hover {
                  <bool>true</bool>
                 </property>
                </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_2">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Fixed</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
               <item>
                <widget class="QPushButton" name="btn_addToList">
