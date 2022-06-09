@@ -219,17 +219,19 @@ class MainWindow(QMainWindow):
             frame_inst.setGeometry(QRect(0, 0, 401, 41))
             frame_inst.setFrameShape(QFrame.StyledPanel)
             frame_inst.setFrameShadow(QFrame.Raised)
-            print(frame_inst.objectName())
+            frame_inst_layout = QHBoxLayout(frame_inst)
 
-            inst_color = QFrame(frame_inst)
+            inst_color = QFrame()
             inst_color.setObjectName("inst_color"+str(c))
             inst_color.setGeometry(QRect(0, 0, 5, 51))
             # inst_color.setStyleSheet(u"font-size : 20px; font-family : Open Sans; back-ground color : pos['color']")
             inst_color.setStyleSheet("font-size : 20px; font-family : Open Sans; background-color : #47F19F")
             inst_color.setFrameShape(QFrame.StyledPanel)
             inst_color.setFrameShadow(QFrame.Raised)
+            inst_color.setMaximumSize(QSize(10, 16777215))
+            frame_inst_layout.addWidget(inst_color)
 
-            inst_name = QLabel(frame_inst)
+            inst_name = QLabel()
             if pos['ticker'] != "":
                 inst_name.setText(pos['ticker'])
             else:
@@ -240,8 +242,9 @@ class MainWindow(QMainWindow):
             inst_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                     "")
             inst_name.setAlignment(Qt.AlignCenter)
+            frame_inst_layout.addWidget(inst_name)
 
-            inst_type = QLabel(frame_inst)
+            inst_type = QLabel()
             inst_type.setText(pos['instrument_type'])
             inst_type.setObjectName("inst_type"+str(c))
             inst_type.setGeometry(QRect(80, -10, 21, 61))
@@ -249,8 +252,9 @@ class MainWindow(QMainWindow):
             inst_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                     "")
             inst_type.setAlignment(Qt.AlignCenter)
+            frame_inst_layout.addWidget(inst_type)
 
-            inst_quan = QLabel(frame_inst)
+            inst_quan = QLabel()
             inst_quan.setText(str(pos['quantity']))
             inst_quan.setObjectName("inst_quan"+str(c))
             inst_quan.setGeometry(QRect(130, -10, 21, 61))
@@ -258,26 +262,30 @@ class MainWindow(QMainWindow):
             inst_quan.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                     "")
             inst_quan.setAlignment(Qt.AlignCenter)
+            frame_inst_layout.addWidget(inst_quan)
 
-            inst_cost = QLabel(frame_inst)
-            inst_cost.setText(str(pos['current_buy_price']) + "\n" + str(pos['average_buy_price']))
+            inst_cost = QLabel()
+            inst_cost.setText(str(round(pos['current_buy_price'], 2)) + "\n" + str(round(pos['average_buy_price'], 2)))
             inst_cost.setObjectName("inst_cost"+str(c))
             inst_cost.setGeometry(QRect(190, -10, 51, 61))
             inst_cost.setMaximumSize(QSize(56, 16777215))
             inst_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                     "")
             inst_cost.setAlignment(Qt.AlignCenter)
+            frame_inst_layout.addWidget(inst_cost)
 
-            inst_profit = QLabel(frame_inst)
+            inst_profit = QLabel()
             inst_profit.setText(str(
-                pos['expected_yield']) + "\n" + str((pos['current_buy_price'] - pos['average_buy_price']) / pos['quantity']))
+                round(pos['expected_yield'], 2)) + "\n" + str(round(((pos['current_buy_price'] - pos['average_buy_price']) / pos['quantity']), 2)))
             inst_profit.setObjectName("inst_profit"+str(c))
             inst_profit.setGeometry(QRect(270, -20, 56, 61))
             inst_profit.setMaximumSize(QSize(56, 16777215))
             inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                       "")
             inst_profit.setAlignment(Qt.AlignCenter)
-            inst_percent = QLabel(frame_inst)
+            frame_inst_layout.addWidget(inst_profit)
+
+            inst_percent = QLabel()
             inst_percent.setText("1")
             inst_percent.setObjectName("inst_percent"+str(c))
             inst_percent.setGeometry(QRect(340, -20, 56, 61))
@@ -285,6 +293,8 @@ class MainWindow(QMainWindow):
             inst_percent.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
                                        "")
             inst_percent.setAlignment(Qt.AlignCenter)
+            frame_inst_layout.addWidget(inst_percent)
+
             self.position_pie_chart_based_list.addWidget(frame_inst)
 
     def fill_area_pie_based(self, token, client, portfolio):
