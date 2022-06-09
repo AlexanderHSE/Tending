@@ -55,6 +55,8 @@ class MainWindow(QMainWindow):
         self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
         self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
 
+        self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
+
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
 
@@ -220,15 +222,20 @@ class MainWindow(QMainWindow):
             frame_inst.setFrameShape(QFrame.StyledPanel)
             frame_inst.setFrameShadow(QFrame.Raised)
             frame_inst_layout = QHBoxLayout(frame_inst)
+            frame_inst.setStyleSheet('''
+                background-color: black;
+                padding-left: 0px;
+            ''')
 
             inst_color = QFrame()
             inst_color.setObjectName("inst_color"+str(c))
             inst_color.setGeometry(QRect(0, 0, 5, 51))
-            # inst_color.setStyleSheet(u"font-size : 20px; font-family : Open Sans; back-ground color : pos['color']")
-            inst_color.setStyleSheet("font-size : 20px; font-family : Open Sans; background-color : #47F19F")
+            inst_color.setStyleSheet(f"font-size : 20px; font-family : Open Sans; background-color : {pos['color']};")
+            # inst_color.setStyleSheet("font-size : 16px; font-family : Open Sans; background-color : #47F19F")
             inst_color.setFrameShape(QFrame.StyledPanel)
             inst_color.setFrameShadow(QFrame.Raised)
-            inst_color.setMaximumSize(QSize(10, 16777215))
+            inst_color.setMaximumSize(QSize(5, 16777215))
+            inst_color.setContentsMargins(0, 0, 0, 0)
             frame_inst_layout.addWidget(inst_color)
 
             inst_name = QLabel()
@@ -238,8 +245,9 @@ class MainWindow(QMainWindow):
                 inst_name.setText(pos['name'])
             inst_name.setObjectName("inst_name"+str(c))
             inst_name.setGeometry(QRect(10, -10, 51, 61))
-            inst_name.setMaximumSize(QSize(56, 16777215))
-            inst_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            # inst_name.setMaximumSize(QSize(80, 16777215))
+            inst_name.adjustSize()
+            inst_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_name.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_name)
@@ -248,8 +256,9 @@ class MainWindow(QMainWindow):
             inst_type.setText(pos['instrument_type'])
             inst_type.setObjectName("inst_type"+str(c))
             inst_type.setGeometry(QRect(80, -10, 21, 61))
-            inst_type.setMaximumSize(QSize(56, 16777215))
-            inst_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            # inst_type.setMaximumSize(QSize(65, 16777215))
+            inst_type.adjustSize()
+            inst_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_type.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_type)
@@ -258,8 +267,9 @@ class MainWindow(QMainWindow):
             inst_quan.setText(str(pos['quantity']))
             inst_quan.setObjectName("inst_quan"+str(c))
             inst_quan.setGeometry(QRect(130, -10, 21, 61))
-            inst_quan.setMaximumSize(QSize(56, 16777215))
-            inst_quan.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            #inst_quan.setMaximumSize(QSize(56, 16777215))
+            inst_quan.adjustSize()
+            inst_quan.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_quan.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_quan)
@@ -268,31 +278,35 @@ class MainWindow(QMainWindow):
             inst_cost.setText(str(round(pos['current_buy_price'], 2)) + "\n" + str(round(pos['average_buy_price'], 2)))
             inst_cost.setObjectName("inst_cost"+str(c))
             inst_cost.setGeometry(QRect(190, -10, 51, 61))
-            inst_cost.setMaximumSize(QSize(56, 16777215))
-            inst_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            # inst_cost.setMaximumSize(QSize(56, 16777215))
+            inst_cost.adjustSize()
+            inst_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_cost.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_cost)
 
             inst_profit = QLabel()
             inst_profit.setText(str(
-                round(pos['expected_yield'], 2)) + "\n" + str(round(((pos['current_buy_price'] - pos['average_buy_price']) / pos['quantity']), 2)))
+                round(pos['expected_yield'], 2)) + "\n" + str(round(((pos['current_buy_price'] - pos['average_buy_price']) * pos['quantity']), 2)))
             inst_profit.setObjectName("inst_profit"+str(c))
             inst_profit.setGeometry(QRect(270, -20, 56, 61))
-            inst_profit.setMaximumSize(QSize(56, 16777215))
-            inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            # inst_profit.setMaximumSize(QSize(56, 16777215))
+            inst_profit.adjustSize()
+            inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                       "")
             inst_profit.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_profit)
 
             inst_percent = QLabel()
-            inst_percent.setText("1")
+            inst_percent.setText("12,34")
             inst_percent.setObjectName("inst_percent"+str(c))
             inst_percent.setGeometry(QRect(340, -20, 56, 61))
-            inst_percent.setMaximumSize(QSize(56, 16777215))
-            inst_percent.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+            # inst_percent.setMaximumSize(QSize(56, 16777215))
+            inst_percent.adjustSize()
+            inst_percent.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB;"
                                        "")
             inst_percent.setAlignment(Qt.AlignCenter)
+            inst_percent.setContentsMargins(0, 0, 0, 0)
             frame_inst_layout.addWidget(inst_percent)
 
             self.position_pie_chart_based_list.addWidget(frame_inst)
