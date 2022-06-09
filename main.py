@@ -14,8 +14,7 @@ from ui_functions import *
 from tinkoff.invest import Client, RequestError, PortfolioPosition
 from tinkoff.invest.schemas import PortfolioResponse
 
-from tending import get_total_cost_portfolio, cast_yield, get_total_profit, cast_money, dict_sector, \
-    dict_instrument_type, convert_position_to_dict
+from tending import get_total_cost_portfolio, cast_yield, get_total_profit, get_set_positions
 
 
 # # APP STATES
@@ -54,6 +53,7 @@ class MainWindow(QMainWindow):
         self.scroll_layout = QVBoxLayout(self.ui.scrollAreaWidgetContents_3)
         # ScrollArea страницы со списком портфелей
         self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
+        self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
 
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
@@ -97,6 +97,7 @@ class MainWindow(QMainWindow):
 
     # Получение данных по токену из строки ввода
     def get_token_btn(self):
+        accounts = None
         while True:
             token = self.ui.edit_token.text()
             try:
@@ -207,17 +208,88 @@ class MainWindow(QMainWindow):
         self.fill_total_yield(portfolio)
         self.fill_total_profit(portfolio)
 
+    def add_pos_in_area_pie_based(self, positions: list):
+        self.position_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
+        c = 0
+        for pos in positions:
+            c += 1
+            frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
+            # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
+            frame_inst.setObjectName("inst_1"+str(c))
+            frame_inst.setGeometry(QRect(0, 0, 401, 41))
+            frame_inst.setFrameShape(QFrame.StyledPanel)
+            frame_inst.setFrameShadow(QFrame.Raised)
+            print(frame_inst.objectName())
+
+            inst_color = QFrame(frame_inst)
+            inst_color.setObjectName("inst_color"+str(c))
+            inst_color.setGeometry(QRect(0, 0, 5, 51))
+            # inst_color.setStyleSheet(u"font-size : 20px; font-family : Open Sans; back-ground color : pos['color']")
+            inst_color.setStyleSheet("font-size : 20px; font-family : Open Sans; background-color : #47F19F")
+            inst_color.setFrameShape(QFrame.StyledPanel)
+            inst_color.setFrameShadow(QFrame.Raised)
+
+            inst_name = QLabel(frame_inst)
+            if pos['ticker'] != "":
+                inst_name.setText(pos['ticker'])
+            else:
+                inst_name.setText(pos['name'])
+            inst_name.setObjectName("inst_name"+str(c))
+            inst_name.setGeometry(QRect(10, -10, 51, 61))
+            inst_name.setMaximumSize(QSize(56, 16777215))
+            inst_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                    "")
+            inst_name.setAlignment(Qt.AlignCenter)
+
+            inst_type = QLabel(frame_inst)
+            inst_type.setText(pos['instrument_type'])
+            inst_type.setObjectName("inst_type"+str(c))
+            inst_type.setGeometry(QRect(80, -10, 21, 61))
+            inst_type.setMaximumSize(QSize(56, 16777215))
+            inst_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                    "")
+            inst_type.setAlignment(Qt.AlignCenter)
+
+            inst_quan = QLabel(frame_inst)
+            inst_quan.setText(str(pos['quantity']))
+            inst_quan.setObjectName("inst_quan"+str(c))
+            inst_quan.setGeometry(QRect(130, -10, 21, 61))
+            inst_quan.setMaximumSize(QSize(56, 16777215))
+            inst_quan.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                    "")
+            inst_quan.setAlignment(Qt.AlignCenter)
+
+            inst_cost = QLabel(frame_inst)
+            inst_cost.setText(str(pos['current_buy_price']) + "\n" + str(pos['average_buy_price']))
+            inst_cost.setObjectName("inst_cost"+str(c))
+            inst_cost.setGeometry(QRect(190, -10, 51, 61))
+            inst_cost.setMaximumSize(QSize(56, 16777215))
+            inst_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                    "")
+            inst_cost.setAlignment(Qt.AlignCenter)
+
+            inst_profit = QLabel(frame_inst)
+            inst_profit.setText(str(
+                pos['expected_yield']) + "\n" + str((pos['current_buy_price'] - pos['average_buy_price']) / pos['quantity']))
+            inst_profit.setObjectName("inst_profit"+str(c))
+            inst_profit.setGeometry(QRect(270, -20, 56, 61))
+            inst_profit.setMaximumSize(QSize(56, 16777215))
+            inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                      "")
+            inst_profit.setAlignment(Qt.AlignCenter)
+            inst_percent = QLabel(frame_inst)
+            inst_percent.setText("1")
+            inst_percent.setObjectName("inst_percent"+str(c))
+            inst_percent.setGeometry(QRect(340, -20, 56, 61))
+            inst_percent.setMaximumSize(QSize(56, 16777215))
+            inst_percent.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #47F19F\n"
+                                       "")
+            inst_percent.setAlignment(Qt.AlignCenter)
+            self.position_pie_chart_based_list.addWidget(frame_inst)
 
     def fill_area_pie_based(self, token, client, portfolio):
-        u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
-        usdrur = cast_money(u.last_prices[0].price)
-        list_dict_instruments = list()
-        names_dict_pose = dict()
-        for pose in portfolio.positions:
-            dict_pose = convert_position_to_dict(token, pose, usdrur)
-            if dict_pose['average_buy_price'] != 0:
-                print(dict_pose)
-                list_dict_instruments.append(dict_pose)
+        list_pos = get_set_positions(token, client, portfolio)
+        self.add_pos_in_area_pie_based(list_pos)
 
     def fill_main_portfolio(self, token, account):
         print('Данные переданы', account.name)

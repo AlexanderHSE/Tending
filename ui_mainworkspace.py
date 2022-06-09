@@ -700,7 +700,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)

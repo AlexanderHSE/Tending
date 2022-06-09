@@ -5,6 +5,8 @@ import Portfolio
 from tinkoff.invest.services import Services
 from tinkoff.invest.schemas import PortfolioResponse, Quotation, PortfolioPosition
 from Instr import Instr
+from help_func import generate_random_color
+#   t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 
 dict_sector = dict(government="Государтсвенные бумаги", energy="Энергетика", ecomaterials="Промышленность",
                    green_energy="Зелёная энергетика", financial="Финансы", utilities="Коммунальные услуги",
@@ -60,9 +62,6 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur):
         'expected_yield': cast_money(position.expected_yield),
         'instrument_type': position.instrument_type,
         'average_buy_price': cast_money(position.average_position_price),
-        """
-        нужно сделать парсинг текущей цены
-        """
         'current_buy_price': cast_money(position.average_position_price) + cast_money(position.expected_yield)/cast_money(position.quantity),
         'currency': position.average_position_price.currency,
         'nkd': cast_money(position.current_nkd),
@@ -93,6 +92,44 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur):
         r['sector'] = dict_sector[r['sector']]
     r['instrument_type'] = dict_instrument_type[r['instrument_type']]
     return r
+
+
+def get_set_positions(token, client, portfolio):
+    u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
+    usdrur = cast_money(u.last_prices[0].price)
+    list_dict_instruments = list()
+    set_colors = set()
+    for pose in portfolio.positions:
+        dict_pose = convert_position_to_dict(token, pose, usdrur)
+        dict_pose['color'] = generate_random_color(set_colors)
+        if dict_pose['average_buy_price'] != 0:
+            print(dict_pose)
+            list_dict_instruments.append(dict_pose)
+    print(set_colors)
+    return list_dict_instruments
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def get_accounts(self: str) -> GetAccountsResponse:
