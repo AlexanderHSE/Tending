@@ -1,5 +1,5 @@
 from tinkoff.invest import Client,InstrumentIdType
-
+from tinkoff.invest.exceptions import RequestError
 
 class Instr:
     __slots__ = ('__client', '__figi', '__instrument')
@@ -7,21 +7,24 @@ class Instr:
     def __init__(self, token, figi, instr_type):
         print("figi" + figi)
         with Client(token) as client:
-            if instr_type == 'bond':
-                self.instr = client.instruments.bond_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
-                                                        id=figi).instrument
-            elif instr_type == 'share':
-                self.instr = client.instruments.share_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
-                                                         id=figi).instrument
-            elif instr_type == 'etf':
-                self.instr = client.instruments.etf_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
-                                                       id=figi).instrument
-            elif instr_type == 'currency':
-                self.instr = client.instruments.currency_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+            try:
+                if instr_type == 'bond':
+                    self.instr = client.instruments.bond_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
                                                             id=figi).instrument
-            elif instr_type == 'futures ':
-                self.instr = client.instruments.future_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
-                                                          id=figi).instrument
+                elif instr_type == 'share':
+                    self.instr = client.instruments.share_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+                                                             id=figi).instrument
+                elif instr_type == 'etf':
+                    self.instr = client.instruments.etf_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+                                                           id=figi).instrument
+                elif instr_type == 'currency':
+                    self.instr = client.instruments.currency_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+                                                                id=figi).instrument
+                elif instr_type == 'futures ':
+                    self.instr = client.instruments.future_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
+                                                              id=figi).instrument
+            except RequestError:
+                self.instr = None
 
     # Получаем client
     @property

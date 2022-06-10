@@ -1,13 +1,13 @@
 import sys
 import platform
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
 from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt, QEvent)
+                            QSize, QTime, QUrl, Qt, QEvent, QDir, QUrlQuery)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence,
                            QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
-
 from ui_main_stacked import Ui_MainWindow
+from PySide2.QtWebEngineWidgets import QWebEngineView
 from ui_mainworkspace import Ui_MainWindowBig
 
 from ui_functions import *
@@ -16,10 +16,17 @@ from tinkoff.invest.schemas import PortfolioResponse
 
 from tending import get_total_cost_portfolio, cast_yield, get_total_profit, get_set_positions
 
-minus_profit = "#FAA2A2" # hex red color
-zero_porfit = "#F9F9FB"  # hex white color
-plus_profit = "#47F19F " # hex green color
+import pandas as pd
 
+import plotly
+import plotly.express as px
+from plotly.graph_objs import *
+
+from help_func import write_html
+
+minus_profit = "#FAA2A2"  # hex red color
+zero_porfit = "#F9F9FB"  # hex white color
+plus_profit = "#47F19F "  # hex green color
 
 
 # # APP STATES
@@ -58,8 +65,8 @@ class MainWindow(QMainWindow):
         # ScrollArea страницы со списком портфелей
         self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
         self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
-
         self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
+        self.graph = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
 
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
@@ -203,7 +210,8 @@ class MainWindow(QMainWindow):
         total_profit = get_total_profit(total_yield_percentage, total_cost)
         self.ui.profit_number_all.setText(str(total_profit) + "₽")
         if total_yield_percentage < 0:
-            self.ui.profit_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {minus_profit}")
+            self.ui.profit_number_all.setStyleSheet(
+                f"font-size : 20px; font-family : Open Sans; color : {minus_profit}")
         elif total_yield_percentage == 0:
             self.ui.profit_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {zero_porfit}")
         elif total_yield_percentage > 0:
@@ -293,25 +301,25 @@ class MainWindow(QMainWindow):
             if pos['expected_yield'] < 0:
                 inst_profit.setStyleSheet(u"color:  # FAA2A2")
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {minus_profit}")
-               # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {minus_profit}")
+            # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {minus_profit}")
             elif pos['expected_yield'] == 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {zero_porfit}")
-               # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {zero_porfit}")
+            # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {zero_porfit}")
             elif pos['expected_yield'] > 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {plus_profit}")
-                #inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {plus_profit}")
+                # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {plus_profit}")
             inst_profit.setText(str(round(pos['expected_yield'], 2)) + "₽\n" +
                                 str(round(pos['expected_yield_percentage'], 2)) + "%")
             inst_profit.setObjectName("inst_profit" + str(c))
             inst_profit.setGeometry(QRect(270, -20, 56, 61))
             # inst_profit.setMaximumSize(QSize(56, 16777215))
             inst_profit.adjustSize()
-            #inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans");
+            # inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans");
             inst_profit.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_profit)
 
             inst_percent = QLabel()
-            inst_percent.setText(str(round(pos['portfolio_share'],2)) + "%")
+            inst_percent.setText(str(round(pos['portfolio_share'], 2)) + "%")
             inst_percent.setObjectName("inst_percent" + str(c))
             inst_percent.setGeometry(QRect(340, -20, 56, 61))
             inst_percent.setMaximumSize(QSize(56, 16777215))
@@ -325,7 +333,38 @@ class MainWindow(QMainWindow):
 
     def fill_area_pie_based(self, token, client, portfolio):
         list_pos = get_set_positions(token, client, portfolio)
+        self.create_main_portfolio_pie_chart(list_pos)
         self.add_pos_in_area_pie_based(list_pos)
+
+    def create_main_portfolio_pie_chart(self, list_positions):
+        df = pd.DataFrame(list_positions)
+        layout = Layout(
+            paper_bgcolor='#2A2A2C',
+
+        )
+        pie_chart = px.pie(data_frame=df, values='portfolio_share', names='name', color='name',
+                           color_discrete_sequence=list(df['color']),
+                            hole=0.3)
+        hovertemp = "%{label} \n"
+        hovertemp += "%{value}%\n\n"
+        pie_chart.update_traces(hovertemplate=hovertemp)
+        pie_chart.update_traces(textposition='inside', showlegend=False)
+        pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12, uniformtext_mode='hide')
+
+
+
+        # plotly.offline.plot(pie_chart, filename="MainPieChart.html")
+        write_html(pie_chart, "MainPortfolioPieChart.html")
+        self.show_graph(pie_chart)
+
+    def show_graph(self, pie_chart):
+        with open("MainPortfolioPieChart.html", 'r') as pie_char_html:
+            self.graph.setHtml(pie_char_html.read())
+            self.graph.setMinimumSize(350, 360)
+
+    # print(pie_chart.to_html(include_plotlyjs='cdn'))
+    # print(pie_chart.to_html())
+    # print(type(pie_chart.to_html(include_plotlyjs='cdn')))
 
     def fill_main_portfolio(self, token, account):
         print('Данные переданы', account.name)
@@ -334,7 +373,6 @@ class MainWindow(QMainWindow):
             portfolio = client.operations.get_portfolio(account_id=account.id)
             self.fill_total_stats(portfolio)
             self.fill_area_pie_based(token, client, portfolio)
-
         print(token)
 
 
@@ -417,6 +455,7 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+    # sys.argv.append("--disable-web-security")
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

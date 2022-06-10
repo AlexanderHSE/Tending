@@ -368,38 +368,25 @@ class Ui_MainWindowBig(object):
         self.pie_chart_area.setFrameShadow(QFrame.Raised)
         self.verticalLayout_14 = QVBoxLayout(self.pie_chart_area)
         self.verticalLayout_14.setObjectName(u"verticalLayout_14")
-        self.frame_5 = QFrame(self.pie_chart_area)
-        self.frame_5.setObjectName(u"frame_5")
-        self.frame_5.setMaximumSize(QSize(16777215, 51))
-        self.frame_5.setFrameShape(QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_11 = QHBoxLayout(self.frame_5)
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.pie_chart_name = QLabel(self.frame_5)
+        self.pie_chart_name = QLabel(self.pie_chart_area)
         self.pie_chart_name.setObjectName(u"pie_chart_name")
+        self.pie_chart_name.setMaximumSize(QSize(16777215, 50))
         self.pie_chart_name.setStyleSheet(u"font-size : 20px; font-family : Open Sans; color : #F9F9FB\n"
 "")
         self.pie_chart_name.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_11.addWidget(self.pie_chart_name)
+        self.verticalLayout_14.addWidget(self.pie_chart_name)
 
-
-        self.verticalLayout_14.addWidget(self.frame_5)
-
-        self.frame_6 = QFrame(self.pie_chart_area)
-        self.frame_6.setObjectName(u"frame_6")
-        self.frame_6.setFrameShape(QFrame.StyledPanel)
-        self.frame_6.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_15 = QVBoxLayout(self.frame_6)
-        self.verticalLayout_15.setSpacing(0)
+        self.widget = QWidget(self.pie_chart_area)
+        self.widget.setObjectName(u"widget")
+        self.verticalLayout_15 = QVBoxLayout(self.widget)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
-        self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_3 = QSpacerItem(319, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
 
         self.verticalLayout_15.addItem(self.horizontalSpacer_3)
 
 
-        self.verticalLayout_14.addWidget(self.frame_6)
+        self.verticalLayout_14.addWidget(self.widget)
 
 
         self.horizontalLayout_9.addWidget(self.pie_chart_area)

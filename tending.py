@@ -54,62 +54,65 @@ def get_instrument(token, position):
 
 def convert_position_to_dict(total_cost, token, position: PortfolioPosition, usdrur, eurrur):
     instr = get_instrument(token, position)
-    r = {
-        'name': instr.name,
-        'ticker': "",
-        'country': instr.country_of_risk_name,
-        'sector': "",
-        'quantity': cast_money(position.quantity),
-        'expected_yield': cast_money(position.expected_yield),
-        'instrument_type': position.instrument_type,
-        'average_buy_price': cast_money(position.average_position_price),
-        'current_buy_price': cast_money(position.average_position_price) + cast_money(
-            position.expected_yield) / cast_money(position.quantity),
-        'currency': position.average_position_price.currency,
-        'nkd': cast_money(position.current_nkd),
-    }
+    if instr is not None:
+        r = {
+            'name': instr.name,
+            'ticker': "",
+            'country': instr.country_of_risk_name,
+            'sector': "",
+            'quantity': cast_money(position.quantity),
+            'expected_yield': cast_money(position.expected_yield),
+            'instrument_type': position.instrument_type,
+            'average_buy_price': cast_money(position.average_position_price),
+            'current_buy_price': cast_money(position.average_position_price) + cast_money(
+                position.expected_yield) / cast_money(position.quantity),
+            'currency': position.average_position_price.currency,
+            'nkd': cast_money(position.current_nkd),
+        }
 
-    if int(r['quantity']) - r['quantity'] == 0:
-        r['quantity'] = int(r['quantity'])
-    if position.instrument_type == 'currency' or position.instrument_type == 'bond':
-        r['ticker'] = ""
-        if position.instrument_type == 'currency':
-            r['sector'] = "currency"
+        if int(r['quantity']) - r['quantity'] == 0:
+            r['quantity'] = int(r['quantity'])
+        if position.instrument_type == 'currency' or position.instrument_type == 'bond':
+            r['ticker'] = ""
+            if position.instrument_type == 'currency':
+                r['sector'] = "currency"
+            else:
+                r['sector'] = "bond"
+        elif position.instrument_type == 'etf':
+            r['sector'] = 'etf'
+            r['ticker'] = instr.ticker
         else:
-            r['sector'] = "bond"
-    elif position.instrument_type == 'etf':
-        r['sector'] = 'etf'
-        r['ticker'] = instr.ticker
-    else:
-        r['ticker'] = instr.ticker
-        r['sector'] = instr.sector
-    if r['currency'] != 'rub':
-        if r['currency'] == 'usd':
-            r['current_buy_price'] *= usdrur
-            r['expected_yield'] *= usdrur
-            r['average_buy_price'] *= usdrur
-            r['nkd'] *= usdrur
-        elif r['currency'] == 'eur':
-            r['current_buy_price'] *= eurrur
-            r['expected_yield'] *= eurrur
-            r['average_buy_price'] *= eurrur
-            r['nkd'] *= eurrur
-    if r['average_buy_price'] != 0:
-        r['expected_yield_percentage'] = (r['current_buy_price'] - r['average_buy_price']) / r[
-            'average_buy_price'] * 100
-    else:
-        r['expected_yield_percentage'] = -100
-    print(str(r['name']) + " " + str(r['average_buy_price']) + " " +
-          str(r['current_buy_price']) + str(r['expected_yield_percentage']))
-    r['currency'] = '₽'
-    r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
-    r['comissixon'] = r['sell_sum'] * 0.003
-    r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
-    if len(r['sector']) != 0:
-        r['sector'] = dict_sector[r['sector']]
-    r['instrument_type'] = dict_instrument_type[r['instrument_type']]
-    r['portfolio_share'] = r['average_buy_price'] * r['quantity'] / total_cost * 100
-    return r
+            r['ticker'] = instr.ticker
+            r['sector'] = instr.sector
+        if r['currency'] != 'rub':
+            if r['currency'] == 'usd':
+                r['current_buy_price'] *= usdrur
+                r['expected_yield'] *= usdrur
+                r['average_buy_price'] *= usdrur
+                r['nkd'] *= usdrur
+            elif r['currency'] == 'eur':
+                r['current_buy_price'] *= eurrur
+                r['expected_yield'] *= eurrur
+                r['average_buy_price'] *= eurrur
+                r['nkd'] *= eurrur
+        if r['average_buy_price'] != 0:
+            r['expected_yield_percentage'] = (r['current_buy_price'] - r['average_buy_price']) / r[
+                'average_buy_price'] * 100
+        else:
+            r['expected_yield_percentage'] = -100
+        print(str(r['name']) + " " + str(r['average_buy_price']) + " " +
+              str(r['current_buy_price']) + str(r['expected_yield_percentage']))
+        r['currency'] = '₽'
+        r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
+        r['comissixon'] = r['sell_sum'] * 0.003
+        r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
+        if len(r['sector']) != 0:
+            r['sector'] = dict_sector[r['sector']]
+        r['instrument_type'] = dict_instrument_type[r['instrument_type']]
+        r['portfolio_share'] = round(r['average_buy_price'] * r['quantity'] / total_cost * 100, 2)
+        r['total_cost'] = round(r['quantity'] * r['current_buy_price'])
+        return r
+    return None
 
 
 def get_set_positions(token, client, portfolio):
@@ -122,12 +125,17 @@ def get_set_positions(token, client, portfolio):
     set_colors = set()
     for pose in portfolio.positions:
         dict_pose = convert_position_to_dict(total_cost, token, pose, usdrur, eurrur)
-        dict_pose['color'] = generate_random_color(set_colors)
-        if dict_pose['average_buy_price'] != 0:
-            print(dict_pose)
-            list_dict_instruments.append(dict_pose)
+        if dict_pose is not None:
+            dict_pose['color'] = generate_random_color(set_colors)
+            if dict_pose['average_buy_price'] != 0:
+                print(dict_pose)
+                list_dict_instruments.append(dict_pose)
     print(set_colors)
     return list_dict_instruments
+
+
+
+
 
 
 def get_accounts(self: str) -> GetAccountsResponse:
