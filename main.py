@@ -66,7 +66,8 @@ class MainWindow(QMainWindow):
         self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
         self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
         self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
-        self.graph = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
+        self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
+        self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
 
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
@@ -140,10 +141,10 @@ class MainWindow(QMainWindow):
                 lambda *args, add_new_port=True, tok=token, acc=accounts.accounts[i]: self.add_portfolio_to_list(
                     add_new_port, tok, acc))
             btn.clicked.connect(
-                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_main_portfolio(tok, acc))
+                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_portfolio(tok, acc))
             # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
             btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-            # btn.clicked.connect(self.fill_main_portfolio(accounts.accounts[i]))
+            # btn.clicked.connect(self.fill_portfolio(accounts.accounts[i]))
             self.scroll_layout.addWidget(btn)
 
     # Добавление портфеля в список портфелей
@@ -167,7 +168,7 @@ class MainWindow(QMainWindow):
         else:
             btn_list.setParent(None)
         # Надо как то убрать двойное выполнение функции
-        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_main_portfolio(token, acc_))
+        btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_portfolio(token, acc_))
         btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
 
     # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
@@ -187,8 +188,8 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.takeAt(i).widget().setParent(None)
 
-    def fill_total_cost(self, portfolio: PortfolioResponse):
-        total_cost = str(get_total_cost_portfolio(portfolio)) + "₽"
+    def fill_total_cost(self, df, portfolio: PortfolioResponse):
+        total_cost = str(get_total_cost_portfolio(df, portfolio)) + "₽"
         self.ui.cost_number_all.setText(total_cost)
         self.ui.cost_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {zero_porfit}")
 
@@ -203,10 +204,10 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.yield_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {plus_profit}")
 
-    def fill_total_profit(self, portfolio: PortfolioResponse):
+    def fill_total_profit(self,df,  portfolio: PortfolioResponse):
         total_yield = portfolio.expected_yield
         total_yield_percentage = cast_yield(total_yield)
-        total_cost = get_total_cost_portfolio(portfolio)
+        total_cost = get_total_cost_portfolio(df, portfolio)
         total_profit = get_total_profit(total_yield_percentage, total_cost)
         self.ui.profit_number_all.setText(str(total_profit) + "₽")
         if total_yield_percentage < 0:
@@ -217,11 +218,10 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.profit_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {plus_profit}")
 
-    def fill_total_stats(self, portfolio):
-        self.fill_total_cost(portfolio)
+    def fill_total_stats(self, df, portfolio):
         self.fill_total_yield(portfolio)
-        self.fill_total_profit(portfolio)
-
+        self.fill_total_profit(df, portfolio)
+        self.fill_total_cost(df, portfolio)
     def add_pos_in_area_pie_based(self, positions: list):
         self.position_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
         c = 0
@@ -333,47 +333,183 @@ class MainWindow(QMainWindow):
 
     def fill_area_pie_based(self, token, client, portfolio):
         list_pos = get_set_positions(token, client, portfolio)
-        self.create_main_portfolio_pie_chart(list_pos)
+        self.create_main_portfolio_pie_chart(list_pos, portfolio)
         self.add_pos_in_area_pie_based(list_pos)
+        self.fill_analyt_page(list_pos)
 
-    def create_main_portfolio_pie_chart(self, list_positions):
+    def create_main_portfolio_pie_chart(self, list_positions, portfolio):
         df = pd.DataFrame(list_positions)
-        layout = Layout(
-            paper_bgcolor='#2A2A2C',
+        if df.empty:
+            self.ui.widget.hide()
+            self.fill_total_stats(df, portfolio)
+        else:
+            self.ui.widget.show()
+            self.fill_total_stats(df, portfolio)
+            pie_chart = px.pie(data_frame=df, values='portfolio_share', names='name', color='name',
+                               color_discrete_sequence=list(df['color']),
+                               hole=0.3)
+            hovertemp = "%{label} \n"
+            hovertemp += "%{value}%\n\n"
+            pie_chart.update_traces(hovertemplate=hovertemp)
+            pie_chart.update_traces(textposition='inside', showlegend=False)
+            pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
+                                    uniformtext_mode='hide')
 
-        )
-        pie_chart = px.pie(data_frame=df, values='portfolio_share', names='name', color='name',
-                           color_discrete_sequence=list(df['color']),
-                            hole=0.3)
-        hovertemp = "%{label} \n"
-        hovertemp += "%{value}%\n\n"
-        pie_chart.update_traces(hovertemplate=hovertemp)
-        pie_chart.update_traces(textposition='inside', showlegend=False)
-        pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12, uniformtext_mode='hide')
-
-
-
-        # plotly.offline.plot(pie_chart, filename="MainPieChart.html")
-        write_html(pie_chart, "MainPortfolioPieChart.html")
-        self.show_graph(pie_chart)
+            # plotly.offline.plot(pie_chart, filename="MainPieChart.html")
+            write_html(pie_chart, "MainPortfolioPieChart.html")
+            self.show_graph(pie_chart)
 
     def show_graph(self, pie_chart):
         with open("MainPortfolioPieChart.html", 'r') as pie_char_html:
-            self.graph.setHtml(pie_char_html.read())
-            self.graph.setMinimumSize(350, 360)
+            self.main_pie_chart.setHtml(pie_char_html.read())
+            self.main_pie_chart.setMinimumSize(350, 360)
 
     # print(pie_chart.to_html(include_plotlyjs='cdn'))
     # print(pie_chart.to_html())
     # print(type(pie_chart.to_html(include_plotlyjs='cdn')))
 
-    def fill_main_portfolio(self, token, account):
-        print('Данные переданы', account.name)
+    def fill_main_page(self, portfolio, token, client):
+        self.fill_area_pie_based(token, client, portfolio)
+
+    def link_analytic_buttons(self, list_positions):
+        self.ui.btn_all_instruments.clicked.connect(lambda: self.give_all_instruments_to_charts())
+        self.ui.btn_shares.clicked.connect(lambda: self.give_all_shares_to_charts())
+        self.ui.btn_bonds.clicked.connect(lambda: self.give_all_bonds_to_charts())
+        self.ui.btn_etfs.clicked.connect(lambda: self.give_all_etf_to_charts())
+        self.ui.btn_currencies_all.clicked.connect(lambda: self.give_all_currencies_to_charts())
+
+        self.ui.btn_currencies.clicked.connect(lambda: self.grouping_by_currencies_pie_chart_analytical_page())
+        self.ui.btn_sectors.clicked.connect(lambda: self.grouping_by_sectors_pie_chart_analytical_page())
+        self.ui.btn_countries.clicked.connect(lambda: self.grouping_by_countries_pie_chart_analytical_page())
+        self.ui.btn_instruments_type.clicked.connect(lambda: self.grouping_by_instruments_type_pie_chart_analytical_page())
+
+
+    # Нажимаем на кнопку "Все инструменты" и передаем все инструменты для графиков.
+    def give_all_instruments_to_charts(self):
+        global current_df
+        current_df = full_df
+        print(current_df)
+        self.ui.btn_countries.show()
+        self.ui.btn_instruments_type.show()
+        self.ui.btn_sectors.show()
+        global request_from_currencies
+        request_from_currencies = False
+        print('Все инструменты')
+
+    # Нажимаем на кнопку "Акции" и передаем только все акции для графиков.
+    def give_all_shares_to_charts(self):
+        global current_df
+        current_df = full_df[full_df['instrument_type'] == 'Акция']
+        print(current_df)
+        self.ui.btn_countries.show()
+        self.ui.btn_instruments_type.hide()
+        self.ui.btn_sectors.show()
+        global request_from_currencies
+        request_from_currencies = False
+        print('Акции')
+
+    # Нажимаем на кнопку "Облигации" и передаем только все облигации для графиков.
+    def give_all_bonds_to_charts(self):
+        global current_df
+        current_df = full_df[full_df['instrument_type'] == 'Облигация']
+        print(current_df)
+        self.ui.btn_countries.show()
+        self.ui.btn_instruments_type.hide()
+        self.ui.btn_sectors.hide()
+        global request_from_currencies
+        request_from_currencies = False
+        print('Облигации')
+
+    # Нажимаем на кнопку "Фонды" и передаем только все фонды для графиков.
+    def give_all_etf_to_charts(self):
+        global current_df
+        current_df = full_df[full_df['instrument_type'] == 'Фонд']
+        print(current_df)
+        self.ui.btn_countries.show()
+        self.ui.btn_instruments_type.hide()
+        self.ui.btn_sectors.hide()
+        global request_from_currencies
+        request_from_currencies = False
+        print('Фонды')
+
+    # Нажимаем на кнопку "Валюты" и передаем только все валюты для графиков.
+    def give_all_currencies_to_charts(self):
+        global current_df
+        current_df = full_df[full_df['instrument_type'] == 'Валюта']
+        self.ui.btn_countries.hide()
+        self.ui.btn_instruments_type.hide()
+        self.ui.btn_sectors.hide()
+        global request_from_currencies
+        request_from_currencies = True
+        print("current_df=")
+        print(current_df)
+        print('Фонды')
+
+
+
+    # Нажимаем на кнопку "Валюта" и строим график валют на основе переданных данных.
+    def grouping_by_currencies_pie_chart_analytical_page(self):
+        print("current_df=")
+        print(current_df)
+        global request_from_currencies
+        if request_from_currencies:
+            data = current_df.groupby('name').agg('sum')
+        else:
+            data = current_df.groupby('original_currency').agg('sum')
+        print(data)
+        print('Валюты')
+
+        pass
+
+    # Нажимаем на кнопку "Сектора" и строим график секторов на основе переданных данных.
+    def grouping_by_sectors_pie_chart_analytical_page(self):
+        data = current_df.groupby('sector').agg('sum')
+        print(data)
+        print('Сектора')
+        pass
+
+    # Нажимаем на кнопку "Страны" и строим график стран на основе переданных данных.
+    def grouping_by_countries_pie_chart_analytical_page(self):
+        data = current_df[current_df['country'] != ''].groupby('country').agg('sum')
+        print(data)
+        print('Страны')
+        pass
+
+    # Нажимаем на кнопку "Классы" и строим график классов на основе переданных данных.
+    def grouping_by_instruments_type_pie_chart_analytical_page(self):
+        data = current_df.groupby('instrument_type').agg('sum')
+        print(data)
+        print('Классы')
+        pass
+
+    # Строим график на основе данных.
+    def show_analytic_pie_chart(self):
+        pass
+
+    full_df = pd.DataFrame()
+    current_df = pd.DataFrame()
+    request_from_currencies = False
+    def fill_analyt_page(self, list_positions):
+        if len(list_positions) == 0:
+            return
+        # Графики на странице аналитики.
+        global full_df
+        full_df = pd.DataFrame(list_positions)
+        global current_df
+        current_df = pd.DataFrame(list_positions)
+        self.link_analytic_buttons(current_df)
+        global request_from_currencies
+        request_from_currencies = False
+        self.grouping_by_currencies_pie_chart_analytical_page()
+        # Рекомендации.
+
+        # Все инструменты.
+
+    def fill_portfolio(self, token, account):
         sender = self.sender()
         with Client(token) as client:
             portfolio = client.operations.get_portfolio(account_id=account.id)
-            self.fill_total_stats(portfolio)
-            self.fill_area_pie_based(token, client, portfolio)
-        print(token)
+            self.fill_main_page(portfolio, token, client)
 
 
 #

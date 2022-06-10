@@ -103,9 +103,8 @@ class Ui_MainWindowBig(object):
         self.btn_casemain.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
-"	font-family: Ubuntu;\n"
+"	font-family: Open Sans;\n"
 "	font-size: 16px;\n"
-"	font-weight: bold;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	color: rgb(234, 234, 234);\n"
@@ -122,9 +121,8 @@ class Ui_MainWindowBig(object):
         self.btn_analtics.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
-"	font-family: Ubuntu;\n"
+"	font-family: Open Sans;\n"
 "	font-size: 16px;\n"
-"	font-weight: bold;\n"
 "}\n"
 "QPushButton:hover {\n"
 "	color: rgb(234, 234, 234);\n"
@@ -257,7 +255,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 591))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 346))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -286,8 +284,7 @@ class Ui_MainWindowBig(object):
         self.cost_number_all = QLabel(self.cost_all)
         self.cost_number_all.setObjectName(u"cost_number_all")
         self.cost_number_all.setLayoutDirection(Qt.RightToLeft)
-        self.cost_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
-"")
+        self.cost_number_all.setStyleSheet(u"font-size : 12px; font-family : Open Sans; color: #FFFFFF")
         self.cost_number_all.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_9.addWidget(self.cost_number_all)
@@ -313,8 +310,7 @@ class Ui_MainWindowBig(object):
         self.profit_number_all = QLabel(self.profit_all)
         self.profit_number_all.setObjectName(u"profit_number_all")
         self.profit_number_all.setLayoutDirection(Qt.RightToLeft)
-        self.profit_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
-"")
+        self.profit_number_all.setStyleSheet(u"font-size : 12px; font-family : Open Sans; color: #FFFFFF")
         self.profit_number_all.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_8.addWidget(self.profit_number_all)
@@ -341,8 +337,7 @@ class Ui_MainWindowBig(object):
         self.yield_number_all = QLabel(self.yield_all)
         self.yield_number_all.setObjectName(u"yield_number_all")
         self.yield_number_all.setLayoutDirection(Qt.RightToLeft)
-        self.yield_number_all.setStyleSheet(u"font-size : 20px; font-family : Open Sans; \n"
-"")
+        self.yield_number_all.setStyleSheet(u"font-size : 12px; font-family : Open Sans; color: #FFFFFF")
         self.yield_number_all.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_5.addWidget(self.yield_number_all)
@@ -512,7 +507,7 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 325))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 100, 30))
         self.instruments_cpa_scrollArea.setWidget(self.scrollAreaWidgetContents_4)
 
         self.verticalLayout_13.addWidget(self.instruments_cpa_scrollArea)
@@ -530,10 +525,301 @@ class Ui_MainWindowBig(object):
         self.stackedWidget.addWidget(self.page_casebig)
         self.page_analytics = QWidget()
         self.page_analytics.setObjectName(u"page_analytics")
-        self.lineEdit = QLineEdit(self.page_analytics)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setGeometry(QRect(380, 270, 113, 22))
+        self.btn_all_instruments = QPushButton(self.page_analytics)
+        self.btn_all_instruments.setObjectName(u"btn_all_instruments")
+        self.btn_all_instruments.setGeometry(QRect(10, 10, 120, 30))
+        self.btn_all_instruments.setMaximumSize(QSize(140, 16777215))
+        self.btn_all_instruments.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C;\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_all_instruments.setCheckable(False)
+        self.btn_all_instruments.setFlat(True)
+        self.btn_shares = QPushButton(self.page_analytics)
+        self.btn_shares.setObjectName(u"btn_shares")
+        self.btn_shares.setGeometry(QRect(140, 10, 80, 30))
+        self.btn_shares.setMaximumSize(QSize(100, 16777215))
+        self.btn_shares.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_shares.setCheckable(False)
+        self.btn_shares.setFlat(True)
+        self.btn_bonds = QPushButton(self.page_analytics)
+        self.btn_bonds.setObjectName(u"btn_bonds")
+        self.btn_bonds.setGeometry(QRect(230, 10, 80, 30))
+        self.btn_bonds.setMaximumSize(QSize(100, 16777215))
+        self.btn_bonds.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_bonds.setCheckable(False)
+        self.btn_bonds.setFlat(True)
+        self.btn_etfs = QPushButton(self.page_analytics)
+        self.btn_etfs.setObjectName(u"btn_etfs")
+        self.btn_etfs.setGeometry(QRect(320, 10, 80, 30))
+        self.btn_etfs.setMaximumSize(QSize(100, 16777215))
+        self.btn_etfs.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_etfs.setCheckable(False)
+        self.btn_etfs.setFlat(True)
+        self.analytics_graphs = QFrame(self.page_analytics)
+        self.analytics_graphs.setObjectName(u"analytics_graphs")
+        self.analytics_graphs.setGeometry(QRect(20, 50, 481, 311))
+        self.analytics_graphs.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
+        self.analytics_graphs.setFrameShape(QFrame.StyledPanel)
+        self.analytics_graphs.setFrameShadow(QFrame.Raised)
+        self.btn_currencies = QPushButton(self.analytics_graphs)
+        self.btn_currencies.setObjectName(u"btn_currencies")
+        self.btn_currencies.setGeometry(QRect(0, 10, 100, 30))
+        self.btn_currencies.setMaximumSize(QSize(100, 16777215))
+        self.btn_currencies.setLayoutDirection(Qt.LeftToRight)
+        self.btn_currencies.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_currencies.setCheckable(False)
+        self.btn_currencies.setFlat(True)
+        self.btn_sectors = QPushButton(self.analytics_graphs)
+        self.btn_sectors.setObjectName(u"btn_sectors")
+        self.btn_sectors.setGeometry(QRect(220, 10, 100, 30))
+        self.btn_sectors.setMaximumSize(QSize(140, 16777215))
+        self.btn_sectors.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_sectors.setCheckable(False)
+        self.btn_sectors.setFlat(True)
+        self.btn_countries = QPushButton(self.analytics_graphs)
+        self.btn_countries.setObjectName(u"btn_countries")
+        self.btn_countries.setGeometry(QRect(110, 10, 100, 30))
+        self.btn_countries.setMaximumSize(QSize(100, 16777215))
+        self.btn_countries.setLayoutDirection(Qt.LeftToRight)
+        self.btn_countries.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_countries.setCheckable(False)
+        self.btn_countries.setFlat(True)
+        self.btn_instruments_type = QPushButton(self.analytics_graphs)
+        self.btn_instruments_type.setObjectName(u"btn_instruments_type")
+        self.btn_instruments_type.setGeometry(QRect(330, 10, 100, 30))
+        self.btn_instruments_type.setMaximumSize(QSize(100, 16777215))
+        self.btn_instruments_type.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_instruments_type.setCheckable(False)
+        self.btn_instruments_type.setFlat(True)
+        self.analytics_graps_widget = QWidget(self.analytics_graphs)
+        self.analytics_graps_widget.setObjectName(u"analytics_graps_widget")
+        self.analytics_graps_widget.setGeometry(QRect(10, 50, 451, 241))
+        self.recommendation_text_area = QFrame(self.page_analytics)
+        self.recommendation_text_area.setObjectName(u"recommendation_text_area")
+        self.recommendation_text_area.setGeometry(QRect(540, 60, 341, 301))
+        self.recommendation_text_area.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
+        self.recommendation_text_area.setFrameShape(QFrame.StyledPanel)
+        self.recommendation_text_area.setFrameShadow(QFrame.Raised)
+        self.recommendation_text_scroll = QScrollArea(self.recommendation_text_area)
+        self.recommendation_text_scroll.setObjectName(u"recommendation_text_scroll")
+        self.recommendation_text_scroll.setGeometry(QRect(10, 10, 321, 281))
+        self.recommendation_text_scroll.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_10 = QWidget()
+        self.scrollAreaWidgetContents_10.setObjectName(u"scrollAreaWidgetContents_10")
+        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 321, 281))
+        self.recommendation_text = QTextEdit(self.scrollAreaWidgetContents_10)
+        self.recommendation_text.setObjectName(u"recommendation_text")
+        self.recommendation_text.setGeometry(QRect(0, 0, 321, 271))
+        self.recommendation_text_scroll.setWidget(self.scrollAreaWidgetContents_10)
+        self.recommendation_frame = QFrame(self.page_analytics)
+        self.recommendation_frame.setObjectName(u"recommendation_frame")
+        self.recommendation_frame.setGeometry(QRect(540, 10, 341, 41))
+        self.recommendation_frame.setStyleSheet(u"background-color: #2A2A2C; border-radius: 10")
+        self.recommendation_frame.setFrameShape(QFrame.StyledPanel)
+        self.recommendation_frame.setFrameShadow(QFrame.Raised)
+        self.recommendation_title = QLabel(self.recommendation_frame)
+        self.recommendation_title.setObjectName(u"recommendation_title")
+        self.recommendation_title.setGeometry(QRect(90, 5, 191, 31))
+        self.recommendation_title.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color : #F9F9FB\n"
+"")
+        self.recommendation_title.setAlignment(Qt.AlignCenter)
+        self.instrument_all_area = QFrame(self.page_analytics)
+        self.instrument_all_area.setObjectName(u"instrument_all_area")
+        self.instrument_all_area.setGeometry(QRect(20, 380, 861, 131))
+        self.instrument_all_area.setStyleSheet(u"background-color: #252528; border-radius: 10")
+        self.instrument_all_area.setFrameShape(QFrame.StyledPanel)
+        self.instrument_all_area.setFrameShadow(QFrame.Raised)
+        self.instrument_scroll = QScrollArea(self.instrument_all_area)
+        self.instrument_scroll.setObjectName(u"instrument_scroll")
+        self.instrument_scroll.setGeometry(QRect(10, 80, 841, 41))
+        self.instrument_scroll.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_11 = QWidget()
+        self.scrollAreaWidgetContents_11.setObjectName(u"scrollAreaWidgetContents_11")
+        self.scrollAreaWidgetContents_11.setGeometry(QRect(0, 0, 841, 41))
+        self.instrument_scroll.setWidget(self.scrollAreaWidgetContents_11)
+        self.tittle_instruments_type = QLabel(self.instrument_all_area)
+        self.tittle_instruments_type.setObjectName(u"tittle_instruments_type")
+        self.tittle_instruments_type.setGeometry(QRect(20, 10, 251, 21))
+        self.tittle_instruments_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_name = QLabel(self.instrument_all_area)
+        self.tittle_instrument_name.setObjectName(u"tittle_instrument_name")
+        self.tittle_instrument_name.setGeometry(QRect(10, 40, 81, 31))
+        self.tittle_instrument_name.setMaximumSize(QSize(200, 16777215))
+        self.tittle_instrument_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_name.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_quantity = QLabel(self.instrument_all_area)
+        self.tittle_instrument_quantity.setObjectName(u"tittle_instrument_quantity")
+        self.tittle_instrument_quantity.setGeometry(QRect(300, 40, 81, 31))
+        self.tittle_instrument_quantity.setMaximumSize(QSize(200, 16777215))
+        self.tittle_instrument_quantity.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_quantity.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_average_price = QLabel(self.instrument_all_area)
+        self.tittle_instrument_average_price.setObjectName(u"tittle_instrument_average_price")
+        self.tittle_instrument_average_price.setGeometry(QRect(380, 46, 61, 20))
+        self.tittle_instrument_average_price.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_average_price.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_current_price = QLabel(self.instrument_all_area)
+        self.tittle_instrument_current_price.setObjectName(u"tittle_instrument_current_price")
+        self.tittle_instrument_current_price.setGeometry(QRect(450, 40, 61, 31))
+        self.tittle_instrument_current_price.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_current_price.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_cost = QLabel(self.instrument_all_area)
+        self.tittle_instrument_cost.setObjectName(u"tittle_instrument_cost")
+        self.tittle_instrument_cost.setGeometry(QRect(520, 40, 71, 31))
+        self.tittle_instrument_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_cost.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_profit = QLabel(self.instrument_all_area)
+        self.tittle_instrument_profit.setObjectName(u"tittle_instrument_profit")
+        self.tittle_instrument_profit.setGeometry(QRect(590, 40, 71, 31))
+        self.tittle_instrument_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_profit.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_yield = QLabel(self.instrument_all_area)
+        self.tittle_instrument_yield.setObjectName(u"tittle_instrument_yield")
+        self.tittle_instrument_yield.setGeometry(QRect(660, 40, 71, 31))
+        self.tittle_instrument_yield.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_yield.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_share_portfel = QLabel(self.instrument_all_area)
+        self.tittle_instrument_share_portfel.setObjectName(u"tittle_instrument_share_portfel")
+        self.tittle_instrument_share_portfel.setGeometry(QRect(740, 40, 111, 31))
+        self.tittle_instrument_share_portfel.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_share_portfel.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_country = QLabel(self.instrument_all_area)
+        self.tittle_instrument_country.setObjectName(u"tittle_instrument_country")
+        self.tittle_instrument_country.setGeometry(QRect(240, 40, 51, 31))
+        self.tittle_instrument_country.setMaximumSize(QSize(200, 16777215))
+        self.tittle_instrument_country.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_country.setAlignment(Qt.AlignCenter)
+        self.tittle_instrument_sector = QLabel(self.instrument_all_area)
+        self.tittle_instrument_sector.setObjectName(u"tittle_instrument_sector")
+        self.tittle_instrument_sector.setGeometry(QRect(180, 40, 51, 31))
+        self.tittle_instrument_sector.setMaximumSize(QSize(200, 16777215))
+        self.tittle_instrument_sector.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #252528\n"
+"")
+        self.tittle_instrument_sector.setAlignment(Qt.AlignCenter)
+        self.scrollArea_4 = QScrollArea(self.page_analytics)
+        self.scrollArea_4.setObjectName(u"scrollArea_4")
+        self.scrollArea_4.setGeometry(QRect(0, 0, 1, 1))
+        self.scrollArea_4.setWidgetResizable(True)
+        self.scrollAreaWidgetContents_12 = QWidget()
+        self.scrollAreaWidgetContents_12.setObjectName(u"scrollAreaWidgetContents_12")
+        self.scrollAreaWidgetContents_12.setGeometry(QRect(0, 0, 16, 16))
+        self.scrollArea_4.setWidget(self.scrollAreaWidgetContents_12)
+        self.btn_currencies_all = QPushButton(self.page_analytics)
+        self.btn_currencies_all.setObjectName(u"btn_currencies_all")
+        self.btn_currencies_all.setGeometry(QRect(410, 10, 80, 30))
+        self.btn_currencies_all.setMaximumSize(QSize(100, 16777215))
+        self.btn_currencies_all.setStyleSheet(u"QPushButton {\n"
+"	border: none;\n"
+"	color: rgb(155, 156, 151);\n"
+"	font-family: Open Sans;\n"
+"	font-size: 14px;\n"
+"    border-radius: 10;\n"
+"	background-color: #39393C\n"
+"}\n"
+"QPushButton:hover {\n"
+"	color: rgb(234, 234, 234);\n"
+"}")
+        self.btn_currencies_all.setCheckable(False)
+        self.btn_currencies_all.setFlat(True)
         self.stackedWidget.addWidget(self.page_analytics)
+        self.scrollArea_4.raise_()
+        self.btn_all_instruments.raise_()
+        self.btn_shares.raise_()
+        self.btn_bonds.raise_()
+        self.analytics_graphs.raise_()
+        self.recommendation_text_area.raise_()
+        self.recommendation_frame.raise_()
+        self.instrument_all_area.raise_()
+        self.btn_etfs.raise_()
+        self.btn_currencies_all.raise_()
         self.page_caseList = QWidget()
         self.page_caseList.setObjectName(u"page_caseList")
         self.verticalLayout_6 = QVBoxLayout(self.page_caseList)
@@ -552,7 +838,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_caseList = QWidget()
         self.scrollAreaWidgetContents_caseList.setObjectName(u"scrollAreaWidgetContents_caseList")
-        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 543))
+        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 100, 30))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_caseList)
 
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -657,7 +943,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 881, 514))
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 100, 30))
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
 
         self.horizontalLayout_15.addWidget(self.scrollArea_3)
@@ -687,7 +973,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)
@@ -704,11 +990,11 @@ class Ui_MainWindowBig(object):
         self.btn_maximize_restore.setText("")
         self.btn_close_2.setText(QCoreApplication.translate("MainWindowBig", u"\u00d7", None))
         self.cost_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c", None))
-        self.cost_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
+        self.cost_number_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
         self.profit_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
-        self.profit_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
+        self.profit_number_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
         self.yield_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
-        self.yield_number_all.setText(QCoreApplication.translate("MainWindowBig", u"TextLabel", None))
+        self.yield_number_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
         self.pie_chart_name.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0441\u0435 \u0430\u043a\u0442\u0438\u0432\u044b", None))
         self.column_title_name.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
         self.column_title_type.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0438\u043f", None))
@@ -718,7 +1004,27 @@ class Ui_MainWindowBig(object):
         self.column_title_yeild.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
         self.column_title_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
         self.column_tittle_percentage.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
-        self.lineEdit.setText(QCoreApplication.translate("MainWindowBig", u"Analytics", None))
+        self.btn_all_instruments.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0441\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b", None))
+        self.btn_shares.setText(QCoreApplication.translate("MainWindowBig", u"\u0410\u043a\u0446\u0438\u0438", None))
+        self.btn_bonds.setText(QCoreApplication.translate("MainWindowBig", u"\u041e\u0431\u043b\u0438\u0433\u0430\u0446\u0438\u0438", None))
+        self.btn_etfs.setText(QCoreApplication.translate("MainWindowBig", u"\u0424\u043e\u043d\u0434\u044b", None))
+        self.btn_currencies.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0430\u043b\u044e\u0442\u0430", None))
+        self.btn_sectors.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0435\u043a\u0442\u043e\u0440\u0430", None))
+        self.btn_countries.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u0440\u0430\u043d\u044b", None))
+        self.btn_instruments_type.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043b\u0430\u0441\u0441\u044b", None))
+        self.recommendation_title.setText(QCoreApplication.translate("MainWindowBig", u"\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430\u0446\u0438\u0438", None))
+        self.tittle_instruments_type.setText(QCoreApplication.translate("MainWindowBig", u"\u0410\u043a\u0446\u0438\u0438", None))
+        self.tittle_instrument_name.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
+        self.tittle_instrument_quantity.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e", None))
+        self.tittle_instrument_average_price.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0440. \u0446\u0435\u043d\u0430", None))
+        self.tittle_instrument_current_price.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0435\u043a. \u0446\u0435\u043d\u0430", None))
+        self.tittle_instrument_cost.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c", None))
+        self.tittle_instrument_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
+        self.tittle_instrument_yield.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
+        self.tittle_instrument_share_portfel.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f \u0432 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u0435", None))
+        self.tittle_instrument_country.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u0440\u0430\u043d\u0430", None))
+        self.tittle_instrument_sector.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0435\u043a\u0442\u043e\u0440", None))
+        self.btn_currencies_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0430\u043b\u044e\u0442\u044b", None))
         self.btn_addCase.setText("")
         self.edit_token.setPlaceholderText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u043e\u043a\u0435\u043d", None))
         self.btn_addToList.setText(QCoreApplication.translate("MainWindowBig", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))

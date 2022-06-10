@@ -37,12 +37,17 @@ def get_total_profit(total_yield_percentage: float, total_cost: float):
     return round(total_cost - invested_money, 2)
 
 
-def get_total_cost_portfolio(portfolio: PortfolioResponse):
+def get_total_cost_portfolio(df, portfolio: PortfolioResponse):
+    if df.empty:
+        return 0
     total_amount_shares = cast_money(portfolio.total_amount_shares)
     total_amount_bonds = cast_money(portfolio.total_amount_bonds)
     total_amount_etf = cast_money(portfolio.total_amount_etf)
-    total_amount_currencies = cast_money(portfolio.total_amount_currencies)
+    total_amount_currencies = df[df['instrument_type'] == 'Валюта'].agg('sum')['total_cost']
     total_amount_futures = cast_money(portfolio.total_amount_futures)
+    print("**********************")
+    print(total_amount_currencies)
+    print("**********************")
     return round(total_amount_shares + total_amount_bonds + total_amount_etf +
                  total_amount_currencies + total_amount_futures, 2)
 
@@ -52,7 +57,7 @@ def get_instrument(token, position):
     return ins.instr
 
 
-def convert_position_to_dict(total_cost, token, position: PortfolioPosition, usdrur, eurrur):
+def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur):
     instr = get_instrument(token, position)
     if instr is not None:
         r = {
@@ -90,11 +95,15 @@ def convert_position_to_dict(total_cost, token, position: PortfolioPosition, usd
                 r['expected_yield'] *= usdrur
                 r['average_buy_price'] *= usdrur
                 r['nkd'] *= usdrur
+                r['original_currency'] = 'Доллар США'
             elif r['currency'] == 'eur':
                 r['current_buy_price'] *= eurrur
                 r['expected_yield'] *= eurrur
                 r['average_buy_price'] *= eurrur
+                r['original_currency'] = 'Евро'
                 r['nkd'] *= eurrur
+        else:
+            r['original_currency'] = 'Рубль'
         if r['average_buy_price'] != 0:
             r['expected_yield_percentage'] = (r['current_buy_price'] - r['average_buy_price']) / r[
                 'average_buy_price'] * 100
@@ -109,8 +118,7 @@ def convert_position_to_dict(total_cost, token, position: PortfolioPosition, usd
         if len(r['sector']) != 0:
             r['sector'] = dict_sector[r['sector']]
         r['instrument_type'] = dict_instrument_type[r['instrument_type']]
-        r['portfolio_share'] = round(r['average_buy_price'] * r['quantity'] / total_cost * 100, 2)
-        r['total_cost'] = round(r['quantity'] * r['current_buy_price'])
+        r['cost'] = r['quantity'] * r['current_buy_price']
         return r
     return None
 
@@ -120,17 +128,21 @@ def get_set_positions(token, client, portfolio):
     usdrur = cast_money(u.last_prices[0].price)
     e = client.market_data.get_last_prices(figi=['BBG0013HJJ31'])
     eurrur = cast_money(e.last_prices[0].price)
-    total_cost = get_total_cost_portfolio(portfolio)
     list_dict_instruments = list()
     set_colors = set()
     for pose in portfolio.positions:
-        dict_pose = convert_position_to_dict(total_cost, token, pose, usdrur, eurrur)
+        dict_pose = convert_position_to_dict(token, pose, usdrur, eurrur)
         if dict_pose is not None:
             dict_pose['color'] = generate_random_color(set_colors)
             if dict_pose['average_buy_price'] != 0:
                 print(dict_pose)
                 list_dict_instruments.append(dict_pose)
-    print(set_colors)
+    total_cost = 0
+    for pos in list_dict_instruments:
+        total_cost += pos['cost']
+    for pos in list_dict_instruments:
+        pos['portfolio_share'] = round(pos['current_buy_price'] * pos['quantity'] / total_cost * 100, 2)
+        pos['total_cost'] = round(pos['quantity'] * pos['current_buy_price'])
     return list_dict_instruments
 
 
@@ -185,7 +197,14 @@ if __name__ == "__main__":
         etf = client.instruments.etfs(instrument_status=2)
         fut = client.instruments.futures(instrument_status=2)
         mun = list()
+        print("VSE VALUTI")
         print(cur)
+        print("CLIENT")
+        u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
+        usdrur = cast_money(u.last_prices[0].price)
+        print(u)
+        print("TYPE")
+        print(type(u))
         for x in shar.instruments:
             sec.add(x.sector)
             if x.sector == 'municipal':

@@ -7,7 +7,7 @@ def generate_random_color(set_colors: set()):
         color = "#"
         for i in range(6):
             color = color + random.choice('0123456789ABCDEF')
-        if color not in set_colors:
+        if color not in set_colors and color != '#2A2A2C':
             set_colors.add(color)
             return color
 
@@ -16,7 +16,7 @@ def write_html(graph, file_name):
     graph_html = graph.to_html(include_plotlyjs='cdn')
     print(type(graph_html))
     print(graph_html)
-    style = " <style> body{ margin: 0; background-color: black;} </style>"
+    style = " <style> body{ margin: 0; background-color: #2A2A2C;} </style>"
     with open(file_name, 'w+') as file_graph_html:
         index = graph_html.find('<head><meta charset="utf-8" />')
         new_html = graph_html[:index] + style + graph_html[index:]
