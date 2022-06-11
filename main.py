@@ -483,8 +483,7 @@ class MainWindow(QMainWindow):
             pie_chart = px.pie(data_frame=data, values='cost', names='sector', color='sector',
                                color_discrete_sequence=list(data['color']),
                                hole=0.3)
-            hovertemp = "%{label} \n"
-            hovertemp += "%{value}%\n\n"
+            hovertemp = "%{label}"
             pie_chart.update_traces(hovertemplate=hovertemp)
             pie_chart.update_traces(textposition='inside', showlegend=False)
             pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
@@ -529,7 +528,7 @@ class MainWindow(QMainWindow):
         with open(name_graph, 'r') as pie_char_html:
             print("open graph)")
             self.analytic_pie_chart.setHtml(pie_char_html.read())
-            self.analytic_pie_chart.setMinimumSize(340, 320)
+            self.analytic_pie_chart.setMinimumSize(320, 320)
             self.add_legent_analytic_pie_chart(dt, condition)
 
     def add_legent_analytic_pie_chart(self, df, condition):
@@ -541,7 +540,7 @@ class MainWindow(QMainWindow):
             frame_inst_1 = QFrame(self.ui.scrollAreaWidgetContents_2)
             # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
             frame_inst_1.setObjectName("_inst_1" + str(i))
-            frame_inst_1.setGeometry(QRect(5, 10, 170, 21))
+            frame_inst_1.setGeometry(QRect(5, 10, 100, 21))
             frame_inst_1.setFrameShape(QFrame.StyledPanel)
             frame_inst_1.setFrameShadow(QFrame.Raised)
             frame_inst_layout_1 = QHBoxLayout(frame_inst_1)
@@ -562,7 +561,7 @@ class MainWindow(QMainWindow):
             frame_inst_layout_1.addWidget(inst_color_1)
 
             inst_name_1 = QLabel()
-            inst_name_1.setText(condition[i] + " " + str(costs[i]))
+            inst_name_1.setText(condition[i] + "\n" + str(costs[i]))
             inst_name_1.setObjectName("inst_name" + str(i))
             inst_name_1.setGeometry(QRect(30, 0, 141, 21))
             # inst_name.setMaximumSize(QSize(80, 16777215))

@@ -12,7 +12,7 @@ from help_func import generate_random_color
 dict_sector = dict(government="Государтсвенные бумаги", energy="Энергетика", ecomaterials="Промышленность",
                    green_energy="Зелёная энергетика", financial="Финансы", utilities="Коммунальные услуги",
                    materials="Материалы", green_buildings="Промышленность", municipal="Муниципальные бумаги",
-                   other="Другое", industrials="Промышленность", it="Информационные технологии",
+                   other="Другое", industrials="Промышленность", it="IT",
                    health_care="Здравоохранение", telecom="Услуги связи", consumer="Потребительский сектор",
                    real_estate="Недвижимость", electrocars="Промышленность", currency="Валюта", etf="ETF",
                    bond="Облигация")
