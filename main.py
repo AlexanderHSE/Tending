@@ -69,9 +69,9 @@ class MainWindow(QMainWindow):
         self.position_analytic_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_2)
         self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.legeng_analytic_pie_chart.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
+        self.ui.legeng_analytic_pie_chart.horizontalScrollBar().setStyleSheet('QScrollBar {height:0px;}')
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
-
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
 
@@ -544,7 +544,7 @@ class MainWindow(QMainWindow):
             frame_inst_1.setGeometry(QRect(5, 10, 170, 21))
             frame_inst_1.setFrameShape(QFrame.StyledPanel)
             frame_inst_1.setFrameShadow(QFrame.Raised)
-            frame_inst_layout = QHBoxLayout(frame_inst_1)
+            frame_inst_layout_1 = QHBoxLayout(frame_inst_1)
             frame_inst_1.setStyleSheet('''
                    background-color: #222226;
                    padding-left: 0px;
@@ -559,7 +559,7 @@ class MainWindow(QMainWindow):
             inst_color_1.setFrameShadow(QFrame.Raised)
             inst_color_1.setMaximumSize(QSize(5, 16777215))
             inst_color_1.setContentsMargins(0, 0, 0, 0)
-            frame_inst_layout.addWidget(inst_color_1)
+            frame_inst_layout_1.addWidget(inst_color_1)
 
             inst_name_1 = QLabel()
             inst_name_1.setText(condition[i] + " " + str(costs[i]))
@@ -570,8 +570,8 @@ class MainWindow(QMainWindow):
             inst_name_1.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_name_1.setAlignment(Qt.AlignCenter)
-            frame_inst_layout.addWidget(inst_name_1)
-            self.position_pie_chart_based_list.addWidget(frame_inst_1)
+            frame_inst_layout_1.addWidget(inst_name_1)
+            self.position_analytic_pie_chart_based_list.addWidget(frame_inst_1)
 
     def disactivate_text_on_analytic_pie_chart(self):
         self.ui.analytic_graph_text_if_have_no_instr.setStyleSheet('color: #2A2A2C')
