@@ -1336,7 +1336,7 @@ QPushButton:hover {
              <rect>
               <x>10</x>
               <y>50</y>
-              <width>261</width>
+              <width>271</width>
               <height>241</height>
              </rect>
             </property>
@@ -1361,9 +1361,9 @@ QPushButton:hover {
            <widget class="QScrollArea" name="legeng_analytic_pie_chart">
             <property name="geometry">
              <rect>
-              <x>300</x>
+              <x>290</x>
               <y>60</y>
-              <width>211</width>
+              <width>221</width>
               <height>241</height>
              </rect>
             </property>
@@ -1375,7 +1375,7 @@ QPushButton:hover {
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>211</width>
+               <width>221</width>
                <height>241</height>
               </rect>
              </property>

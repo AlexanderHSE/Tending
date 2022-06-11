@@ -23,7 +23,8 @@ import plotly
 import plotly.express as px
 from plotly.graph_objs import *
 
-from help_func import write_html, check_dt_is_empty, generate_color_column
+from help_func import write_html, check_dt_is_empty, generate_color_column, add_column_percantages, \
+    generate_color_by_sectors_column
 
 minus_profit = "#FAA2A2"  # hex red color
 zero_porfit = "#F9F9FB"  # hex white color
@@ -477,20 +478,22 @@ class MainWindow(QMainWindow):
             self.disactivate_text_on_analytic_pie_chart()
             sectors = list(data.index)
             data = data.set_index(np.arange(0, len(data.index), 1))
-            generate_color_column(data)
             data['sector'] = pd.Series(sectors)
+            add_column_percantages(data)
+            generate_color_by_sectors_column(data)
             print(data)
-            pie_chart = px.pie(data_frame=data, values='cost', names='sector', color='sector',
+            pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='sector', color='sector',
                                color_discrete_sequence=list(data['color']),
                                hole=0.3)
-            hovertemp = "%{label}"
+            hovertemp = "%{label} "
+            hovertemp += "%{value}%"
             pie_chart.update_traces(hovertemplate=hovertemp)
             pie_chart.update_traces(textposition='inside', showlegend=False)
             pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                     uniformtext_mode='hide', )
             name_graph = "AnalyticBySectorsPieChart.html"
             write_html(pie_chart, name_graph)
-            self.show_analytic_pie_chart(name_graph,data, 'sector')
+            self.show_analytic_pie_chart(name_graph, data, 'sector')
         else:
             self.ui.analytics_graps_widget.hide()
             self.activate_text_on_analytic_pie_chart()
@@ -528,7 +531,7 @@ class MainWindow(QMainWindow):
         with open(name_graph, 'r') as pie_char_html:
             print("open graph)")
             self.analytic_pie_chart.setHtml(pie_char_html.read())
-            self.analytic_pie_chart.setMinimumSize(320, 320)
+            self.analytic_pie_chart.setMinimumSize(345, 320)
             self.add_legent_analytic_pie_chart(dt, condition)
 
     def add_legent_analytic_pie_chart(self, df, condition):

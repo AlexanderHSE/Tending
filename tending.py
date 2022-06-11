@@ -16,6 +16,7 @@ dict_sector = dict(government="Государтсвенные бумаги", ene
                    health_care="Здравоохранение", telecom="Услуги связи", consumer="Потребительский сектор",
                    real_estate="Недвижимость", electrocars="Промышленность", currency="Валюта", etf="ETF",
                    bond="Облигация")
+
 dict_instrument_type = dict(share="Акция", bond="Облигация", etf="Фонд", currency="Валюта", future="Фьючерс")
 
 
@@ -144,10 +145,6 @@ def get_set_positions(token, client, portfolio):
         pos['portfolio_share'] = round(pos['current_buy_price'] * pos['quantity'] / total_cost * 100, 2)
         pos['total_cost'] = round(pos['quantity'] * pos['current_buy_price'])
     return list_dict_instruments
-
-
-
-
 
 
 def get_accounts(self: str) -> GetAccountsResponse:
