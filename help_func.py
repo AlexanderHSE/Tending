@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 from bs4 import BeautifulSoup
 
 
@@ -10,6 +11,18 @@ def generate_random_color(set_colors: set()):
         if color not in set_colors and color != '#2A2A2C':
             set_colors.add(color)
             return color
+
+
+def generate_color_column(df):
+    len_col = len(df.index)
+    set_colors = set()
+    for color_index in range(len_col):
+
+        generate_random_color(set_colors)
+    color_column = pd.Series(list(set_colors))
+    print("generate_color_column")
+    print(list(set_colors))
+    df['color'] = color_column
 
 
 def write_html(graph, file_name):
@@ -31,3 +44,7 @@ def write_html(graph, file_name):
         # print("del")
         # print(delete_obj)
     #  delete_obj.decompose()
+
+
+def check_dt_is_empty(dt):
+    return len(dt.index) == 0
