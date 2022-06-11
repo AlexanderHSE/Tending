@@ -185,7 +185,7 @@ background-color: rgb(37,37,40);
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>../../../../.designer/backup/Frame_13.jpg</pixmap>
+                   <pixmap>Frame_13.jpg</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -323,7 +323,7 @@ QPushButton:hover {
                      </property>
                      <property name="icon">
                       <iconset>
-                       <normaloff>../../../../.designer/backup/briefcase (1).png</normaloff>../../../../.designer/backup/briefcase (1).png</iconset>
+                       <normaloff>briefcase (1).png</normaloff>briefcase (1).png</iconset>
                      </property>
                      <property name="iconSize">
                       <size>
@@ -424,7 +424,7 @@ QPushButton:hover {
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>../../../../.designer/backup/maximize-2.png</normaloff>../../../../.designer/backup/maximize-2.png</iconset>
+                 <normaloff>maximize-2.png</normaloff>maximize-2.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -479,7 +479,7 @@ QPushButton:hover {
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>1</number>
+          <number>2</number>
          </property>
          <widget class="QWidget" name="page_casebig">
           <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -494,7 +494,7 @@ QPushButton:hover {
                 <x>0</x>
                 <y>0</y>
                 <width>881</width>
-                <height>346</height>
+                <height>591</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -983,8 +983,8 @@ QPushButton:hover {
                          <rect>
                           <x>0</x>
                           <y>0</y>
-                          <width>100</width>
-                          <height>30</height>
+                          <width>403</width>
+                          <height>330</height>
                          </rect>
                         </property>
                        </widget>
@@ -1867,8 +1867,8 @@ QPushButton:hover {
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>100</width>
-                   <height>30</height>
+                   <width>883</width>
+                   <height>543</height>
                   </rect>
                  </property>
                 </widget>
@@ -1914,7 +1914,7 @@ QPushButton:hover {
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>../../../../.designer/backup/plus-square_1.png</normaloff>../../../../.designer/backup/plus-square_1.png</iconset>
+                     <normaloff>plus-square_1.png</normaloff>plus-square_1.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>

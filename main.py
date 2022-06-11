@@ -339,8 +339,13 @@ class MainWindow(QMainWindow):
     def fill_area_pie_based(self, token, client, portfolio):
         list_pos = get_set_positions(token, client, portfolio)
         self.create_main_portfolio_pie_chart(list_pos, portfolio)
+        self.clear_pos_in_area_pie()
         self.add_pos_in_area_pie_based(list_pos)
         self.fill_analyt_page(list_pos)
+
+    def clear_pos_in_area_pie(self):
+        for i in reversed(range(self.position_pie_chart_based_list.count())):
+            self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
     def create_main_portfolio_pie_chart(self, list_positions, portfolio):
         df = pd.DataFrame(list_positions)
@@ -532,6 +537,7 @@ class MainWindow(QMainWindow):
             print("open graph)")
             self.analytic_pie_chart.setHtml(pie_char_html.read())
             self.analytic_pie_chart.setMinimumSize(345, 320)
+            self.clear_legend_analytics_pie_chart()
             self.add_legent_analytic_pie_chart(dt, condition)
 
     def add_legent_analytic_pie_chart(self, df, condition):
@@ -574,6 +580,11 @@ class MainWindow(QMainWindow):
             inst_name_1.setAlignment(Qt.AlignCenter)
             frame_inst_layout_1.addWidget(inst_name_1)
             self.position_analytic_pie_chart_based_list.addWidget(frame_inst_1)
+
+    # Удаление фреймов из легенды
+    def clear_legend_analytics_pie_chart(self):
+        for i in reversed(range(self.position_analytic_pie_chart_based_list.count())):
+            self.position_analytic_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
     def disactivate_text_on_analytic_pie_chart(self):
         self.ui.analytic_graph_text_if_have_no_instr.setStyleSheet('color: #2A2A2C')

@@ -85,7 +85,7 @@ class Ui_MainWindowBig(object):
         self.label_4 = QLabel(self.frame_head)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setMinimumSize(QSize(300, 41))
-        self.label_4.setPixmap(QPixmap(u"../../../../.designer/backup/Frame_13.jpg"))
+        self.label_4.setPixmap(QPixmap(u"Frame_13.jpg"))
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
@@ -162,7 +162,7 @@ class Ui_MainWindowBig(object):
 "	color: rgb(234, 234, 234);\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"../../../../.designer/backup/briefcase (1).png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"briefcase (1).png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_case.setIcon(icon)
         self.btn_case.setIconSize(QSize(50, 50))
         self.btn_case.setCheckable(False)
@@ -214,7 +214,7 @@ class Ui_MainWindowBig(object):
 "	font-weight: bold;\n"
 "}")
         icon1 = QIcon()
-        icon1.addFile(u"../../../../.designer/backup/maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_maximize_restore.setIcon(icon1)
         self.btn_maximize_restore.setIconSize(QSize(20, 20))
         self.btn_maximize_restore.setFlat(True)
@@ -255,7 +255,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 346))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 591))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -507,7 +507,7 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 100, 30))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 330))
         self.instruments_cpa_scrollArea.setWidget(self.scrollAreaWidgetContents_4)
 
         self.verticalLayout_13.addWidget(self.instruments_cpa_scrollArea)
@@ -851,7 +851,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_caseList = QWidget()
         self.scrollAreaWidgetContents_caseList.setObjectName(u"scrollAreaWidgetContents_caseList")
-        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 100, 30))
+        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 543))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_caseList)
 
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -869,7 +869,7 @@ class Ui_MainWindowBig(object):
         self.btn_addCase = QPushButton(self.frame_addCase)
         self.btn_addCase.setObjectName(u"btn_addCase")
         icon2 = QIcon()
-        icon2.addFile(u"../../../../.designer/backup/plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_addCase.setIcon(icon2)
         self.btn_addCase.setIconSize(QSize(50, 50))
         self.btn_addCase.setCheckable(False)
@@ -986,7 +986,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)
