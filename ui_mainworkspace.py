@@ -204,23 +204,6 @@ class Ui_MainWindowBig(object):
 
         self.horizontalLayout_6.addWidget(self.btn_minimize_2)
 
-        self.btn_maximize_restore = QPushButton(self.frame_btns_2)
-        self.btn_maximize_restore.setObjectName(u"btn_maximize_restore")
-        self.btn_maximize_restore.setStyleSheet(u"QPushButton {\n"
-"	border: none;\n"
-"	color: rgb(155, 156, 151);\n"
-"	font-family: Ubuntu;\n"
-"	font-size: 16px;\n"
-"	font-weight: bold;\n"
-"}")
-        icon1 = QIcon()
-        icon1.addFile(u"maximize-2.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_maximize_restore.setIcon(icon1)
-        self.btn_maximize_restore.setIconSize(QSize(20, 20))
-        self.btn_maximize_restore.setFlat(True)
-
-        self.horizontalLayout_6.addWidget(self.btn_maximize_restore)
-
         self.btn_close_2 = QPushButton(self.frame_btns_2)
         self.btn_close_2.setObjectName(u"btn_close_2")
         self.btn_close_2.setMinimumSize(QSize(20, 20))
@@ -246,6 +229,8 @@ class Ui_MainWindowBig(object):
 
         self.stackedWidget = QStackedWidget(self.frame)
         self.stackedWidget.setObjectName(u"stackedWidget")
+        self.stackedWidget.setMinimumSize(QSize(0, 600))
+        self.stackedWidget.setMaximumSize(QSize(16777215, 620))
         self.page_casebig = QWidget()
         self.page_casebig.setObjectName(u"page_casebig")
         self.verticalLayout_7 = QVBoxLayout(self.page_casebig)
@@ -783,7 +768,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_caseList = QWidget()
         self.scrollAreaWidgetContents_caseList.setObjectName(u"scrollAreaWidgetContents_caseList")
-        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 57, 16))
+        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 548))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_caseList)
 
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -800,9 +785,9 @@ class Ui_MainWindowBig(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.btn_addCase = QPushButton(self.frame_addCase)
         self.btn_addCase.setObjectName(u"btn_addCase")
-        icon2 = QIcon()
-        icon2.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_addCase.setIcon(icon2)
+        icon1 = QIcon()
+        icon1.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_addCase.setIcon(icon1)
         self.btn_addCase.setIconSize(QSize(50, 50))
         self.btn_addCase.setCheckable(False)
         self.btn_addCase.setFlat(True)
@@ -826,13 +811,10 @@ class Ui_MainWindowBig(object):
         self.frame_7.setMaximumSize(QSize(16777215, 16777215))
         self.frame_7.setFrameShape(QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.frame_7)
-        self.horizontalLayout_2.setSpacing(0)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.edit_token = QLineEdit(self.frame_7)
         self.edit_token.setObjectName(u"edit_token")
         self.edit_token.setEnabled(True)
+        self.edit_token.setGeometry(QRect(1, 10, 771, 50))
         sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
@@ -843,15 +825,9 @@ class Ui_MainWindowBig(object):
         self.edit_token.setMaxLength(1000)
         self.edit_token.setEchoMode(QLineEdit.Password)
         self.edit_token.setClearButtonEnabled(True)
-
-        self.horizontalLayout_2.addWidget(self.edit_token)
-
-        self.horizontalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Fixed, QSizePolicy.Minimum)
-
-        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
-
         self.btn_addToList = QPushButton(self.frame_7)
         self.btn_addToList.setObjectName(u"btn_addToList")
+        self.btn_addToList.setGeometry(QRect(782, 10, 100, 50))
         sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
@@ -868,9 +844,15 @@ class Ui_MainWindowBig(object):
 "	background-color: rgb(157, 155, 161);\n"
 "}\n"
 "")
-
-        self.horizontalLayout_2.addWidget(self.btn_addToList)
-
+        self.pushButton = QPushButton(self.frame_7)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(710, 23, 25, 25))
+        self.pushButton.setStyleSheet(u"background-color: rgb(73, 73, 77); border: none;")
+        icon2 = QIcon()
+        icon2.addFile(u"closedEyeChanged.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton.setIcon(icon2)
+        self.pushButton.setIconSize(QSize(25, 25))
+        self.pushButton.setFlat(True)
 
         self.verticalLayout_4.addWidget(self.frame_7)
 
@@ -888,7 +870,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_3.setWidgetResizable(True)
         self.scrollAreaWidgetContents_3 = QWidget()
         self.scrollAreaWidgetContents_3.setObjectName(u"scrollAreaWidgetContents_3")
-        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 55, 16))
+        self.scrollAreaWidgetContents_3.setGeometry(QRect(0, 0, 881, 519))
         self.scrollArea_3.setWidget(self.scrollAreaWidgetContents_3)
 
         self.horizontalLayout_15.addWidget(self.scrollArea_3)
@@ -899,17 +881,6 @@ class Ui_MainWindowBig(object):
         self.stackedWidget.addWidget(self.page_add_case)
 
         self.verticalLayout_2.addWidget(self.stackedWidget)
-
-        self.frame_grip = QFrame(self.frame)
-        self.frame_grip.setObjectName(u"frame_grip")
-        self.frame_grip.setMinimumSize(QSize(10, 20))
-        self.frame_grip.setMaximumSize(QSize(20, 17))
-        self.frame_grip.setLayoutDirection(Qt.RightToLeft)
-        self.frame_grip.setStyleSheet(u"border-bottom-right-radius: 10px; margin-right: 20px;")
-        self.frame_grip.setFrameShape(QFrame.StyledPanel)
-        self.frame_grip.setFrameShadow(QFrame.Raised)
-
-        self.verticalLayout_2.addWidget(self.frame_grip)
 
 
         self.verticalLayout.addWidget(self.frame)
@@ -932,7 +903,6 @@ class Ui_MainWindowBig(object):
         self.btn_currency.setText(QCoreApplication.translate("MainWindowBig", u"\u20bd", None))
         self.btn_case.setText("")
         self.btn_minimize_2.setText(QCoreApplication.translate("MainWindowBig", u"\u2013", None))
-        self.btn_maximize_restore.setText("")
         self.btn_close_2.setText(QCoreApplication.translate("MainWindowBig", u"\u00d7", None))
         self.cost_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u043e\u0438\u043c\u043e\u0441\u0442\u044c", None))
         self.cost_number_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
@@ -963,5 +933,6 @@ class Ui_MainWindowBig(object):
         self.btn_addCase.setText("")
         self.edit_token.setPlaceholderText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u043e\u043a\u0435\u043d", None))
         self.btn_addToList.setText(QCoreApplication.translate("MainWindowBig", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))
+        self.pushButton.setText("")
     # retranslateUi
 

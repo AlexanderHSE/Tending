@@ -29,6 +29,7 @@ from help_func import write_html, check_dt_is_empty, generate_color_column, add_
 from frame_creating import create_shares_frame_on_analytic_page, create_bonds_frame_on_analytic_page, \
     create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page
 
+from re import search
 
 minus_profit = "#FAA2A2"  # hex red color
 zero_porfit = "#F9F9FB"  # hex white color
@@ -57,8 +58,6 @@ class MainWindow(QMainWindow):
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
 
         def moveWindow(event):
-            if UIFuncs.returnStatus(self) == 1:
-                UIFuncs.maximize_restore(self)
             # If left click - move window
             if event.buttons() == Qt.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.dragPos)
@@ -68,6 +67,8 @@ class MainWindow(QMainWindow):
         self.ui.title_bar_2.mouseMoveEvent = moveWindow
 
         self.ui.btn_addToList.clicked.connect(self.get_token_btn)
+
+        self.ui.pushButton.clicked.connect(self.toggle_visibility)
 
         UIFuncs.uiDefinitions(self)
 
@@ -85,25 +86,47 @@ class MainWindow(QMainWindow):
         # Portfolio page
         self.ui.btn_casemain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
 
+    def toggle_visibility(self):
+        """
+        Функция, выполняющая изменение видимости токена
+        """
+        if self.ui.edit_token.echoMode() == QLineEdit.Normal:
+            self.ui.edit_token.setEchoMode(QLineEdit.Password)
+            new_icon = QPixmap('closedEyeChanged.png')
+            self.ui.pushButton.setIcon(QIcon(new_icon))
+        else:
+            self.ui.edit_token.setEchoMode(QLineEdit.Normal)
+            new_icon = QPixmap('openedEye.png')
+            self.ui.pushButton.setIcon(QIcon(new_icon))
+
     # Движение окна
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
-
-    # Переход из окна Портфель (пока что) на окно входа
-    # def btn_to_login(self):
-    #     app.procNextState(STATE_LOGIN)
 
     # Получение данных по токену из строки ввода
     def get_token_btn(self):
         accounts = None
         while True:
-            token = self.ui.edit_token.text()
+            token = self.ui.edit_token.text().strip()
             try:
+                self.ui.edit_token.setPlaceholderText('Введите токен')
+                self.ui.edit_token.setStyleSheet('''
+                    border-radius: 20px;
+                    color: rgb(180, 180, 189);
+                    background-color: rgb(73, 73, 77);
+                    padding-left: 12px;
+                ''')
                 with Client(token) as client:
                     accounts = client.users.get_accounts()
                     break
-            except RequestError:
+            except (RequestError, ValueError):
                 print("Ошибка, введите токен заново!")
+                self.ui.edit_token.setPlaceholderText('Ошибка, введите токен заново!')
+                pal = self.ui.edit_token.palette()
+                text_color = pal.color(QtGui.QPalette.Text)
+                pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+                self.ui.edit_token.setPalette(pal)
+                self.ui.edit_token.setText('')
                 break
         self.clear_layout()
         self.create_new_widget(token, accounts)
@@ -137,7 +160,7 @@ class MainWindow(QMainWindow):
         sender = self.sender()
         self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
         # btn_text_list = sender.text()
-        btn_text_list = acc.name
+        btn_text_list = acc.name + ' ' + ' id ' + acc.id
         btn_list = QPushButton(btn_text_list, self.ui.scrollAreaWidgetContents_caseList)
         btn_list.setObjectName(btn_text_list)
         btn_list.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
@@ -157,11 +180,18 @@ class MainWindow(QMainWindow):
 
     # Проверка наличия кнопки с заданным идентификатором в окне со списком счетов
     def check_presence(self, acc=None):
+        """
+        Проверка наличия добавляемого счёта в списке счетов.
+
+        Параметры:
+            acc : Добавляемый аккаунт
+        """
         sender = self.sender()
         elem_inside = False
         for i in range(self.scroll_layout_list.count()):
             item = self.scroll_layout_list.itemAt(i).widget()
-            if item.text() == acc.name:
+            # Проверка, что аккаунт с таким id уже есть в списке счетов
+            if search('id.*?(\d+)', item.text()).group(1) == acc.id:
                 elem_inside = True
         if elem_inside:
             return False
