@@ -24,12 +24,15 @@ import plotly.express as px
 from plotly.graph_objs import *
 
 from help_func import write_html, check_dt_is_empty, generate_color_column, add_column_percantages, \
-    generate_color_by_sectors_column
+    generate_color_by_sectors_column, check_float
+
+from frame_creating import create_shares_frame_on_analytic_page, create_bonds_frame_on_analytic_page, \
+    create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page
+
 
 minus_profit = "#FAA2A2"  # hex red color
 zero_porfit = "#F9F9FB"  # hex white color
 plus_profit = "#47F19F "  # hex green color
-
 
 # # APP STATES
 #
@@ -68,11 +71,14 @@ class MainWindow(QMainWindow):
         self.scroll_layout_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_caseList)
         self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
         self.position_analytic_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_2)
+        self.all_instruments_analytic_page_list = QVBoxLayout(self.ui.scrollAreaWidgetAllInstrumentsAPage)
+        self.ui.scroll_area_all_instruments_analytic_page.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.legeng_analytic_pie_chart.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.legeng_analytic_pie_chart.horizontalScrollBar().setStyleSheet('QScrollBar {height:0px;}')
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
+
         # self.ui.to_login_2.clicked.connect(self.btn_to_login)
         # self.ui.to_login_2.clicked.connect(self.close)
 
@@ -132,29 +138,29 @@ class MainWindow(QMainWindow):
     def create_new_widget(self, token, accounts):
         self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
         for i in range(len(accounts.accounts)):
-            btn_text = accounts.accounts[i].name
-            btn = QPushButton(btn_text, self.ui.scrollAreaWidgetContents_3)
-            btn.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
-                              "background-color: rgb(148, 148, 152);\n"
-                              "height: 60px;\n }"
-                              "QPushButton:hover {\n"
-                              "	background-color:rgb(234, 234, 234);}\n")
-            btn.setFlat(True)
-            btn.setObjectName(btn_text)
-            btn.clicked.connect(
-                lambda *args, add_new_port=True, tok=token, acc=accounts.accounts[i]: self.add_portfolio_to_list(
-                    add_new_port, tok, acc))
-            btn.clicked.connect(
-                lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_portfolio(tok, acc))
-            # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
-            btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-            # btn.clicked.connect(self.fill_portfolio(accounts.accounts[i]))
-            self.scroll_layout.addWidget(btn)
+            if accounts.accounts[i].access_level != 3:
+                btn_text = accounts.accounts[i].name
+                btn = QPushButton(btn_text, self.ui.scrollAreaWidgetContents_3)
+                btn.setStyleSheet(u"QPushButton {border-radius: 25px;\n"
+                                  "background-color: rgb(148, 148, 152);\n"
+                                  "height: 60px;\n }"
+                                  "QPushButton:hover {\n"
+                                  "	background-color:rgb(234, 234, 234);}\n")
+                btn.setFlat(True)
+                btn.setObjectName(btn_text)
+                btn.clicked.connect(
+                    lambda *args, add_new_port=True, tok=token, acc=accounts.accounts[i]: self.add_portfolio_to_list(
+                        add_new_port, tok, acc))
+                btn.clicked.connect(
+                    lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_portfolio(tok, acc))
+                # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
+                btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
+                # btn.clicked.connect(self.fill_portfolio(accounts.accounts[i]))
+                self.scroll_layout.addWidget(btn)
 
     # Добавление портфеля в список портфелей
     def add_portfolio_to_list(self, add_new_port=False, token=None, acc=None):
         sender = self.sender()
-        print(acc.name)
         self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
         # btn_text_list = sender.text()
         btn_text_list = acc.name
@@ -227,10 +233,11 @@ class MainWindow(QMainWindow):
         self.fill_total_profit(df, portfolio)
         self.fill_total_cost(df, portfolio)
 
-    def add_pos_in_area_pie_based(self, positions: list):
+    def add_pos_in_area_pie_based(self, positions):
         self.position_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
         c = 0
-        for pos in positions:
+        for indexRow in range(len(positions.index)):
+            row = positions.iloc[indexRow]
             c += 1
             frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
             # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
@@ -247,7 +254,7 @@ class MainWindow(QMainWindow):
             inst_color = QFrame()
             inst_color.setObjectName("inst_color" + str(c))
             inst_color.setGeometry(QRect(0, 0, 5, 51))
-            inst_color.setStyleSheet(f"font-size : 20px; font-family : Open Sans; background-color : {pos['color']};")
+            inst_color.setStyleSheet(f"font-size : 20px; font-family : Open Sans; background-color : {row['color']};")
             # inst_color.setStyleSheet("font-size : 16px; font-family : Open Sans; background-color : #47F19F")
             inst_color.setFrameShape(QFrame.StyledPanel)
             inst_color.setFrameShadow(QFrame.Raised)
@@ -256,10 +263,10 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_color)
 
             inst_name = QLabel()
-            if pos['ticker'] != "":
-                inst_name.setText(pos['ticker'])
+            if row['ticker'] != "":
+                inst_name.setText(row['ticker'])
             else:
-                inst_name.setText(pos['name'])
+                inst_name.setText(row['name'])
             inst_name.setObjectName("inst_name" + str(c))
             inst_name.setGeometry(QRect(10, -10, 51, 61))
             # inst_name.setMaximumSize(QSize(80, 16777215))
@@ -270,7 +277,7 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_name)
 
             inst_type = QLabel()
-            inst_type.setText(pos['instrument_type'])
+            inst_type.setText(row['instrument_type'])
             inst_type.setObjectName("inst_type" + str(c))
             inst_type.setGeometry(QRect(80, -10, 21, 61))
             # inst_type.setMaximumSize(QSize(65, 16777215))
@@ -281,7 +288,10 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_type)
 
             inst_quan = QLabel()
-            inst_quan.setText(str(pos['quantity']))
+            if check_float(row['quantity']):
+                inst_quan.setText(str(int(row['quantity'])))
+            else:
+                inst_quan.setText(str(row['quantity']))
             inst_quan.setObjectName("inst_quan" + str(c))
             inst_quan.setGeometry(QRect(130, -10, 21, 61))
             # inst_quan.setMaximumSize(QSize(56, 16777215))
@@ -292,7 +302,7 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_quan)
 
             inst_cost = QLabel()
-            inst_cost.setText(str(round(pos['current_buy_price'], 2)) + "\n" + str(round(pos['average_buy_price'], 2)))
+            inst_cost.setText(str(round(row['current_buy_price'], 2)) + "\n" + str(round(row['average_buy_price'], 2)))
             inst_cost.setObjectName("inst_cost" + str(c))
             inst_cost.setGeometry(QRect(190, -10, 51, 61))
             # inst_cost.setMaximumSize(QSize(56, 16777215))
@@ -303,18 +313,18 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_cost)
 
             inst_profit = QLabel()
-            if pos['expected_yield'] < 0:
+            if row['expected_yield'] < 0:
                 inst_profit.setStyleSheet(u"color:  # FAA2A2")
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {minus_profit}")
             # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {minus_profit}")
-            elif pos['expected_yield'] == 0:
+            elif row['expected_yield'] == 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {zero_porfit}")
             # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {zero_porfit}")
-            elif pos['expected_yield'] > 0:
+            elif row['expected_yield'] > 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {plus_profit}")
                 # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {plus_profit}")
-            inst_profit.setText(str(round(pos['expected_yield'], 2)) + "₽\n" +
-                                str(round(pos['expected_yield_percentage'], 2)) + "%")
+            inst_profit.setText(str(round(row['expected_yield'], 2)) + "₽\n" +
+                                str(round(row['expected_yield_percentage'], 2)) + "%")
             inst_profit.setObjectName("inst_profit" + str(c))
             inst_profit.setGeometry(QRect(270, -20, 56, 61))
             # inst_profit.setMaximumSize(QSize(56, 16777215))
@@ -324,7 +334,7 @@ class MainWindow(QMainWindow):
             frame_inst_layout.addWidget(inst_profit)
 
             inst_percent = QLabel()
-            inst_percent.setText(str(round(pos['portfolio_share'], 2)) + "%")
+            inst_percent.setText(str(round(row['portfolio_share'], 2)) + "%")
             inst_percent.setObjectName("inst_percent" + str(c))
             inst_percent.setGeometry(QRect(340, -20, 56, 61))
             inst_percent.setMaximumSize(QSize(56, 16777215))
@@ -340,7 +350,24 @@ class MainWindow(QMainWindow):
         list_pos = get_set_positions(token, client, portfolio)
         self.create_main_portfolio_pie_chart(list_pos, portfolio)
         self.clear_pos_in_area_pie()
-        self.add_pos_in_area_pie_based(list_pos)
+        global all_instruments_df
+        all_instruments_df = pd.DataFrame()
+        if len(list_pos) == 0:
+            all_instruments_df['cost'] = pd.Series()
+            print("Here")
+            '''
+            
+            
+            УДАЛЕНИЕ ДЕЛАТЬ ТУТ ! 
+            
+            
+            
+            '''
+        else:
+            all_instruments_df = pd.DataFrame(list_pos)
+        all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(np.arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
         self.fill_analyt_page(list_pos)
 
     def clear_pos_in_area_pie(self):
@@ -350,9 +377,20 @@ class MainWindow(QMainWindow):
     def create_main_portfolio_pie_chart(self, list_positions, portfolio):
         df = pd.DataFrame(list_positions)
         if df.empty:
+            self.clear_legend_analytics_pie_chart()
+            self.ui.analytics_graps_widget.hide()
+            global full_df
+            global current_df
+            global all_instruments_df
+            global request_from_currencies
+            full_df = pd.DataFrame()
+            current_df = pd.DataFrame()
+            all_instruments_df = pd.DataFrame()
+            request_from_currencies = False
             self.ui.widget.hide()
             self.fill_total_stats(df, portfolio)
         else:
+            df = df.sort_values('name')
             self.ui.widget.show()
             self.fill_total_stats(df, portfolio)
             pie_chart = px.pie(data_frame=df, values='portfolio_share', names='name', color='name',
@@ -374,10 +412,6 @@ class MainWindow(QMainWindow):
             self.main_pie_chart.setHtml(pie_char_html.read())
             self.main_pie_chart.setMinimumSize(390, 400)
 
-    # print(pie_chart.to_html(include_plotlyjs='cdn'))
-    # print(pie_chart.to_html())
-    # print(type(pie_chart.to_html(include_plotlyjs='cdn')))
-
     def fill_main_page(self, portfolio, token, client):
         self.fill_area_pie_based(token, client, portfolio)
 
@@ -397,153 +431,196 @@ class MainWindow(QMainWindow):
     # Нажимаем на кнопку "Все инструменты" и передаем все инструменты для графиков.
     def give_all_instruments_to_charts(self):
         global current_df
-        current_df = full_df
-        print(current_df)
-        self.ui.btn_countries.show()
-        self.ui.btn_instruments_type.show()
-        self.ui.btn_sectors.show()
-        global request_from_currencies
-        request_from_currencies = False
-        print('Все инструменты')
+        if not current_df.empty:
+            current_df = full_df
+            self.ui.btn_countries.show()
+            self.ui.btn_instruments_type.show()
+            self.ui.btn_sectors.show()
+            global request_from_currencies
+            request_from_currencies = False
+            self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Акции" и передаем только все акции для графиков.
     def give_all_shares_to_charts(self):
         global current_df
-        current_df = full_df[full_df['instrument_type'] == 'Акция']
-        print(current_df)
-        self.ui.btn_countries.show()
-        self.ui.btn_instruments_type.hide()
-        self.ui.btn_sectors.show()
-        global request_from_currencies
-        request_from_currencies = False
-        print('Акции')
+        if not current_df.empty:
+            current_df = full_df[full_df['instrument_type'] == 'Акция']
+            self.ui.btn_countries.show()
+            self.ui.btn_instruments_type.hide()
+            self.ui.btn_sectors.show()
+            global request_from_currencies
+            request_from_currencies = False
+            self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Облигации" и передаем только все облигации для графиков.
     def give_all_bonds_to_charts(self):
         global current_df
-        current_df = full_df[full_df['instrument_type'] == 'Облигация']
-        print(current_df)
-        self.ui.btn_countries.show()
-        self.ui.btn_instruments_type.hide()
-        self.ui.btn_sectors.hide()
-        global request_from_currencies
-        request_from_currencies = False
-        print('Облигации')
+        if not current_df.empty:
+            current_df = full_df[full_df['instrument_type'] == 'Облигация']
+            self.ui.btn_countries.show()
+            self.ui.btn_instruments_type.hide()
+            self.ui.btn_sectors.hide()
+            global request_from_currencies
+            request_from_currencies = False
+            self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Фонды" и передаем только все фонды для графиков.
     def give_all_etf_to_charts(self):
         global current_df
-        current_df = full_df[full_df['instrument_type'] == 'Фонд']
-        print(current_df)
-        self.ui.btn_countries.show()
-        self.ui.btn_instruments_type.hide()
-        self.ui.btn_sectors.hide()
-        global request_from_currencies
-        request_from_currencies = False
-        print('Фонды')
+        if not current_df.empty:
+            current_df = full_df[full_df['instrument_type'] == 'Фонд']
+            self.ui.btn_countries.show()
+            self.ui.btn_instruments_type.hide()
+            self.ui.btn_sectors.hide()
+            global request_from_currencies
+            request_from_currencies = False
+            self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюты" и передаем только все валюты для графиков.
     def give_all_currencies_to_charts(self):
         global current_df
-        current_df = full_df[full_df['instrument_type'] == 'Валюта']
-        self.ui.btn_countries.hide()
-        self.ui.btn_instruments_type.hide()
-        self.ui.btn_sectors.hide()
-        global request_from_currencies
-        request_from_currencies = True
-        print("current_df=")
-        print(current_df)
-        print('Фонды')
+        if not current_df.empty:
+            current_df = full_df[full_df['instrument_type'] == 'Валюта']
+            self.ui.btn_countries.hide()
+            self.ui.btn_instruments_type.hide()
+            self.ui.btn_sectors.hide()
+            global request_from_currencies
+            request_from_currencies = True
+            self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюта" и строим график валют на основе переданных данных.
     def grouping_by_currencies_pie_chart_analytical_page(self):
-        print("current_df=")
-        print(current_df)
         global request_from_currencies
-        if request_from_currencies:
-            data = current_df.groupby('name').agg('sum')
-        else:
-            data = current_df.groupby('original_currency').agg('sum')
-        if not check_dt_is_empty(data):
-            self.ui.analytics_graps_widget.show()
-            self.disactivate_text_on_analytic_pie_chart()
-        else:
-            self.ui.analytics_graps_widget.hide()
-            self.activate_text_on_analytic_pie_chart()
-        print(data)
-        print('Валюты')
-
-        pass
+        if not current_df.empty:
+            if request_from_currencies:
+                data = current_df.groupby('name').agg('sum')
+            else:
+                data = current_df.groupby('original_currency').agg('sum')
+            if not check_dt_is_empty(data):
+                self.ui.analytics_graps_widget.show()
+                self.disactivate_text_on_analytic_pie_chart()
+                currencies = list(data.index)
+                data = data.set_index(np.arange(0, len(data.index), 1))
+                data['currencies'] = pd.Series(currencies)
+                add_column_percantages(data)
+                generate_color_column(data)
+                data = data.sort_values('total_cost_percentage', ascending=False)
+                pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='currencies',
+                                   color='currencies',
+                                   color_discrete_sequence=list(data['color']),
+                                   hole=0.3)
+                hovertemp = "%{label} "
+                hovertemp += "%{value}%            "
+                pie_chart.update_traces(hovertemplate=hovertemp)
+                pie_chart.update_traces(textposition='inside', showlegend=False)
+                pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
+                                        uniformtext_mode='hide', )
+                name_graph = "AnalyticByCurrenciesPieChart.html"
+                write_html(pie_chart, name_graph)
+                self.show_analytic_pie_chart(name_graph, data, 'currencies')
+            else:
+                self.ui.analytics_graps_widget.hide()
+                self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Сектора" и строим график секторов на основе переданных данных.
     def grouping_by_sectors_pie_chart_analytical_page(self):
-        data = current_df.groupby('sector').agg('sum')
-        if not check_dt_is_empty(data):
-            self.ui.analytics_graps_widget.show()
-            self.disactivate_text_on_analytic_pie_chart()
-            sectors = list(data.index)
-            data = data.set_index(np.arange(0, len(data.index), 1))
-            data['sector'] = pd.Series(sectors)
-            add_column_percantages(data)
-            generate_color_by_sectors_column(data)
-            print(data)
-            pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='sector', color='sector',
-                               color_discrete_sequence=list(data['color']),
-                               hole=0.3)
-            hovertemp = "%{label} "
-            hovertemp += "%{value}%"
-            pie_chart.update_traces(hovertemplate=hovertemp)
-            pie_chart.update_traces(textposition='inside', showlegend=False)
-            pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
-                                    uniformtext_mode='hide', )
-            name_graph = "AnalyticBySectorsPieChart.html"
-            write_html(pie_chart, name_graph)
-            self.show_analytic_pie_chart(name_graph, data, 'sector')
-        else:
-            self.ui.analytics_graps_widget.hide()
-            self.activate_text_on_analytic_pie_chart()
-
-        print('Сектора')
+        if not current_df.empty:
+            data = current_df.groupby('sector').agg('sum')
+            if not check_dt_is_empty(data):
+                self.ui.analytics_graps_widget.show()
+                self.disactivate_text_on_analytic_pie_chart()
+                sectors = list(data.index)
+                data = data.set_index(np.arange(0, len(data.index), 1))
+                data['sector'] = pd.Series(sectors)
+                add_column_percantages(data)
+                generate_color_by_sectors_column(data)
+                data = data.sort_values('total_cost_percentage', ascending=False)
+                pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='sector', color='sector',
+                                   color_discrete_sequence=list(data['color']),
+                                   hole=0.3)
+                hovertemp = "%{label} "
+                hovertemp += "%{value}%      "
+                pie_chart.update_traces(hovertemplate=hovertemp)
+                pie_chart.update_traces(textposition='inside', showlegend=False)
+                pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
+                                        uniformtext_mode='hide', )
+                name_graph = "AnalyticBySectorsPieChart.html"
+                write_html(pie_chart, name_graph)
+                self.show_analytic_pie_chart(name_graph, data, 'sector')
+            else:
+                self.ui.analytics_graps_widget.hide()
+                self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Страны" и строим график стран на основе переданных данных.
     def grouping_by_countries_pie_chart_analytical_page(self):
-        data = current_df[current_df['country'] != ''].groupby('country').agg('sum')
-        if not check_dt_is_empty(data):
-            self.ui.analytics_graps_widget.show()
-            self.disactivate_text_on_analytic_pie_chart()
-        else:
-            self.ui.analytics_graps_widget.hide()
-            self.activate_text_on_analytic_pie_chart()
-        print(data)
-        print('Страны')
-        pass
+        if not current_df.empty:
+            data = current_df.groupby('short_country_name').agg('sum')
+            if not check_dt_is_empty(data):
+                self.ui.analytics_graps_widget.show()
+                self.disactivate_text_on_analytic_pie_chart()
+                countries = list(data.index)
+                data = data.set_index(np.arange(0, len(data.index), 1))
+                data['short_country_name'] = pd.Series(countries)
+                add_column_percantages(data)
+                generate_color_column(data)
+                data = data.sort_values('total_cost_percentage', ascending=False)
+                pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='short_country_name',
+                                   color='short_country_name', color_discrete_sequence=list(data['color']),
+                                   hole=0.3)
+                hovertemp = "%{label} \n"
+                hovertemp += "%{value}%               "
+                pie_chart.update_traces(hovertemplate=hovertemp)
+                pie_chart.update_traces(textposition='inside', showlegend=False)
+                pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
+                                        uniformtext_mode='hide', )
+                name_graph = "AnalyticByCountriesPieChart.html"
+                write_html(pie_chart, name_graph)
+                self.show_analytic_pie_chart(name_graph, data, 'short_country_name')
+            else:
+                self.ui.analytics_graps_widget.hide()
+                self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Классы" и строим график классов на основе переданных данных.
     def grouping_by_instruments_type_pie_chart_analytical_page(self):
-        data = current_df.groupby('instrument_type').agg('sum')
-        if not check_dt_is_empty(data):
-            self.ui.analytics_graps_widget.show()
-            self.disactivate_text_on_analytic_pie_chart()
-        else:
-            self.ui.analytics_graps_widget.hide()
-            self.activate_text_on_analytic_pie_chart()
-        print(data)
-        print('Классы')
-        pass
+        if not current_df.empty:
+            data = current_df.groupby('instrument_type').agg('sum')
+            if not check_dt_is_empty(data):
+                self.ui.analytics_graps_widget.show()
+                self.disactivate_text_on_analytic_pie_chart()
+                sectors = list(data.index)
+                data = data.set_index(np.arange(0, len(data.index), 1))
+                data['instrument_type'] = pd.Series(sectors)
+                add_column_percantages(data)
+                generate_color_column(data)
+                data = data.sort_values('total_cost_percentage', ascending=False)
+                pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='instrument_type',
+                                   color='instrument_type', color_discrete_sequence=list(data['color']), hole=0.3)
+                hovertemp = "%{label} "
+                hovertemp += "%{value}            %"
+                pie_chart.update_traces(hovertemplate=hovertemp)
+                pie_chart.update_traces(textposition='inside', showlegend=False)
+                pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
+                                        uniformtext_mode='hide', )
+                name_graph = "AnalyticByInstrumentTypePieChart.html"
+                write_html(pie_chart, name_graph)
+                self.show_analytic_pie_chart(name_graph, data, 'instrument_type')
+            else:
+                self.ui.analytics_graps_widget.hide()
+                self.activate_text_on_analytic_pie_chart()
 
     # Строим график на основе данных.
     def show_analytic_pie_chart(self, name_graph, dt, condition):
         with open(name_graph, 'r') as pie_char_html:
-            print("open graph)")
             self.analytic_pie_chart.setHtml(pie_char_html.read())
-            self.analytic_pie_chart.setMinimumSize(345, 320)
+            self.analytic_pie_chart.setMinimumSize(335, 310)
             self.clear_legend_analytics_pie_chart()
-            self.add_legent_analytic_pie_chart(dt, condition)
+            self.add_legend_analytic_pie_chart(dt, condition)
 
-    def add_legent_analytic_pie_chart(self, df, condition):
+    def add_legend_analytic_pie_chart(self, df, condition):
         self.position_analytic_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
         colors = df['color'].tolist()
-        costs = df['total_cost'].tolist()
+        costs = df['cost'].tolist()
+        total_cost_pecentage = df['total_cost_percentage'].tolist()
         condition = df[condition].tolist()
         for i in range(len(colors)):
             frame_inst_1 = QFrame(self.ui.scrollAreaWidgetContents_2)
@@ -570,13 +647,14 @@ class MainWindow(QMainWindow):
             frame_inst_layout_1.addWidget(inst_color_1)
 
             inst_name_1 = QLabel()
-            inst_name_1.setText(condition[i] + "\n" + str(costs[i]))
+            inst_name_1.setText(
+                condition[i] + "\n" + str(total_cost_pecentage[i]) + "%" + " " + str(round(costs[i], 2)) + "₽")
             inst_name_1.setObjectName("inst_name" + str(i))
             inst_name_1.setGeometry(QRect(30, 0, 141, 21))
             # inst_name.setMaximumSize(QSize(80, 16777215))
             inst_name_1.adjustSize()
             inst_name_1.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
-                                    "")
+                                      "")
             inst_name_1.setAlignment(Qt.AlignCenter)
             frame_inst_layout_1.addWidget(inst_name_1)
             self.position_analytic_pie_chart_based_list.addWidget(frame_inst_1)
@@ -594,6 +672,7 @@ class MainWindow(QMainWindow):
 
     full_df = pd.DataFrame()
     current_df = pd.DataFrame()
+    all_instruments_df = pd.DataFrame()
     request_from_currencies = False
 
     def fill_analyt_page(self, list_positions):
@@ -611,6 +690,44 @@ class MainWindow(QMainWindow):
         # Рекомендации.
 
         # Все инструменты.
+        self.fill_all_instruments_on_analytic_page()
+
+
+
+    def fill_all_instruments_on_analytic_page(self):
+        global full_df
+        full_df = full_df.sort_values('cost', ascending=False)
+        if not full_df.empty:
+            self.all_instruments_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
+            shares_df =full_df[full_df['instrument_type'] == 'Акция']
+            if not shares_df.empty:
+                shares_df = shares_df.set_index(np.arange(0, len(shares_df.index), 1))
+                frame_shares = create_shares_frame_on_analytic_page(shares_df)
+                self.all_instruments_analytic_page_list.addWidget(frame_shares)
+            else:
+                pass
+
+            bonds_df = full_df[full_df['instrument_type'] == 'Облигация']
+            if not bonds_df.empty:
+                bonds_df = bonds_df.set_index(np.arange(0, len(bonds_df.index), 1))
+                frame_bonds = create_bonds_frame_on_analytic_page(bonds_df)
+                self.all_instruments_analytic_page_list.addWidget(frame_bonds)
+            else:
+                pass
+            etf_df = full_df[full_df['instrument_type'] == 'Фонд']
+            if not etf_df.empty:
+                etf_df = etf_df.set_index(np.arange(0, len(etf_df.index), 1))
+                frame_shares = create_etfs_frame_on_analytic_page(etf_df)
+                self.all_instruments_analytic_page_list.addWidget(frame_shares)
+            else:
+                pass
+            currencies_df = full_df[full_df['instrument_type'] == 'Валюта']
+            if not etf_df.empty:
+                currencies_df = currencies_df.set_index(np.arange(0, len(currencies_df.index), 1))
+                frame_shares = create_currencies_frame_on_analytic_page(currencies_df)
+                self.all_instruments_analytic_page_list.addWidget(frame_shares)
+            else:
+                pass
 
     def fill_portfolio(self, token, account):
         sender = self.sender()

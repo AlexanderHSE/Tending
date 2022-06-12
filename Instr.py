@@ -5,7 +5,6 @@ class Instr:
     __slots__ = ('__client', '__figi', '__instrument')
 
     def __init__(self, token, figi, instr_type):
-        print("figi" + figi)
         with Client(token) as client:
             try:
                 if instr_type == 'bond':

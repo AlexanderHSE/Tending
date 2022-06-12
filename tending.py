@@ -1,3 +1,4 @@
+import pandas as pd
 from tinkoff.invest import Client, MoneyValue, GetAccountsResponse, RequestError
 import ApiParsing
 import AllPortfolio
@@ -8,7 +9,8 @@ from Instr import Instr
 from help_func import generate_random_color
 
 #   t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
-
+#   t.r3D-SJY-s37p965fw1Co_UvACNdtrcxUW7rq_xIU4GP5d2Ni2XSLB3NlrHSx21ck6eLoenkmV0LXiIx0_uldUw
+#   t.6l6UT2g6HYDf_PNb8BIO4PuWeGajBgfQGPHgtTi-bEIgfiSdTKsyVuN17Yv0T0Umxw-TzPnrVTUIe8g3LkL8bg
 dict_sector = dict(government="Государтсвенные бумаги", energy="Энергетика", ecomaterials="Промышленность",
                    green_energy="Зелёная энергетика", financial="Финансы", utilities="Коммунальные услуги",
                    materials="Материалы", green_buildings="Промышленность", municipal="Муниципальные бумаги",
@@ -18,6 +20,8 @@ dict_sector = dict(government="Государтсвенные бумаги", ene
                    bond="Облигация")
 
 dict_instrument_type = dict(share="Акция", bond="Облигация", etf="Фонд", currency="Валюта", future="Фьючерс")
+
+countries_codes = {}
 
 
 def cast_money(money_value: MoneyValue):
@@ -44,11 +48,8 @@ def get_total_cost_portfolio(df, portfolio: PortfolioResponse):
     total_amount_shares = cast_money(portfolio.total_amount_shares)
     total_amount_bonds = cast_money(portfolio.total_amount_bonds)
     total_amount_etf = cast_money(portfolio.total_amount_etf)
-    total_amount_currencies = df[df['instrument_type'] == 'Валюта'].agg('sum')['total_cost']
+    total_amount_currencies = df[df['instrument_type'] == 'Валюта'].agg('sum')['cost']
     total_amount_futures = cast_money(portfolio.total_amount_futures)
-    print("**********************")
-    print(total_amount_currencies)
-    print("**********************")
     return round(total_amount_shares + total_amount_bonds + total_amount_etf +
                  total_amount_currencies + total_amount_futures, 2)
 
@@ -110,8 +111,6 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur)
                 'average_buy_price'] * 100
         else:
             r['expected_yield_percentage'] = -100
-        print(str(r['name']) + " " + str(r['average_buy_price']) + " " +
-              str(r['current_buy_price']) + str(r['expected_yield_percentage']))
         r['currency'] = '₽'
         r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
         r['comissixon'] = r['sell_sum'] * 0.003
@@ -119,31 +118,63 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur)
         if len(r['sector']) != 0:
             r['sector'] = dict_sector[r['sector']]
         r['instrument_type'] = dict_instrument_type[r['instrument_type']]
-        r['cost'] = r['quantity'] * r['current_buy_price']
+        r['cost'] = round(r['quantity'] * r['current_buy_price'], 2)
         return r
     return None
 
 
+def set_name_brief_contry(dict_pose):
+    global countries_codes
+    count = list()
+    lens = list()
+    for country in countries_codes:
+        count.append(country.name)
+        lens.append(len(country.name_brief))
+        if dict_pose['country'] == country.name or dict_pose['country'] == country.name_brief:
+            if dict_pose['country'] == 'Виргинские Острова, Британские':
+                dict_pose['short_country_name'] = "Соединенное Королевство"
+            dict_pose['short_country_name'] = country.name_brief
+
+
+def set_counrties(token):
+    with Client(token) as client:
+        global countries_codes
+        countries_codes = client.instruments.get_countries().countries
+
+
 def get_set_positions(token, client, portfolio):
+    set_counrties(token)
     u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
     usdrur = cast_money(u.last_prices[0].price)
     e = client.market_data.get_last_prices(figi=['BBG0013HJJ31'])
     eurrur = cast_money(e.last_prices[0].price)
     list_dict_instruments = list()
     set_colors = set()
+    dict_count_instruments = dict()
+    instruments_not_once_see = set()
     for pose in portfolio.positions:
         dict_pose = convert_position_to_dict(token, pose, usdrur, eurrur)
         if dict_pose is not None:
             dict_pose['color'] = generate_random_color(set_colors)
+            set_name_brief_contry(dict_pose)
+            if dict_pose['name'] in dict_count_instruments:
+                dict_count_instruments[dict_pose['name']] += dict_pose['quantity']
+                instruments_not_once_see.add(dict_pose['name'])
+            else:
+                dict_count_instruments[dict_pose['name']] = dict_pose['quantity']
             if dict_pose['average_buy_price'] != 0:
-                print(dict_pose)
                 list_dict_instruments.append(dict_pose)
+    if len(instruments_not_once_see) != 0:
+        for pos in list_dict_instruments:
+            if pos['name'] in instruments_not_once_see:
+                pos['quantity'] = dict_count_instruments[pos['name']]
+                pos['current_buy_price'] = pos['average_buy_price'] + pos['expected_yield'] / pos['quantity']
+                pos['cost'] = round(pos['quantity'] * pos['current_buy_price'], 2)
     total_cost = 0
     for pos in list_dict_instruments:
         total_cost += pos['cost']
     for pos in list_dict_instruments:
         pos['portfolio_share'] = round(pos['current_buy_price'] * pos['quantity'] / total_cost * 100, 2)
-        pos['total_cost'] = round(pos['quantity'] * pos['current_buy_price'])
     return list_dict_instruments
 
 
@@ -169,6 +200,8 @@ def choice_parsing():
 token = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
 if __name__ == "__main__":
     with Client(token) as client:
+        print("2")
+        print()
         dic = dict()
         other = list()
         consumer = list()
@@ -193,6 +226,34 @@ if __name__ == "__main__":
         bon = client.instruments.bonds(instrument_status=2)
         etf = client.instruments.etfs(instrument_status=2)
         fut = client.instruments.futures(instrument_status=2)
+
+        set_counrties = set()
+        for s in shar.instruments:
+            set_counrties.add(s.country_of_risk_name)
+        print(set_counrties)
+        print("len set" + str(len(set_counrties)))
+        c = 0
+        count = list()
+        lens = list()
+        countries_codes = client.instruments.get_countries().countries
+        for country in countries_codes:
+            if country.name != '' and (country.name in set_counrties or country.name_brief in set_counrties):
+                c += 1
+                print(str(c) + country.name + "/" + country.name_brief)
+                lens.append(len(country.name_brief))
+                count.append(country.name_brief)
+        print("MAX")
+        print("111111111111111")
+        dt = pd.DataFrame()
+        dt['co'] = pd.Series(count)
+        dt['le'] = pd.Series(lens)
+        dt = dt.sort_values('le', ascending=False)
+        print(dt.head(45))
+        print("111111111111111")
+
+        print(set_counrties)
+        print(len(set_counrties))
+        print(0)
         mun = list()
         print("VSE VALUTI")
         print(cur)
