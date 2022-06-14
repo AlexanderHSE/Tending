@@ -85,7 +85,7 @@ class Ui_MainWindowBig(object):
         self.label_4 = QLabel(self.frame_head)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setMinimumSize(QSize(300, 41))
-        self.label_4.setPixmap(QPixmap(u"Frame_13.jpg"))
+        self.label_4.setPixmap(QPixmap(u"images/Frame_13.jpg"))
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
@@ -162,7 +162,7 @@ class Ui_MainWindowBig(object):
 "	color: rgb(234, 234, 234);\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"briefcase (1).png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(u"images/briefcase (1).png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_case.setIcon(icon)
         self.btn_case.setIconSize(QSize(20, 20))
         self.btn_case.setCheckable(False)
@@ -240,7 +240,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 346))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 596))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -399,7 +399,7 @@ class Ui_MainWindowBig(object):
         self.column_title_name = QLabel(self.frame_4)
         self.column_title_name.setObjectName(u"column_title_name")
         self.column_title_name.setMaximumSize(QSize(56, 16777215))
-        self.column_title_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_name.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_title_name.setAlignment(Qt.AlignCenter)
 
@@ -408,7 +408,7 @@ class Ui_MainWindowBig(object):
         self.column_title_type = QLabel(self.frame_4)
         self.column_title_type.setObjectName(u"column_title_type")
         self.column_title_type.setMaximumSize(QSize(37, 16777215))
-        self.column_title_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_type.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_title_type.setAlignment(Qt.AlignCenter)
 
@@ -417,7 +417,7 @@ class Ui_MainWindowBig(object):
         self.column_title_quantity = QLabel(self.frame_4)
         self.column_title_quantity.setObjectName(u"column_title_quantity")
         self.column_title_quantity.setMaximumSize(QSize(68, 16777215))
-        self.column_title_quantity.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_quantity.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_title_quantity.setAlignment(Qt.AlignCenter)
 
@@ -432,7 +432,7 @@ class Ui_MainWindowBig(object):
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
         self.price_now = QLabel(self.column_title_price)
         self.price_now.setObjectName(u"price_now")
-        self.price_now.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.price_now.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.price_now.setAlignment(Qt.AlignCenter)
 
@@ -440,7 +440,7 @@ class Ui_MainWindowBig(object):
 
         self.price_average = QLabel(self.column_title_price)
         self.price_average.setObjectName(u"price_average")
-        self.price_average.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.price_average.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.price_average.setAlignment(Qt.AlignCenter)
 
@@ -458,7 +458,7 @@ class Ui_MainWindowBig(object):
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
         self.column_title_yeild = QLabel(self.column_title_res)
         self.column_title_yeild.setObjectName(u"column_title_yeild")
-        self.column_title_yeild.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_yeild.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_title_yeild.setAlignment(Qt.AlignCenter)
 
@@ -466,7 +466,7 @@ class Ui_MainWindowBig(object):
 
         self.column_title_profit = QLabel(self.column_title_res)
         self.column_title_profit.setObjectName(u"column_title_profit")
-        self.column_title_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
+        self.column_title_profit.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_title_profit.setAlignment(Qt.AlignCenter)
 
@@ -478,7 +478,7 @@ class Ui_MainWindowBig(object):
         self.column_tittle_percentage = QLabel(self.frame_4)
         self.column_tittle_percentage.setObjectName(u"column_tittle_percentage")
         self.column_tittle_percentage.setMaximumSize(QSize(37, 16777215))
-        self.column_tittle_percentage.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB;\n"
+        self.column_tittle_percentage.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
         self.column_tittle_percentage.setAlignment(Qt.AlignCenter)
 
@@ -492,7 +492,13 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 85))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 335))
+        self.label_2 = QLabel(self.scrollAreaWidgetContents_4)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setGeometry(QRect(40, 150, 331, 20))
+        self.label_2.setStyleSheet(u"font-size : 23px; font-family : Open Sans; color : #2A2A2C\n"
+"")
+        self.label_2.setAlignment(Qt.AlignCenter)
         self.instruments_cpa_scrollArea.setWidget(self.scrollAreaWidgetContents_4)
 
         self.verticalLayout_13.addWidget(self.instruments_cpa_scrollArea)
@@ -738,6 +744,12 @@ class Ui_MainWindowBig(object):
         self.scrollAreaWidgetAllInstrumentsAPage = QWidget()
         self.scrollAreaWidgetAllInstrumentsAPage.setObjectName(u"scrollAreaWidgetAllInstrumentsAPage")
         self.scrollAreaWidgetAllInstrumentsAPage.setGeometry(QRect(0, 0, 851, 231))
+        self.label = QLabel(self.scrollAreaWidgetAllInstrumentsAPage)
+        self.label.setObjectName(u"label")
+        self.label.setGeometry(QRect(250, 120, 331, 20))
+        self.label.setStyleSheet(u"font-size : 23px; font-family : Open Sans; color : #2A2A2C\n"
+"")
+        self.label.setAlignment(Qt.AlignCenter)
         self.scroll_area_all_instruments_analytic_page.setWidget(self.scrollAreaWidgetAllInstrumentsAPage)
         self.stackedWidget.addWidget(self.page_analytics)
         self.scrollArea_4.raise_()
@@ -786,7 +798,7 @@ class Ui_MainWindowBig(object):
         self.btn_addCase = QPushButton(self.frame_addCase)
         self.btn_addCase.setObjectName(u"btn_addCase")
         icon1 = QIcon()
-        icon1.addFile(u"plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"images/plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
         self.btn_addCase.setIcon(icon1)
         self.btn_addCase.setIconSize(QSize(50, 50))
         self.btn_addCase.setCheckable(False)
@@ -849,7 +861,7 @@ class Ui_MainWindowBig(object):
         self.pushButton.setGeometry(QRect(710, 23, 25, 25))
         self.pushButton.setStyleSheet(u"background-color: rgb(73, 73, 77); border: none;")
         icon2 = QIcon()
-        icon2.addFile(u"closedEyeChanged.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(u"images/closedEyeChanged.png", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton.setIcon(icon2)
         self.pushButton.setIconSize(QSize(25, 25))
         self.pushButton.setFlat(True)
@@ -889,7 +901,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)
@@ -919,6 +931,7 @@ class Ui_MainWindowBig(object):
         self.column_title_yeild.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
         self.column_title_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
         self.column_tittle_percentage.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))
         self.btn_all_instruments.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0441\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b", None))
         self.btn_shares.setText(QCoreApplication.translate("MainWindowBig", u"\u0410\u043a\u0446\u0438\u0438", None))
         self.btn_bonds.setText(QCoreApplication.translate("MainWindowBig", u"\u041e\u0431\u043b\u0438\u0433\u0430\u0446\u0438\u0438", None))
@@ -930,6 +943,7 @@ class Ui_MainWindowBig(object):
         self.analytic_graph_text_if_have_no_instr.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0442\u0430\u043a\u043e\u0433\u043e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430 \u0432 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u0435", None))
         self.recommendation_title.setText(QCoreApplication.translate("MainWindowBig", u"\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430\u0446\u0438\u0438", None))
         self.btn_currencies_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0430\u043b\u044e\u0442\u044b", None))
+        self.label.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))
         self.btn_addCase.setText("")
         self.edit_token.setPlaceholderText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0442\u043e\u043a\u0435\u043d", None))
         self.btn_addToList.setText(QCoreApplication.translate("MainWindowBig", u"\u0413\u043e\u0442\u043e\u0432\u043e", None))

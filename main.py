@@ -1,13 +1,10 @@
 import sys
-import platform
-from PySide2 import QtCore, QtGui, QtWidgets, QtWebEngineWidgets
-from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect,
-                            QSize, QTime, QUrl, Qt, QEvent, QDir, QUrlQuery)
-from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence,
-                           QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
-from PySide2.QtWidgets import *
-from ui_main_stacked import Ui_MainWindow
-from PySide2.QtWebEngineWidgets import QWebEngineView
+from PySide2 import QtGui, QtWebEngineWidgets
+from PySide2.QtCore import (QRect, QSize, Qt)
+from PySide2.QtGui import (QFontDatabase, QIcon, QPixmap)
+# from PySide2.QtWidgets import *
+from PySide2.QtWidgets import (QMainWindow, QVBoxLayout, QLineEdit, QPushButton, QFrame, QHBoxLayout, QLabel, QApplication)
+# from PySide2.QtWebEngineWidgets import QWebEngineView
 from ui_mainworkspace import Ui_MainWindowBig
 
 from ui_functions import *
@@ -16,12 +13,11 @@ from tinkoff.invest.schemas import PortfolioResponse
 
 from tending import get_total_cost_portfolio, cast_yield, get_total_profit, get_set_positions
 
-import pandas as pd
-import numpy as np
+# import pandas as pd
+from pandas import (DataFrame, Series)
+from numpy import arange
 
-import plotly
 import plotly.express as px
-from plotly.graph_objs import *
 
 from help_func import write_html, check_dt_is_empty, generate_color_column, add_column_percantages, \
     generate_color_by_sectors_column, check_float
@@ -38,7 +34,8 @@ plus_profit = "#47F19F "  # hex green color
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        QFontDatabase.addApplicationFont('Ubuntu-Regular.ttf')
+        QFontDatabase.addApplicationFont('fonts/Ubuntu-Regular.ttf')
+        QFontDatabase.addApplicationFont('fonts/OpenSans-Regular.ttf')
         QMainWindow.__init__(self)
         self.dragPos = None
         self.ui = Ui_MainWindowBig()
@@ -56,6 +53,7 @@ class MainWindow(QMainWindow):
         self.ui.legeng_analytic_pie_chart.horizontalScrollBar().setStyleSheet('QScrollBar {height:0px;}')
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
+        self.ui.widget.hide()
 
         def moveWindow(event):
             # If left click - move window
@@ -92,11 +90,11 @@ class MainWindow(QMainWindow):
         """
         if self.ui.edit_token.echoMode() == QLineEdit.Normal:
             self.ui.edit_token.setEchoMode(QLineEdit.Password)
-            new_icon = QPixmap('closedEyeChanged.png')
+            new_icon = QPixmap('images/closedEyeChanged.png')
             self.ui.pushButton.setIcon(QIcon(new_icon))
         else:
             self.ui.edit_token.setEchoMode(QLineEdit.Normal)
-            new_icon = QPixmap('openedEye.png')
+            new_icon = QPixmap('images/openedEye.png')
             self.ui.pushButton.setIcon(QIcon(new_icon))
 
     # Движение окна
@@ -120,7 +118,7 @@ class MainWindow(QMainWindow):
                     accounts = client.users.get_accounts()
                     break
             except (RequestError, ValueError):
-                print("Ошибка, введите токен заново!")
+                # print("Ошибка, введите токен заново!")
                 self.ui.edit_token.setPlaceholderText('Ошибка, введите токен заново!')
                 pal = self.ui.edit_token.palette()
                 text_color = pal.color(QtGui.QPalette.Text)
@@ -355,18 +353,19 @@ class MainWindow(QMainWindow):
         self.create_main_portfolio_pie_chart(list_pos, portfolio)
         self.clear_pos_in_area_pie()
         global all_instruments_df
-        all_instruments_df = pd.DataFrame()
+        all_instruments_df = DataFrame()
         if len(list_pos) == 0:
-            all_instruments_df['cost'] = pd.Series()
+            all_instruments_df['cost'] = Series()
             print("Here")
             '''
             УДАЛЕНИЕ ДЕЛАТЬ ТУТ ! 
             '''
             self.clear_all_instruments_on_analytic_page()
         else:
-            all_instruments_df = pd.DataFrame(list_pos)
+            self.clear_all_instruments_on_analytic_page()
+            all_instruments_df = DataFrame(list_pos)
         all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
-        all_instruments_df = all_instruments_df.set_index(np.arange(0, len(all_instruments_df.index), 1))
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
         self.fill_analyt_page(list_pos)
 
@@ -375,7 +374,7 @@ class MainWindow(QMainWindow):
             self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
     def create_main_portfolio_pie_chart(self, list_positions, portfolio):
-        df = pd.DataFrame(list_positions)
+        df = DataFrame(list_positions)
         if df.empty:
             self.clear_legend_analytics_pie_chart()
             self.ui.analytics_graps_widget.hide()
@@ -383,13 +382,28 @@ class MainWindow(QMainWindow):
             global current_df
             global all_instruments_df
             global request_from_currencies
-            full_df = pd.DataFrame()
-            current_df = pd.DataFrame()
-            all_instruments_df = pd.DataFrame()
+            full_df = DataFrame()
+            current_df = DataFrame()
+            all_instruments_df = DataFrame()
             request_from_currencies = False
             self.ui.widget.hide()
             self.fill_total_stats(df, portfolio)
+            self.ui.analytic_graph_text_if_have_no_instr.setText("Нет инструментов")
+            self.ui.label_2.setStyleSheet('''
+                font-size : 23px; 
+                font-family : Open Sans;
+                color: #F9F9FB;
+            ''')
+            self.ui.label.setStyleSheet('''
+                font-size : 23px; 
+                font-family : Open Sans;
+                color: #F9F9FB;
+            ''')
+            self.ui.label_2.show()
+            self.ui.label.show()
         else:
+            self.ui.label.hide()
+            self.ui.label_2.hide()
             df = df.sort_values('name')
             self.ui.widget.show()
             self.fill_total_stats(df, portfolio)
@@ -500,8 +514,8 @@ class MainWindow(QMainWindow):
                 self.ui.analytics_graps_widget.show()
                 self.disactivate_text_on_analytic_pie_chart()
                 currencies = list(data.index)
-                data = data.set_index(np.arange(0, len(data.index), 1))
-                data['currencies'] = pd.Series(currencies)
+                data = data.set_index(arange(0, len(data.index), 1))
+                data['currencies'] = Series(currencies)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
@@ -530,8 +544,8 @@ class MainWindow(QMainWindow):
                 self.ui.analytics_graps_widget.show()
                 self.disactivate_text_on_analytic_pie_chart()
                 sectors = list(data.index)
-                data = data.set_index(np.arange(0, len(data.index), 1))
-                data['sector'] = pd.Series(sectors)
+                data = data.set_index(arange(0, len(data.index), 1))
+                data['sector'] = Series(sectors)
                 add_column_percantages(data)
                 generate_color_by_sectors_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
@@ -559,8 +573,8 @@ class MainWindow(QMainWindow):
                 self.ui.analytics_graps_widget.show()
                 self.disactivate_text_on_analytic_pie_chart()
                 countries = list(data.index)
-                data = data.set_index(np.arange(0, len(data.index), 1))
-                data['short_country_name'] = pd.Series(countries)
+                data = data.set_index(arange(0, len(data.index), 1))
+                data['short_country_name'] = Series(countries)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
@@ -588,8 +602,8 @@ class MainWindow(QMainWindow):
                 self.ui.analytics_graps_widget.show()
                 self.disactivate_text_on_analytic_pie_chart()
                 sectors = list(data.index)
-                data = data.set_index(np.arange(0, len(data.index), 1))
-                data['instrument_type'] = pd.Series(sectors)
+                data = data.set_index(arange(0, len(data.index), 1))
+                data['instrument_type'] = Series(sectors)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
@@ -670,9 +684,9 @@ class MainWindow(QMainWindow):
     def activate_text_on_analytic_pie_chart(self):
         self.ui.analytic_graph_text_if_have_no_instr.setStyleSheet('color: #F9F9FB')
 
-    full_df = pd.DataFrame()
-    current_df = pd.DataFrame()
-    all_instruments_df = pd.DataFrame()
+    full_df = DataFrame()
+    current_df = DataFrame()
+    all_instruments_df = DataFrame()
     request_from_currencies = False
 
     def fill_analyt_page(self, list_positions):
@@ -680,9 +694,9 @@ class MainWindow(QMainWindow):
             return
         # Графики на странице аналитики.
         global full_df
-        full_df = pd.DataFrame(list_positions)
+        full_df = DataFrame(list_positions)
         global current_df
-        current_df = pd.DataFrame(list_positions)
+        current_df = DataFrame(list_positions)
         self.link_analytic_buttons(current_df)
         global request_from_currencies
         request_from_currencies = False
@@ -699,7 +713,7 @@ class MainWindow(QMainWindow):
             self.all_instruments_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
             shares_df =full_df[full_df['instrument_type'] == 'Акция']
             if not shares_df.empty:
-                shares_df = shares_df.set_index(np.arange(0, len(shares_df.index), 1))
+                shares_df = shares_df.set_index(arange(0, len(shares_df.index), 1))
                 frame_shares = create_shares_frame_on_analytic_page(shares_df)
                 self.all_instruments_analytic_page_list.addWidget(frame_shares)
             else:
@@ -707,21 +721,21 @@ class MainWindow(QMainWindow):
 
             bonds_df = full_df[full_df['instrument_type'] == 'Облигация']
             if not bonds_df.empty:
-                bonds_df = bonds_df.set_index(np.arange(0, len(bonds_df.index), 1))
+                bonds_df = bonds_df.set_index(arange(0, len(bonds_df.index), 1))
                 frame_bonds = create_bonds_frame_on_analytic_page(bonds_df)
                 self.all_instruments_analytic_page_list.addWidget(frame_bonds)
             else:
                 pass
             etf_df = full_df[full_df['instrument_type'] == 'Фонд']
             if not etf_df.empty:
-                etf_df = etf_df.set_index(np.arange(0, len(etf_df.index), 1))
+                etf_df = etf_df.set_index(arange(0, len(etf_df.index), 1))
                 frame_shares = create_etfs_frame_on_analytic_page(etf_df)
                 self.all_instruments_analytic_page_list.addWidget(frame_shares)
             else:
                 pass
             currencies_df = full_df[full_df['instrument_type'] == 'Валюта']
             if not etf_df.empty:
-                currencies_df = currencies_df.set_index(np.arange(0, len(currencies_df.index), 1))
+                currencies_df = currencies_df.set_index(arange(0, len(currencies_df.index), 1))
                 frame_shares = create_currencies_frame_on_analytic_page(currencies_df)
                 self.all_instruments_analytic_page_list.addWidget(frame_shares)
             else:

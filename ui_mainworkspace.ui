@@ -185,7 +185,7 @@ background-color: rgb(37,37,40);
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap>Frame_13.jpg</pixmap>
+                   <pixmap>images/Frame_13.jpg</pixmap>
                   </property>
                  </widget>
                 </item>
@@ -323,7 +323,7 @@ QPushButton:hover {
                      </property>
                      <property name="icon">
                       <iconset>
-                       <normaloff>briefcase (1).png</normaloff>briefcase (1).png</iconset>
+                       <normaloff>images/briefcase (1).png</normaloff>images/briefcase (1).png</iconset>
                      </property>
                      <property name="iconSize">
                       <size>
@@ -462,7 +462,7 @@ QPushButton:hover {
           </size>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_casebig">
           <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -477,7 +477,7 @@ QPushButton:hover {
                 <x>0</x>
                 <y>0</y>
                 <width>881</width>
-                <height>346</height>
+                <height>596</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -790,7 +790,7 @@ QPushButton:hover {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                           <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                           </property>
                           <property name="text">
@@ -810,7 +810,7 @@ QPushButton:hover {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                           <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                           </property>
                           <property name="text">
@@ -830,7 +830,7 @@ QPushButton:hover {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                           <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                           </property>
                           <property name="text">
@@ -859,7 +859,7 @@ QPushButton:hover {
                            <item>
                             <widget class="QLabel" name="price_now">
                              <property name="styleSheet">
-                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                              <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                              </property>
                              <property name="text">
@@ -873,7 +873,7 @@ QPushButton:hover {
                            <item>
                             <widget class="QLabel" name="price_average">
                              <property name="styleSheet">
-                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                              <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                              </property>
                              <property name="text">
@@ -905,7 +905,7 @@ QPushButton:hover {
                            <item>
                             <widget class="QLabel" name="column_title_yeild">
                              <property name="styleSheet">
-                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                              <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                              </property>
                              <property name="text">
@@ -919,7 +919,7 @@ QPushButton:hover {
                            <item>
                             <widget class="QLabel" name="column_title_profit">
                              <property name="styleSheet">
-                              <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB
+                              <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                              </property>
                              <property name="text">
@@ -942,7 +942,7 @@ QPushButton:hover {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">font-size : 13px; font-family : Open Sans; color : #F9F9FB;
+                           <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                           </property>
                           <property name="text">
@@ -967,9 +967,29 @@ QPushButton:hover {
                           <x>0</x>
                           <y>0</y>
                           <width>403</width>
-                          <height>85</height>
+                          <height>335</height>
                          </rect>
                         </property>
+                        <widget class="QLabel" name="label_2">
+                         <property name="geometry">
+                          <rect>
+                           <x>40</x>
+                           <y>150</y>
+                           <width>331</width>
+                           <height>20</height>
+                          </rect>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">font-size : 23px; font-family : Open Sans; color : #2A2A2C
+</string>
+                         </property>
+                         <property name="text">
+                          <string>Нет активов</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
                        </widget>
                       </widget>
                      </item>
@@ -1559,6 +1579,26 @@ QPushButton:hover {
                <height>231</height>
               </rect>
              </property>
+             <widget class="QLabel" name="label">
+              <property name="geometry">
+               <rect>
+                <x>250</x>
+                <y>120</y>
+                <width>331</width>
+                <height>20</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font-size : 23px; font-family : Open Sans; color : #2A2A2C
+</string>
+              </property>
+              <property name="text">
+               <string>Нет активов</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
             </widget>
            </widget>
           </widget>
@@ -1659,7 +1699,7 @@ QPushButton:hover {
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>plus-square_1.png</normaloff>plus-square_1.png</iconset>
+                     <normaloff>images/plus-square_1.png</normaloff>images/plus-square_1.png</iconset>
                    </property>
                    <property name="iconSize">
                     <size>
@@ -1799,7 +1839,7 @@ QPushButton:hover {
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>closedEyeChanged.png</normaloff>closedEyeChanged.png</iconset>
+                <normaloff>images/closedEyeChanged.png</normaloff>images/closedEyeChanged.png</iconset>
               </property>
               <property name="iconSize">
                <size>
