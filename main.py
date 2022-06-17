@@ -499,7 +499,7 @@ class MainWindow(QMainWindow):
     def fill_main_page(self, portfolio, token, client):
         self.fill_area_pie_based(token, client, portfolio)
 
-    def link_analytic_buttons(self, list_positions):
+    def link_analytic_buttons(self):
         self.ui.btn_all_instruments.clicked.connect(lambda: self.give_all_instruments_to_charts())
         self.ui.btn_shares.clicked.connect(lambda: self.give_all_shares_to_charts())
         self.ui.btn_bonds.clicked.connect(lambda: self.give_all_bonds_to_charts())
@@ -793,11 +793,29 @@ class MainWindow(QMainWindow):
         full_df = DataFrame(list_positions)
         global current_df
         current_df = DataFrame(list_positions)
-        self.link_analytic_buttons(current_df)
+        self.link_analytic_buttons()
         global request_from_currencies
         request_from_currencies = False
         global request_from_etfs
         request_from_etfs = False
+        data_type = current_df.groupby('instrument_type').agg('sum')
+        types = list(data_type.index)
+        if "Акция" in types:
+            self.ui.btn_shares.setEnabled(True)
+        else:
+            self.ui.btn_shares.setEnabled(False)
+        if "Валюта" in types:
+            self.ui.btn_currencies_all.setEnabled(True)
+        else:
+            self.ui.btn_currencies_all.setEnabled(False)
+        if "Облигация" in types:
+            self.ui.btn_bonds.setEnabled(True)
+        else:
+            self.ui.btn_bonds.setEnabled(False)
+        if "Фонд" in types:
+            self.ui.btn_etfs.setEnabled(True)
+        else:
+            self.ui.btn_etfs.setEnabled(False)
         self.grouping_by_currencies_pie_chart_analytical_page()
         # Рекомендации.
 
