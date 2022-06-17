@@ -784,11 +784,11 @@ QPushButton:hover {
                        </property>
                        <layout class="QHBoxLayout" name="horizontalLayout_10">
                         <item>
-                         <widget class="QLabel" name="column_title_name">
-                          <property name="maximumSize">
+                         <widget class="QPushButton" name="btn_sortByTitlteName">
+                          <property name="minimumSize">
                            <size>
                             <width>56</width>
-                            <height>16777215</height>
+                            <height>61</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -798,37 +798,30 @@ QPushButton:hover {
                           <property name="text">
                            <string>Название</string>
                           </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
-                          </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QLabel" name="column_title_type">
-                          <property name="maximumSize">
+                         <widget class="QPushButton" name="btn_sortByTitlteType">
+                          <property name="minimumSize">
                            <size>
-                            <width>37</width>
-                            <height>16777215</height>
+                            <width>22</width>
+                            <height>61</height>
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">font-size : 13px; color : #F9F9FB
-</string>
+                           <string notr="true">font-size : 13px; color : #F9F9FB</string>
                           </property>
                           <property name="text">
                            <string>Тип</string>
                           </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
-                          </property>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QLabel" name="column_title_quantity">
-                          <property name="maximumSize">
+                         <widget class="QPushButton" name="btn_sortByTitlteQuantity">
+                          <property name="minimumSize">
                            <size>
                             <width>68</width>
-                            <height>16777215</height>
+                            <height>61</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -837,9 +830,6 @@ QPushButton:hover {
                           </property>
                           <property name="text">
                            <string>Количество</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
                           </property>
                          </widget>
                         </item>
@@ -859,7 +849,13 @@ QPushButton:hover {
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_11">
                            <item>
-                            <widget class="QLabel" name="price_now">
+                            <widget class="QPushButton" name="btn_sortByTitlteCurrencyPrice">
+                             <property name="minimumSize">
+                              <size>
+                               <width>57</width>
+                               <height>9</height>
+                              </size>
+                             </property>
                              <property name="styleSheet">
                               <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
@@ -867,22 +863,16 @@ QPushButton:hover {
                              <property name="text">
                               <string>Тек. цена</string>
                              </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
                             </widget>
                            </item>
                            <item>
-                            <widget class="QLabel" name="price_average">
+                            <widget class="QPushButton" name="btn_sortByTitlteAveragePrice">
                              <property name="styleSheet">
                               <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
                              </property>
                              <property name="text">
                               <string>Ср. цена</string>
-                             </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
                              </property>
                             </widget>
                            </item>
@@ -905,7 +895,7 @@ QPushButton:hover {
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_12">
                            <item>
-                            <widget class="QLabel" name="column_title_yeild">
+                            <widget class="QPushButton" name="btn_sortByTitlteProfit">
                              <property name="styleSheet">
                               <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
@@ -913,13 +903,10 @@ QPushButton:hover {
                              <property name="text">
                               <string>Прибыль</string>
                              </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
                             </widget>
                            </item>
                            <item>
-                            <widget class="QLabel" name="column_title_profit">
+                            <widget class="QPushButton" name="btn_sortByTitlteYield">
                              <property name="styleSheet">
                               <string notr="true">font-size : 13px; color : #F9F9FB
 </string>
@@ -927,20 +914,17 @@ QPushButton:hover {
                              <property name="text">
                               <string>Доходность</string>
                              </property>
-                             <property name="alignment">
-                              <set>Qt::AlignCenter</set>
-                             </property>
                             </widget>
                            </item>
                           </layout>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QLabel" name="column_tittle_percentage">
-                          <property name="maximumSize">
+                         <widget class="QPushButton" name="btn_sortByTitltePercentages">
+                          <property name="minimumSize">
                            <size>
-                            <width>37</width>
-                            <height>16777215</height>
+                            <width>30</width>
+                            <height>61</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -949,9 +933,6 @@ QPushButton:hover {
                           </property>
                           <property name="text">
                            <string>Доля</string>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
                           </property>
                          </widget>
                         </item>

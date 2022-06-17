@@ -397,32 +397,28 @@ class Ui_MainWindowBig(object):
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_10 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.column_title_name = QLabel(self.frame_4)
-        self.column_title_name.setObjectName(u"column_title_name")
-        self.column_title_name.setMaximumSize(QSize(56, 16777215))
-        self.column_title_name.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteName = QPushButton(self.frame_4)
+        self.btn_sortByTitlteName.setObjectName(u"btn_sortByTitlteName")
+        self.btn_sortByTitlteName.setMinimumSize(QSize(56, 61))
+        self.btn_sortByTitlteName.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.column_title_name.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.column_title_name)
+        self.horizontalLayout_10.addWidget(self.btn_sortByTitlteName)
 
-        self.column_title_type = QLabel(self.frame_4)
-        self.column_title_type.setObjectName(u"column_title_type")
-        self.column_title_type.setMaximumSize(QSize(37, 16777215))
-        self.column_title_type.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteType = QPushButton(self.frame_4)
+        self.btn_sortByTitlteType.setObjectName(u"btn_sortByTitlteType")
+        self.btn_sortByTitlteType.setMinimumSize(QSize(22, 61))
+        self.btn_sortByTitlteType.setStyleSheet(u"font-size : 13px; color : #F9F9FB")
+
+        self.horizontalLayout_10.addWidget(self.btn_sortByTitlteType)
+
+        self.btn_sortByTitlteQuantity = QPushButton(self.frame_4)
+        self.btn_sortByTitlteQuantity.setObjectName(u"btn_sortByTitlteQuantity")
+        self.btn_sortByTitlteQuantity.setMinimumSize(QSize(68, 61))
+        self.btn_sortByTitlteQuantity.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.column_title_type.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.column_title_type)
-
-        self.column_title_quantity = QLabel(self.frame_4)
-        self.column_title_quantity.setObjectName(u"column_title_quantity")
-        self.column_title_quantity.setMaximumSize(QSize(68, 16777215))
-        self.column_title_quantity.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
-"")
-        self.column_title_quantity.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_10.addWidget(self.column_title_quantity)
+        self.horizontalLayout_10.addWidget(self.btn_sortByTitlteQuantity)
 
         self.column_title_price = QFrame(self.frame_4)
         self.column_title_price.setObjectName(u"column_title_price")
@@ -431,21 +427,20 @@ class Ui_MainWindowBig(object):
         self.column_title_price.setFrameShadow(QFrame.Raised)
         self.verticalLayout_11 = QVBoxLayout(self.column_title_price)
         self.verticalLayout_11.setObjectName(u"verticalLayout_11")
-        self.price_now = QLabel(self.column_title_price)
-        self.price_now.setObjectName(u"price_now")
-        self.price_now.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteCurrencyPrice = QPushButton(self.column_title_price)
+        self.btn_sortByTitlteCurrencyPrice.setObjectName(u"btn_sortByTitlteCurrencyPrice")
+        self.btn_sortByTitlteCurrencyPrice.setMinimumSize(QSize(57, 9))
+        self.btn_sortByTitlteCurrencyPrice.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.price_now.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_11.addWidget(self.price_now)
+        self.verticalLayout_11.addWidget(self.btn_sortByTitlteCurrencyPrice)
 
-        self.price_average = QLabel(self.column_title_price)
-        self.price_average.setObjectName(u"price_average")
-        self.price_average.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteAveragePrice = QPushButton(self.column_title_price)
+        self.btn_sortByTitlteAveragePrice.setObjectName(u"btn_sortByTitlteAveragePrice")
+        self.btn_sortByTitlteAveragePrice.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.price_average.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_11.addWidget(self.price_average)
+        self.verticalLayout_11.addWidget(self.btn_sortByTitlteAveragePrice)
 
 
         self.horizontalLayout_10.addWidget(self.column_title_price)
@@ -457,33 +452,30 @@ class Ui_MainWindowBig(object):
         self.column_title_res.setFrameShadow(QFrame.Raised)
         self.verticalLayout_12 = QVBoxLayout(self.column_title_res)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
-        self.column_title_yeild = QLabel(self.column_title_res)
-        self.column_title_yeild.setObjectName(u"column_title_yeild")
-        self.column_title_yeild.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteProfit = QPushButton(self.column_title_res)
+        self.btn_sortByTitlteProfit.setObjectName(u"btn_sortByTitlteProfit")
+        self.btn_sortByTitlteProfit.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.column_title_yeild.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_12.addWidget(self.column_title_yeild)
+        self.verticalLayout_12.addWidget(self.btn_sortByTitlteProfit)
 
-        self.column_title_profit = QLabel(self.column_title_res)
-        self.column_title_profit.setObjectName(u"column_title_profit")
-        self.column_title_profit.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
+        self.btn_sortByTitlteYield = QPushButton(self.column_title_res)
+        self.btn_sortByTitlteYield.setObjectName(u"btn_sortByTitlteYield")
+        self.btn_sortByTitlteYield.setStyleSheet(u"font-size : 13px; color : #F9F9FB\n"
 "")
-        self.column_title_profit.setAlignment(Qt.AlignCenter)
 
-        self.verticalLayout_12.addWidget(self.column_title_profit)
+        self.verticalLayout_12.addWidget(self.btn_sortByTitlteYield)
 
 
         self.horizontalLayout_10.addWidget(self.column_title_res)
 
-        self.column_tittle_percentage = QLabel(self.frame_4)
-        self.column_tittle_percentage.setObjectName(u"column_tittle_percentage")
-        self.column_tittle_percentage.setMaximumSize(QSize(37, 16777215))
-        self.column_tittle_percentage.setStyleSheet(u"font-size : 13px; color : #F9F9FB;\n"
+        self.btn_sortByTitltePercentages = QPushButton(self.frame_4)
+        self.btn_sortByTitltePercentages.setObjectName(u"btn_sortByTitltePercentages")
+        self.btn_sortByTitltePercentages.setMinimumSize(QSize(30, 61))
+        self.btn_sortByTitltePercentages.setStyleSheet(u"font-size : 13px; color : #F9F9FB;\n"
 "")
-        self.column_tittle_percentage.setAlignment(Qt.AlignCenter)
 
-        self.horizontalLayout_10.addWidget(self.column_tittle_percentage)
+        self.horizontalLayout_10.addWidget(self.btn_sortByTitltePercentages)
 
 
         self.verticalLayout_13.addWidget(self.frame_4)
@@ -938,14 +930,14 @@ class Ui_MainWindowBig(object):
         self.yield_text_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
         self.yield_number_all.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435 \u0432\u044b\u0431\u0440\u0430\u043d \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
         self.pie_chart_name.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0441\u0435 \u0430\u043a\u0442\u0438\u0432\u044b", None))
-        self.column_title_name.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
-        self.column_title_type.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0438\u043f", None))
-        self.column_title_quantity.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e", None))
-        self.price_now.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0435\u043a. \u0446\u0435\u043d\u0430", None))
-        self.price_average.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0440. \u0446\u0435\u043d\u0430", None))
-        self.column_title_yeild.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
-        self.column_title_profit.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
-        self.column_tittle_percentage.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
+        self.btn_sortByTitlteName.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0430\u0437\u0432\u0430\u043d\u0438\u0435", None))
+        self.btn_sortByTitlteType.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0438\u043f", None))
+        self.btn_sortByTitlteQuantity.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043e\u043b\u0438\u0447\u0435\u0441\u0442\u0432\u043e", None))
+        self.btn_sortByTitlteCurrencyPrice.setText(QCoreApplication.translate("MainWindowBig", u"\u0422\u0435\u043a. \u0446\u0435\u043d\u0430", None))
+        self.btn_sortByTitlteAveragePrice.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0440. \u0446\u0435\u043d\u0430", None))
+        self.btn_sortByTitlteProfit.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u0440\u0438\u0431\u044b\u043b\u044c", None))
+        self.btn_sortByTitlteYield.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u0445\u043e\u0434\u043d\u043e\u0441\u0442\u044c", None))
+        self.btn_sortByTitltePercentages.setText(QCoreApplication.translate("MainWindowBig", u"\u0414\u043e\u043b\u044f", None))
         self.label.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))
         self.btn_all_instruments.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0441\u0435 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b", None))
         self.btn_shares.setText(QCoreApplication.translate("MainWindowBig", u"\u0410\u043a\u0446\u0438\u0438", None))

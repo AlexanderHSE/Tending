@@ -3,7 +3,8 @@ from PySide2 import QtGui, QtWebEngineWidgets
 from PySide2.QtCore import (QRect, QSize, Qt)
 from PySide2.QtGui import (QFontDatabase, QIcon, QPixmap)
 # from PySide2.QtWidgets import *
-from PySide2.QtWidgets import (QMainWindow, QVBoxLayout, QLineEdit, QPushButton, QFrame, QHBoxLayout, QLabel, QApplication)
+from PySide2.QtWidgets import (QMainWindow, QVBoxLayout, QLineEdit, QPushButton, QFrame, QHBoxLayout, QLabel,
+                               QApplication)
 # from PySide2.QtWebEngineWidgets import QWebEngineView
 from ui_mainworkspace import Ui_MainWindowBig
 
@@ -23,8 +24,8 @@ from help_func import write_html, check_dt_is_empty, generate_color_column, add_
     generate_color_by_sectors_column_not_etfs, generate_color_by_sectors_column_etfs, check_float
 
 from frame_creating import create_shares_frame_on_analytic_page, create_bonds_frame_on_analytic_page, \
-    create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page,create_shares_label_recommendation, \
-    create_bonds_label_recommendation, create_etfs_total_label_recommendation, create_etfs_types_label_recommendation,\
+    create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page, create_shares_label_recommendation, \
+    create_bonds_label_recommendation, create_etfs_total_label_recommendation, create_etfs_types_label_recommendation, \
     create_sectors_label_recommendation, create_countries_label_recommendation
 
 from re import search
@@ -126,7 +127,7 @@ class MainWindow(QMainWindow):
                 # print("Ошибка, введите токен заново!")
                 self.ui.edit_token.setPlaceholderText('Ошибка, введите токен заново!')
                 pal = self.ui.edit_token.palette()
-                text_color =  "#D4CE26" #pal.color(QtGui.QPalette.Text)
+                text_color = "#D4CE26"  # pal.color(QtGui.QPalette.Text)
                 pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
                 self.ui.edit_token.setPalette(pal)
                 self.ui.edit_token.setText('')
@@ -354,9 +355,77 @@ class MainWindow(QMainWindow):
 
             self.position_pie_chart_based_list.addWidget(frame_inst)
 
+    def link_main_page_titles_buttons(self):
+        self.ui.btn_sortByTitlteName.clicked.connect(lambda: self.sort_main_page_by_name())
+        self.ui.btn_sortByTitlteType.clicked.connect(lambda: self.sort_main_page_by_type())
+        self.ui.btn_sortByTitlteQuantity.clicked.connect(lambda: self.sort_main_page_by_quantity())
+        self.ui.btn_sortByTitlteCurrencyPrice.clicked.connect(lambda: self.sort_main_page_by_currency_price())
+        self.ui.btn_sortByTitlteAveragePrice.clicked.connect(lambda: self.sort_main_page_by_average_price())
+        self.ui.btn_sortByTitlteProfit.clicked.connect(lambda: self.sort_main_page_by_profit())
+        self.ui.btn_sortByTitlteYield.clicked.connect(lambda: self.sort_main_page_by_yield())
+        self.ui.btn_sortByTitltePercentages.clicked.connect(lambda: self.sort_main_page_by_percentages())
+
+    def sort_main_page_by_name(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('name', ascending=True)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_type(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('instrument_type', ascending=True)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_quantity(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('quantity', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_currency_price(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('current_buy_price', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_average_price(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('average_buy_price', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_profit(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('expected_yield', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_yield(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('expected_yield_percentage', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
+    def sort_main_page_by_percentages(self):
+        self.clear_all_instruments_on_main_page()
+        global all_instruments_df
+        all_instruments_df = all_instruments_df.sort_values('portfolio_share', ascending=False)
+        all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.add_pos_in_area_pie_based(all_instruments_df)
+
     def fill_area_pie_based(self, token, client, portfolio):
         list_pos = get_set_positions(token, client, portfolio)
-        self.create_main_portfolio_pie_chart(list_pos, portfolio)
+        df = DataFrame(list_pos)
+        self.fill_total_stats(df, portfolio)
+        self.create_main_portfolio_pie_chart(df)
         self.clear_pos_in_area_pie()
         global all_instruments_df
         all_instruments_df = DataFrame()
@@ -368,7 +437,10 @@ class MainWindow(QMainWindow):
             all_instruments_df = DataFrame(list_pos)
         all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        self.clear_all_instruments_on_main_page()
         self.add_pos_in_area_pie_based(all_instruments_df)
+        print(all_instruments_df)
+        self.link_main_page_titles_buttons()
         self.fill_analyt_page(list_pos)
 
     def create_recommendation(self, df):
@@ -377,7 +449,7 @@ class MainWindow(QMainWindow):
         # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
         frame_inst.setObjectName("inst_recommendation")
         frame_inst.setGeometry(0, 0, 441, 800)
-        #frame_inst.setMaximumSize(QSize(401, 123))
+        # frame_inst.setMaximumSize(QSize(401, 123))
         frame_inst.setFrameShape(QFrame.StyledPanel)
         frame_inst.setFrameShadow(QFrame.Raised)
         frame_inst_layout = QVBoxLayout(frame_inst)
@@ -395,17 +467,17 @@ class MainWindow(QMainWindow):
         etfs_total_percentage = 0
         try:
             share_total_percentage = \
-            df_instruments_type.loc[df_instruments_type['types'] == 'Акция']["total_cost_percentage"].values[0]
+                df_instruments_type.loc[df_instruments_type['types'] == 'Акция']["total_cost_percentage"].values[0]
         except:
             share_total_percentage = 0
         try:
             bonds_total_percentage = \
-            df_instruments_type.loc[df_instruments_type['types'] == 'Облигация']["total_cost_percentage"].values[0]
+                df_instruments_type.loc[df_instruments_type['types'] == 'Облигация']["total_cost_percentage"].values[0]
         except:
             bonds_total_percentage = 0
         try:
             etfs_total_percentage = \
-            df_instruments_type.loc[df_instruments_type['types'] == 'Фонд']["total_cost_percentage"].values[0]
+                df_instruments_type.loc[df_instruments_type['types'] == 'Фонд']["total_cost_percentage"].values[0]
         except:
             etfs_total_percentage = 0
         shares_label = create_shares_label_recommendation(share_total_percentage)
@@ -435,7 +507,6 @@ class MainWindow(QMainWindow):
         frame_inst_layout.addWidget(frame_countries)
         self.recommendation_analytic_page_list.addWidget(frame_inst)
 
-
     def clear_pos_in_area_pie(self):
         for i in reversed(range(self.position_pie_chart_based_list.count())):
             self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
@@ -444,8 +515,7 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.recommendation_analytic_page_list.count())):
             self.recommendation_analytic_page_list.takeAt(i).widget().setParent(None)
 
-    def create_main_portfolio_pie_chart(self, list_positions, portfolio):
-        df = DataFrame(list_positions)
+    def create_main_portfolio_pie_chart(self, df):
         if df.empty:
             self.clear_legend_analytics_pie_chart()
             self.ui.analytics_graps_widget.hide()
@@ -460,7 +530,6 @@ class MainWindow(QMainWindow):
             request_from_currencies = False
             request_from_etfs = False
             self.ui.widget.hide()
-            self.fill_total_stats(df, portfolio)
             self.ui.analytic_graph_text_if_have_no_instr.setText("Нет инструментов")
             self.ui.label_2.show()
             self.ui.labelRecommendation_no_instruments.show()
@@ -473,7 +542,6 @@ class MainWindow(QMainWindow):
             self.ui.labelgraphs_no_instruments_2.hide()
             df = df.sort_values('name')
             self.ui.widget.show()
-            self.fill_total_stats(df, portfolio)
             pie_chart = px.pie(data_frame=df, values='portfolio_share', names='name', color='name',
                                color_discrete_sequence=list(df['color']),
                                hole=0.3)
@@ -824,7 +892,7 @@ class MainWindow(QMainWindow):
         self.create_recommendation(full_df)
         if not full_df.empty:
             self.all_instruments_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
-            shares_df =full_df[full_df['instrument_type'] == 'Акция']
+            shares_df = full_df[full_df['instrument_type'] == 'Акция']
             if not shares_df.empty:
                 shares_df = shares_df.set_index(arange(0, len(shares_df.index), 1))
                 frame_shares = create_shares_frame_on_analytic_page(shares_df)
@@ -857,6 +925,10 @@ class MainWindow(QMainWindow):
     def clear_all_instruments_on_analytic_page(self):
         for i in reversed(range(self.all_instruments_analytic_page_list.count())):
             self.all_instruments_analytic_page_list.takeAt(i).widget().setParent(None)
+
+    def clear_all_instruments_on_main_page(self):
+        for i in reversed(range(self.position_pie_chart_based_list.count())):
+            self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
     def fill_portfolio(self, token, account):
         sender = self.sender()
