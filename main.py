@@ -23,7 +23,9 @@ from help_func import write_html, check_dt_is_empty, generate_color_column, add_
     generate_color_by_sectors_column_not_etfs, generate_color_by_sectors_column_etfs, check_float
 
 from frame_creating import create_shares_frame_on_analytic_page, create_bonds_frame_on_analytic_page, \
-    create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page
+    create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page,create_shares_label_recommendation, \
+    create_bonds_label_recommendation, create_etfs_total_label_recommendation, create_etfs_types_label_recommendation,\
+    create_sectors_label_recommendation, create_countries_label_recommendation
 
 from re import search
 
@@ -47,13 +49,16 @@ class MainWindow(QMainWindow):
         self.position_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_4)
         self.position_analytic_pie_chart_based_list = QVBoxLayout(self.ui.scrollAreaWidgetContents_2)
         self.all_instruments_analytic_page_list = QVBoxLayout(self.ui.scrollAreaWidgetAllInstrumentsAPage)
+        self.recommendation_analytic_page_list = QVBoxLayout(self.ui.scrollAreaWidgetRecommendation)
         self.ui.scroll_area_all_instruments_analytic_page.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.instruments_cpa_scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.legeng_analytic_pie_chart.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
         self.ui.legeng_analytic_pie_chart.horizontalScrollBar().setStyleSheet('QScrollBar {height:0px;}')
+        self.ui.recommendation_text_scroll.verticalScrollBar().setStyleSheet('QScrollBar {height:0px;}')
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
         self.ui.widget.hide()
+        self.ui.frame_tagLine.setEnabled(False)
 
         def moveWindow(event):
             # If left click - move window
@@ -132,6 +137,7 @@ class MainWindow(QMainWindow):
     # Создание кнопок-полей счетов
     def create_new_widget(self, token, accounts):
         self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
+        self.ui.frame_tagLine.setEnabled(True)
         for i in range(len(accounts.accounts)):
             if accounts.accounts[i].access_level != 3:
                 btn_text = accounts.accounts[i].name
@@ -362,9 +368,74 @@ class MainWindow(QMainWindow):
             all_instruments_df = DataFrame(list_pos)
         all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
-        print(all_instruments_df)
         self.add_pos_in_area_pie_based(all_instruments_df)
         self.fill_analyt_page(list_pos)
+
+    def create_recommendation(self, df):
+        print("fefef")
+        self.recommendation_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
+        frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
+        # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
+        frame_inst.setObjectName("inst_recommendation")
+        frame_inst.setGeometry(0, 0, 441, 800)
+        #frame_inst.setMaximumSize(QSize(401, 123))
+        frame_inst.setFrameShape(QFrame.StyledPanel)
+        frame_inst.setFrameShadow(QFrame.Raised)
+        frame_inst_layout = QVBoxLayout(frame_inst)
+        frame_inst.setStyleSheet('''
+                    
+                    padding-left: 0px;
+                ''')
+        df_instruments_type = df.groupby('instrument_type').agg('sum')
+        types = list(df_instruments_type.index)
+        df_instruments_type = df_instruments_type.set_index(arange(0, len(df_instruments_type.index), 1))
+        df_instruments_type['types'] = Series(types)
+        add_column_percantages(df_instruments_type)
+        share_total_percentage = 0
+        bonds_total_percentage = 0
+        etfs_total_percentage = 0
+        try:
+            share_total_percentage = \
+            df_instruments_type.loc[df_instruments_type['types'] == 'Акция']["total_cost_percentage"].values[0]
+        except:
+            share_total_percentage = 0
+        try:
+            bonds_total_percentage = \
+            df_instruments_type.loc[df_instruments_type['types'] == 'Облигация']["total_cost_percentage"].values[0]
+        except:
+            bonds_total_percentage = 0
+        try:
+            etfs_total_percentage = \
+            df_instruments_type.loc[df_instruments_type['types'] == 'Фонд']["total_cost_percentage"].values[0]
+        except:
+            etfs_total_percentage = 0
+        shares_label = create_shares_label_recommendation(share_total_percentage)
+        frame_inst_layout.addWidget(shares_label)
+        bonds_label = create_bonds_label_recommendation(bonds_total_percentage)
+        frame_inst_layout.addWidget(bonds_label)
+        if etfs_total_percentage >= 20:
+            etf_label_total = create_etfs_total_label_recommendation(etfs_total_percentage)
+            frame_inst_layout.addWidget(etf_label_total)
+            df_etfs_by_types = df.groupby('focus_type').agg('sum')
+            etf_types = list(df_etfs_by_types.index)
+            df_etfs_by_types = df_etfs_by_types.set_index(arange(0, len(df_etfs_by_types.index), 1))
+            df_etfs_by_types['types'] = Series(etf_types)
+            etf_label_types = create_etfs_types_label_recommendation(df_etfs_by_types)
+            frame_inst_layout.addWidget(etf_label_types)
+        df_sectors = df.groupby('sector').agg('sum')
+        sectors = list(df_sectors.index)
+        df_sectors = df_sectors.set_index(arange(0, len(df_sectors.index), 1))
+        df_sectors['sectors'] = Series(sectors)
+        frame_sectors = create_sectors_label_recommendation(df_sectors)
+        frame_inst_layout.addWidget(frame_sectors)
+        df_countries = df.groupby('short_country_name').agg('sum')
+        short_country_names = list(df_countries.index)
+        df_countries = df_countries.set_index(arange(0, len(df_countries.index), 1))
+        df_countries['sectors'] = Series(short_country_names)
+        frame_countries = create_countries_label_recommendation(df_countries)
+        frame_inst_layout.addWidget(frame_countries)
+        self.recommendation_analytic_page_list.addWidget(frame_inst)
+
 
     def clear_pos_in_area_pie(self):
         for i in reversed(range(self.position_pie_chart_based_list.count())):
@@ -557,7 +628,6 @@ class MainWindow(QMainWindow):
                     sectors = list(data.index)
                     data = data.set_index(arange(0, len(data.index), 1))
                     data['sector'] = Series(sectors)
-                    data = data.set_index(arange(0, len(data.index), 1))
                     self.ui.analytics_graps_widget.show()
                     self.disactivate_text_on_analytic_pie_chart()
                     generate_color_by_sectors_column_etfs(data)
@@ -737,6 +807,7 @@ class MainWindow(QMainWindow):
     def fill_all_instruments_on_analytic_page(self):
         global full_df
         full_df = full_df.sort_values('cost', ascending=False)
+        self.create_recommendation(full_df)
         if not full_df.empty:
             self.all_instruments_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
             shares_df =full_df[full_df['instrument_type'] == 'Акция']

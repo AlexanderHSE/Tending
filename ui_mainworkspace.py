@@ -91,6 +91,7 @@ class Ui_MainWindowBig(object):
 
         self.frame_tagLine = QFrame(self.frame_head)
         self.frame_tagLine.setObjectName(u"frame_tagLine")
+        self.frame_tagLine.setEnabled(True)
         self.frame_tagLine.setMinimumSize(QSize(433, 48))
         self.frame_tagLine.setMaximumSize(QSize(433, 16777215))
         self.frame_tagLine.setFrameShape(QFrame.StyledPanel)
@@ -133,6 +134,7 @@ class Ui_MainWindowBig(object):
 
         self.btn_currency = QPushButton(self.frame_tagLine)
         self.btn_currency.setObjectName(u"btn_currency")
+        self.btn_currency.setEnabled(True)
         self.btn_currency.setMaximumSize(QSize(80, 16777215))
         self.btn_currency.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
@@ -149,6 +151,7 @@ class Ui_MainWindowBig(object):
 
         self.btn_case = QPushButton(self.frame_tagLine)
         self.btn_case.setObjectName(u"btn_case")
+        self.btn_case.setEnabled(True)
         self.btn_case.setMaximumSize(QSize(40, 16777215))
         self.btn_case.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
@@ -238,7 +241,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 618))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 601))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -490,7 +493,7 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 357))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 340))
         self.label = QLabel(self.scrollAreaWidgetContents_4)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 160, 341, 21))
@@ -683,14 +686,10 @@ class Ui_MainWindowBig(object):
         self.recommendation_text_scroll.setObjectName(u"recommendation_text_scroll")
         self.recommendation_text_scroll.setGeometry(QRect(10, 10, 321, 281))
         self.recommendation_text_scroll.setWidgetResizable(True)
-        self.scrollAreaWidgetContents_10 = QWidget()
-        self.scrollAreaWidgetContents_10.setObjectName(u"scrollAreaWidgetContents_10")
-        self.scrollAreaWidgetContents_10.setGeometry(QRect(0, 0, 321, 281))
-        self.recommendation_text = QTextEdit(self.scrollAreaWidgetContents_10)
-        self.recommendation_text.setObjectName(u"recommendation_text")
-        self.recommendation_text.setGeometry(QRect(0, 0, 321, 271))
-        self.recommendation_text.setReadOnly(True)
-        self.recommendation_text_scroll.setWidget(self.scrollAreaWidgetContents_10)
+        self.scrollAreaWidgetRecommendation = QWidget()
+        self.scrollAreaWidgetRecommendation.setObjectName(u"scrollAreaWidgetRecommendation")
+        self.scrollAreaWidgetRecommendation.setGeometry(QRect(0, 0, 321, 281))
+        self.recommendation_text_scroll.setWidget(self.scrollAreaWidgetRecommendation)
         self.recommendation_frame = QFrame(self.page_analytics)
         self.recommendation_frame.setObjectName(u"recommendation_frame")
         self.recommendation_frame.setGeometry(QRect(550, 10, 341, 41))
@@ -776,7 +775,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_caseList = QWidget()
         self.scrollAreaWidgetContents_caseList.setObjectName(u"scrollAreaWidgetContents_caseList")
-        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 570))
+        self.scrollAreaWidgetContents_caseList.setGeometry(QRect(0, 0, 883, 553))
         self.scrollArea.setWidget(self.scrollAreaWidgetContents_caseList)
 
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -897,7 +896,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)

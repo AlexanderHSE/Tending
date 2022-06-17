@@ -7,7 +7,8 @@ import Portfolio
 from tinkoff.invest.services import Services
 from tinkoff.invest.schemas import PortfolioResponse, Quotation, PortfolioPosition
 from Instr import Instr
-from help_func import generate_random_color
+from help_func import generate_random_color, add_column_percantages
+from numpy import arange
 
 #   t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 #   t.r3D-SJY-s37p965fw1Co_UvACNdtrcxUW7rq_xIU4GP5d2Ni2XSLB3NlrHSx21ck6eLoenkmV0LXiIx0_uldUw
@@ -27,6 +28,28 @@ dict_focus_type = dict(equity="Акции", fixed_income="Облигация", m
                        money_market="Денежный рынок", real_estate="Недвижимость",
                        commodity="Товары", specialty="Специальный", private_equity="PE-фонд",
                        alternative_investment="Альтернативные инвестиции")
+
+dict_countries_correct_names = {'Германия': "Германию", 'Греция': "Грецию", 'Нидерланды': "Нидерланды", 'Швейцария': "Швейцарию",
+                        'Дания': "Данию", 'Италия': "Италию", 'Швеция': "Швецию", 'Испания': "Испанию", 'Австрия': "Австрию",
+                        'Виргинские Острова, Британские': "Британские Виргинские Острова", 'Камерун': "Камерун",
+                        'Гонконг': "Гонконг", 'Казахстан': "Казахстан", 'Финляндия': "Финляндию", 'Словения': "Словению",
+                        'Сингапур': "Сингапур", 'Маврикий': "Маврикий", 'Монако': "Монако", 'Маршалловы Острова': "Маршалловы Острова",
+                        'Филиппины': "Филиппины", 'Польша': "Польшу", 'Португалия': "Португалию",  'Норвегия': "Норвегию",
+                        'Франция': "Францию", 'Индонезия': "Индонезию", 'Китай': "Китай", 'Бразилия': "Бразилию",
+                        'Бельгия': "Бельгию", 'Люксембург': "Люксембург", 'Израиль': "Израиль", 'Турция': "Турцию",
+                        'Таиланд': "Таиланд", 'Индия': "Индию", 'Корея, Республика': "Республику Корея", 'Чили': "Чили",
+                        'Мексика': "Мексику", 'Аргентина': "Аргентину", 'Перу': "Перу", 'Соединенные Штаты': "Соединенные Штаты",
+                        'Колумбия': "Колумбию", 'Южная Африка': "Южную Африку", 'Россия': "Россию", 'Уругвай': "Уругвай",
+                        'Соединенное Королевство': "Соединенное Королевство"}
+
+dict_sectors_correct_names = {"Государтсвенные бумаги": "государтсвенных бумагах", 'Энергетика': "энергетике",
+                              'Промышленность': "промышленности", 'Зелёная энергетика': "зелёной энергетике",
+                              'Финансы': 'финансах', 'Коммунальные услуги': 'коммунальных услугах',
+                              'Материалы': 'материалах', 'Муниципальные бумаги': 'муниципальных бумагах',
+                              'Другое': 'другом', 'IT': 'IT', 'Здравоохранение': 'здравоохранении',
+                              'Услуги связи': 'услугах связи', 'Потребительский сектор': 'потребительском секторе',
+                              'Недвижимость': 'недвижимости', 'Валюта': 'валюте',
+                              'ETF': 'ETF', 'Облигация': 'облигациях'}
 
 
 def cast_money(money_value: MoneyValue):
@@ -185,15 +208,6 @@ def get_set_positions(token, client, portfolio):
     return list_dict_instruments
 
 
-def get_accounts(self: str) -> GetAccountsResponse:
-    client: Services
-    try:
-        with Client(self) as client:
-            return client.users.get_accounts()
-    except RequestError:
-        print("error!")
-
-
 def choice_parsing():
     print("Выберите способ парсинга")
     print("1. api")
@@ -207,8 +221,6 @@ def choice_parsing():
 token = 't.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A'
 if __name__ == "__main__":
     with Client(token) as client:
-        print("2")
-        print()
         dic = dict()
         other = list()
         consumer = list()
@@ -238,7 +250,6 @@ if __name__ == "__main__":
         for s in shar.instruments:
             set_counrties.add(s.country_of_risk_name)
         print(set_counrties)
-        print("len set" + str(len(set_counrties)))
         c = 0
         count = list()
         lens = list()
@@ -249,27 +260,13 @@ if __name__ == "__main__":
                 print(str(c) + country.name + "/" + country.name_brief)
                 lens.append(len(country.name_brief))
                 count.append(country.name_brief)
-        print("MAX")
-        print("111111111111111")
         dt = pd.DataFrame()
         dt['co'] = pd.Series(count)
         dt['le'] = pd.Series(lens)
         dt = dt.sort_values('le', ascending=False)
-        print(dt.head(45))
-        print("111111111111111")
-
-        print(set_counrties)
-        print(len(set_counrties))
-        print(0)
         mun = list()
-        print("VSE VALUTI")
-        print(cur)
-        print("CLIENT")
         u = client.market_data.get_last_prices(figi=['USD000UTSTOM'])
         usdrur = cast_money(u.last_prices[0].price)
-        print(u)
-        print("TYPE")
-        print(type(u))
         for x in shar.instruments:
             sec.add(x.sector)
             if x.sector == 'municipal':

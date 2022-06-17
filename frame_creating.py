@@ -5,11 +5,152 @@ from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFo
                            QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 
-from help_func import check_float
+from help_func import check_float, add_column_percantages
 
+from numpy import arange
+
+from tending import dict_sectors_correct_names
 minus_profit = "#FAA2A2"  # hex red color
 zero_porfit = "#F9F9FB"  # hex white color
 plus_profit = "#47F19F "  # hex green color
+
+def create_countries_label_recommendation(df):
+    add_column_percantages(df)
+    max_sector = df['portfolio_share'].max()
+    text = "Страны:\n"
+    if max_sector > 55:
+        text += "Вы опираетесь на одну страну, если хотите увеличить защиту портфеля, следует добавить активы других стран."
+    else:
+        text += "В вашем портфеля хорошая диверсификация по странам. У вас защищенный портфель."
+    countries_label_recommendation = QLabel()
+    countries_label_recommendation.setWordWrap(True)
+    countries_label_recommendation.setText(text)
+    countries_label_recommendation.setObjectName("inst_name")
+   # QRect(
+    countries_label_recommendation.setGeometry(0, 0, 441, 300)
+    countries_label_recommendation.setMaximumWidth(300)
+    countries_label_recommendation.adjustSize()
+    countries_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226; font-family : Open Sans; color : #F9F9FB")
+    countries_label_recommendation.setAlignment(Qt.AlignLeft)
+    return countries_label_recommendation
+
+
+def create_sectors_label_recommendation(df):
+    df = df[df['sectors'] != "ETF"]
+    df = df[df['sectors'] != "Валюта"]
+    df = df[df['sectors'] != "Облигация"]
+    df = df[df['sectors'] != "Государтсвенные бумаги"]
+    df = df[df['sectors'] != "Муниципальные бумаги"]
+    df = df.set_index(arange(0, len(df.index), 1))
+    add_column_percantages(df)
+    min_sector = df['total_cost_percentage'].min()
+    max_sector = df['total_cost_percentage'].max()
+    text = "Сектора:\n"
+    if len(df) <4:
+        text += "У вас плохо сбалансированы сектора."
+    elif min_sector >=10 and max_sector - min_sector <= 10:
+        text += "У вас хорошо сбалансированы сектора."
+    else :
+        text += "У вас плохо сбалансированы сектора."
+    sectors_label_recommendation = QLabel()
+    sectors_label_recommendation.setWordWrap(True)
+    sectors_label_recommendation.setText(text)
+    sectors_label_recommendation.setObjectName("inst_name")
+    sectors_label_recommendation.setGeometry(QRect(0, 0, 441, 61))
+    sectors_label_recommendation.setMaximumWidth(300)
+    sectors_label_recommendation.adjustSize()
+    sectors_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226;font-family : Open Sans; color : #F9F9FB")
+    sectors_label_recommendation.setAlignment(Qt.AlignLeft)
+    return sectors_label_recommendation
+def create_etfs_types_label_recommendation(df):
+    types = df['types'].tolist()
+    costs = df['cost'].tolist()
+    text = ""
+    shares_costs = 0
+    not_shares_costs = 0
+    for i in range(len(types)):
+        if types[i] == "Акции":
+            shares_costs += costs[i]
+        else:
+            not_shares_costs += costs[i]
+    if shares_costs - not_shares_costs > 10:
+        text = "Ваши фонды опираются на акции. Для защиты портфеля следует уменьшить их объем."
+    elif not_shares_costs - shares_costs < 10:
+        text = "Ваши фонды в основном защитные. Если хотите увеличить возможную прибыль, следует уменьшить их объем."
+    elif abs(shares_costs - not_shares_costs) <= 10:
+        text = "Ваши фонды хорошо разделены по категориям."
+    etfs_types_label_recommendation = QLabel()
+    etfs_types_label_recommendation.setWordWrap(True)
+    etfs_types_label_recommendation.setText(text)
+    etfs_types_label_recommendation.setObjectName("inst_name")
+    etfs_types_label_recommendation.setGeometry(QRect(0, 0, 441, 61))
+    etfs_types_label_recommendation.setMaximumWidth(300)
+    etfs_types_label_recommendation.adjustSize()
+    etfs_types_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226; font-family : Open Sans; color : #F9F9FB")
+    etfs_types_label_recommendation.setAlignment(Qt.AlignLeft)
+    return etfs_types_label_recommendation
+
+def create_etfs_total_label_recommendation(percentage):
+    etfs_total_label_recommendation = QLabel()
+    etfs_total_label_recommendation.setWordWrap(True)
+    text = "Фонды:\n"
+    if percentage > 50 and percentage <= 100:
+        text += "Вы сильно опираетесь на фонды, следует уменьшить их долю."
+    elif percentage >= 20 and percentage <= 50:
+        text += "Значимаю часть портфеля занимают фонды."
+    etfs_total_label_recommendation.setText(text)
+    etfs_total_label_recommendation.setObjectName("inst_name")
+    etfs_total_label_recommendation.setGeometry(QRect(0, 0, 441, 61))
+    etfs_total_label_recommendation.setMaximumWidth(300)
+    etfs_total_label_recommendation.adjustSize()
+    etfs_total_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226; font-family : Open Sans; color : #F9F9FB")
+    etfs_total_label_recommendation.setAlignment(Qt.AlignLeft)
+    return etfs_total_label_recommendation
+
+def create_bonds_label_recommendation(percentage):
+    bonds_label_recommendation = QLabel()
+    bonds_label_recommendation.setWordWrap(True)
+    text = "Облигации:\n"
+    if percentage > 50 and percentage <= 100:
+        text += "У вас защитный портфель, но низкая доходность. Если хотитете увеличить возможную прибыль, следует добавить акций."
+    elif percentage >= 20 and percentage <= 50:
+        text += "У вас защищенный портфель."
+    else:
+        text += "Меньше четверти портфеля занимают облигации, если хотите сделать портфель более защищенным, " \
+                "следует увеличить долю в облигациях."
+
+    bonds_label_recommendation.setObjectName("inst_name")
+    bonds_label_recommendation.setGeometry(QRect(0, 0, 441, 200))
+    bonds_label_recommendation.setMaximumWidth(300)
+    bonds_label_recommendation.setText(text)
+    bonds_label_recommendation.adjustSize()
+    bonds_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226; font-family : Open Sans; "
+                                             u"color : #F9F9FB")
+    bonds_label_recommendation.setAlignment(Qt.AlignLeft)
+    return bonds_label_recommendation
+
+
+def create_shares_label_recommendation(percentage):
+    shares_label_recommendation = QLabel()
+    shares_label_recommendation.setWordWrap(True)
+    text = "Акции:\n"
+    if percentage >= 70 and percentage <= 100:
+        text += "Вы сильно опираетесь на акции, следует добавить защитные активы."
+    elif percentage >= 60 and percentage < 70:
+        text += "Вы опираетесь на акции, возможно, следует добавить защитные активы."
+    elif percentage >= 40 and percentage < 60:
+        text += "У вас хорошо сбалансированы активы по классам."
+    else:
+        text += "Меньше половины портфеля занимают акции. У вас защитный портфель. Если хотите увеличить возможную прибыль, следует добавить объемы в акциях."
+    shares_label_recommendation.setText(text)
+    shares_label_recommendation.setObjectName("inst_name")
+    shares_label_recommendation.setGeometry(QRect(0, 0, 441, 200))
+    shares_label_recommendation.setMaximumWidth(300)
+    shares_label_recommendation.adjustSize()
+    shares_label_recommendation.setStyleSheet(u"font-size : 13px; background-color: #222226; font-family : Open Sans; "
+                                              u"color : #F9F9FB")
+    shares_label_recommendation.setAlignment(Qt.AlignLeft)
+    return shares_label_recommendation
 
 def create_shares_frame_on_analytic_page(df):
     frame_instruments = QFrame()
