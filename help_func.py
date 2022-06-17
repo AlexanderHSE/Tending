@@ -1,15 +1,22 @@
 import random
 import pandas as pd
 
-dict_sector_color = {"Государтсвенные бумаги": "#D4CE26", 'Энергетика': "#0B73AD", 'Промышленность': "#42418C",
-                     'Зелёная энергетика': "#3A6234", 'Финансы': '#48BB36', 'Коммунальные услуги': '#DBD496',
-                     'Материалы': '#387975',
-                     'Муниципальные бумаги': '#5B7512', 'Другое': '#190E27', 'IT': '#89C7EA',
-                     'Здравоохранение': '#AF2A32', 'Услуги связи': '#532469',
-                     'Потребительский сектор': '#C58019', 'Недвижимость': '#545659', 'Валюта': '#806B2A',
-                     'ETF': '#D736C7', 'Облигация': '#14473B'}
+dict_sector_color_not_etfs = {"Государтсвенные бумаги": "#D4CE26", 'Энергетика': "#0B73AD", 'Промышленность': "#42418C",
+                              'Зелёная энергетика': "#3A6234", 'Финансы': '#48BB36', 'Коммунальные услуги': '#DBD496',
+                              'Материалы': '#387975',
+                              'Муниципальные бумаги': '#5B7512', 'Другое': '#190E27', 'IT': '#89C7EA',
+                              'Здравоохранение': '#AF2A32', 'Услуги связи': '#532469',
+                              'Потребительский сектор': '#C58019', 'Недвижимость': '#545659', 'Валюта': '#806B2A',
+                              'ETF': '#D736C7', 'Облигация': '#14473B'}
+
+dict_sector_color_etfs = {"Акции": "#C58019", 'Облигации': "#D4CE26", 'Смешанные': "#D736C7",
+                          'Денежный рынок': "#48BB36", 'Недвижимость': '#545659', 'Товары': '#0B73AD',
+                          'Специальный': '#AF2A32', 'PE-фонд': '#DBD496', 'Альтернативные инвестиции': '#532469'}
+
+
 def check_float(number):
     return int(number) - number == 0
+
 
 def generate_random_color(set_colors: set()):
     while True:
@@ -30,11 +37,19 @@ def generate_color_column(df):
     df['color'] = color_column
 
 
-def generate_color_by_sectors_column(df):
+def generate_color_by_sectors_column_not_etfs(df):
     sectors_sequence = df['sector'].tolist()
     secotrs_colors = list()
     for sector in sectors_sequence:
-        secotrs_colors.append(dict_sector_color[sector])
+        secotrs_colors.append(dict_sector_color_not_etfs[sector])
+    df['color'] = pd.Series(secotrs_colors)
+
+
+def generate_color_by_sectors_column_etfs(df):
+    sectors_sequence = df['sector'].tolist()
+    secotrs_colors = list()
+    for sector in sectors_sequence:
+        secotrs_colors.append(dict_sector_color_etfs[sector])
     df['color'] = pd.Series(secotrs_colors)
 
 

@@ -20,7 +20,7 @@ from numpy import arange
 import plotly.express as px
 
 from help_func import write_html, check_dt_is_empty, generate_color_column, add_column_percantages, \
-    generate_color_by_sectors_column, check_float
+    generate_color_by_sectors_column_not_etfs, generate_color_by_sectors_column_etfs, check_float
 
 from frame_creating import create_shares_frame_on_analytic_page, create_bonds_frame_on_analytic_page, \
     create_etfs_frame_on_analytic_page, create_currencies_frame_on_analytic_page
@@ -356,16 +356,13 @@ class MainWindow(QMainWindow):
         all_instruments_df = DataFrame()
         if len(list_pos) == 0:
             all_instruments_df['cost'] = Series()
-            print("Here")
-            '''
-            УДАЛЕНИЕ ДЕЛАТЬ ТУТ ! 
-            '''
             self.clear_all_instruments_on_analytic_page()
         else:
             self.clear_all_instruments_on_analytic_page()
             all_instruments_df = DataFrame(list_pos)
         all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        print(all_instruments_df)
         self.add_pos_in_area_pie_based(all_instruments_df)
         self.fill_analyt_page(list_pos)
 
@@ -382,10 +379,12 @@ class MainWindow(QMainWindow):
             global current_df
             global all_instruments_df
             global request_from_currencies
+            global request_from_etfs
             full_df = DataFrame()
             current_df = DataFrame()
             all_instruments_df = DataFrame()
             request_from_currencies = False
+            request_from_etfs = False
             self.ui.widget.hide()
             self.fill_total_stats(df, portfolio)
             self.ui.analytic_graph_text_if_have_no_instr.setText("Нет инструментов")
@@ -452,6 +451,8 @@ class MainWindow(QMainWindow):
             self.ui.btn_sectors.show()
             global request_from_currencies
             request_from_currencies = False
+            global request_from_etfs
+            request_from_etfs = False
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Акции" и передаем только все акции для графиков.
@@ -464,6 +465,8 @@ class MainWindow(QMainWindow):
             self.ui.btn_sectors.show()
             global request_from_currencies
             request_from_currencies = False
+            global request_from_etfs
+            request_from_etfs = False
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Облигации" и передаем только все облигации для графиков.
@@ -476,6 +479,8 @@ class MainWindow(QMainWindow):
             self.ui.btn_sectors.hide()
             global request_from_currencies
             request_from_currencies = False
+            global request_from_etfs
+            request_from_etfs = False
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Фонды" и передаем только все фонды для графиков.
@@ -485,9 +490,11 @@ class MainWindow(QMainWindow):
             current_df = full_df[full_df['instrument_type'] == 'Фонд']
             self.ui.btn_countries.show()
             self.ui.btn_instruments_type.hide()
-            self.ui.btn_sectors.hide()
+            self.ui.btn_sectors.show()
             global request_from_currencies
             request_from_currencies = False
+            global request_from_etfs
+            request_from_etfs = True
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюты" и передаем только все валюты для графиков.
@@ -500,6 +507,8 @@ class MainWindow(QMainWindow):
             self.ui.btn_sectors.hide()
             global request_from_currencies
             request_from_currencies = True
+            global request_from_etfs
+            request_from_etfs = False
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюта" и строим график валют на основе переданных данных.
@@ -538,16 +547,32 @@ class MainWindow(QMainWindow):
 
     # Нажимаем на кнопку "Сектора" и строим график секторов на основе переданных данных.
     def grouping_by_sectors_pie_chart_analytical_page(self):
+        global request_from_etf
         if not current_df.empty:
-            data = current_df.groupby('sector').agg('sum')
-            if not check_dt_is_empty(data):
-                self.ui.analytics_graps_widget.show()
-                self.disactivate_text_on_analytic_pie_chart()
+            data_is_empty = True
+            if request_from_etfs:
+                data = current_df.groupby('focus_type').agg('sum')
+                if not check_dt_is_empty(data):
+                    data_is_empty = False
+                    sectors = list(data.index)
+                    data = data.set_index(arange(0, len(data.index), 1))
+                    data['sector'] = Series(sectors)
+                    data = data.set_index(arange(0, len(data.index), 1))
+                    self.ui.analytics_graps_widget.show()
+                    self.disactivate_text_on_analytic_pie_chart()
+                    generate_color_by_sectors_column_etfs(data)
+            else:
+                data = current_df.groupby('sector').agg('sum')
                 sectors = list(data.index)
-                data = data.set_index(arange(0, len(data.index), 1))
-                data['sector'] = Series(sectors)
+                if not check_dt_is_empty(data):
+                    data_is_empty = False
+                    data = data.set_index(arange(0, len(data.index), 1))
+                    data['sector'] = Series(sectors)
+                    self.ui.analytics_graps_widget.show()
+                    self.disactivate_text_on_analytic_pie_chart()
+                    generate_color_by_sectors_column_not_etfs(data)
+            if not data_is_empty:
                 add_column_percantages(data)
-                generate_color_by_sectors_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
                 pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='sector', color='sector',
                                    color_discrete_sequence=list(data['color']),
@@ -688,6 +713,7 @@ class MainWindow(QMainWindow):
     current_df = DataFrame()
     all_instruments_df = DataFrame()
     request_from_currencies = False
+    request_from_etfs = False
 
     def fill_analyt_page(self, list_positions):
         if len(list_positions) == 0:
@@ -700,6 +726,8 @@ class MainWindow(QMainWindow):
         self.link_analytic_buttons(current_df)
         global request_from_currencies
         request_from_currencies = False
+        global request_from_etfs
+        request_from_etfs = False
         self.grouping_by_currencies_pie_chart_analytical_page()
         # Рекомендации.
 

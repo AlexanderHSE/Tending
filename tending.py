@@ -19,11 +19,14 @@ dict_sector = dict(government="Государтсвенные бумаги", ene
                    other="Другое", industrials="Промышленность", it="IT",
                    health_care="Здравоохранение", telecom="Услуги связи", consumer="Потребительский сектор",
                    real_estate="Недвижимость", electrocars="Промышленность", currency="Валюта", etf="ETF",
-                   bond="Облигация")
+                   bond="Облигация", )
 
 dict_instrument_type = dict(share="Акция", bond="Облигация", etf="Фонд", currency="Валюта", future="Фьючерс")
 
-countries_codes = {}
+dict_focus_type = dict(equity="Акции", fixed_income="Облигация", mixed_allocation="Смешанные",
+                       money_market="Денежный рынок", real_estate="Недвижимость",
+                       commodity="Товары", specialty="Специальный", private_equity="PE-фонд",
+                       alternative_investment="Альтернативные инвестиции")
 
 
 def cast_money(money_value: MoneyValue):
@@ -77,6 +80,7 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur)
                 position.expected_yield) / cast_money(position.quantity),
             'currency': position.average_position_price.currency,
             'nkd': cast_money(position.current_nkd),
+            'focus_type' : ""
         }
 
         if int(r['quantity']) - r['quantity'] == 0:
@@ -88,8 +92,9 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur)
             else:
                 r['sector'] = "bond"
         elif position.instrument_type == 'etf':
-            r['sector'] = 'etf'
+            r['sector'] = 'ETF'
             r['ticker'] = instr.ticker
+            r['focus_type'] = dict_focus_type[instr.focus_type]
         else:
             r['ticker'] = instr.ticker
             r['sector'] = instr.sector
@@ -117,7 +122,7 @@ def convert_position_to_dict(token, position: PortfolioPosition, usdrur, eurrur)
         r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
         r['comissixon'] = r['sell_sum'] * 0.003
         r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
-        if len(r['sector']) != 0:
+        if position.instrument_type != 'etf':
             r['sector'] = dict_sector[r['sector']]
         r['instrument_type'] = dict_instrument_type[r['instrument_type']]
         r['cost'] = round(r['quantity'] * r['current_buy_price'], 2)
