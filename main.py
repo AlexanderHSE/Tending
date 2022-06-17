@@ -463,21 +463,20 @@ class MainWindow(QMainWindow):
             self.ui.widget.hide()
             self.fill_total_stats(df, portfolio)
             self.ui.analytic_graph_text_if_have_no_instr.setText("Нет инструментов")
-            self.ui.label_2.setStyleSheet('''
-                font-size : 23px; 
-                font-family : Open Sans;
-                color: #F9F9FB;
-            ''')
             self.ui.label.setStyleSheet('''
                 font-size : 23px; 
                 font-family : Open Sans;
                 color: #F9F9FB;
             ''')
             self.ui.label_2.show()
+            self.ui.labelRecommendation_no_instruments.show()
+            self.ui.labelgraphs_no_instruments_2.show()
             self.ui.label.show()
         else:
             self.ui.label.hide()
             self.ui.label_2.hide()
+            self.ui.labelRecommendation_no_instruments.hide()
+            self.ui.labelgraphs_no_instruments_2.hide()
             df = df.sort_values('name')
             self.ui.widget.show()
             self.fill_total_stats(df, portfolio)

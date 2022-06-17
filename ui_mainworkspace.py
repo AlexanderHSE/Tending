@@ -241,7 +241,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 601))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 346))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -493,7 +493,7 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 340))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 85))
         self.label = QLabel(self.scrollAreaWidgetContents_4)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 160, 341, 21))
@@ -676,6 +676,14 @@ class Ui_MainWindowBig(object):
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
         self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 221, 241))
         self.legeng_analytic_pie_chart.setWidget(self.scrollAreaWidgetContents_2)
+        self.labelgraphs_no_instruments_2 = QLabel(self.analytics_graphs)
+        self.labelgraphs_no_instruments_2.setObjectName(u"labelgraphs_no_instruments_2")
+        self.labelgraphs_no_instruments_2.setGeometry(QRect(20, 10, 511, 301))
+        self.labelgraphs_no_instruments_2.setLayoutDirection(Qt.LeftToRight)
+        self.labelgraphs_no_instruments_2.setStyleSheet(u"font-size : 23px; \n"
+"font-family : Open Sans;\n"
+"color: #F9F9FB;")
+        self.labelgraphs_no_instruments_2.setAlignment(Qt.AlignCenter)
         self.recommendation_text_area = QFrame(self.page_analytics)
         self.recommendation_text_area.setObjectName(u"recommendation_text_area")
         self.recommendation_text_area.setGeometry(QRect(550, 60, 341, 291))
@@ -689,6 +697,14 @@ class Ui_MainWindowBig(object):
         self.scrollAreaWidgetRecommendation = QWidget()
         self.scrollAreaWidgetRecommendation.setObjectName(u"scrollAreaWidgetRecommendation")
         self.scrollAreaWidgetRecommendation.setGeometry(QRect(0, 0, 321, 281))
+        self.labelRecommendation_no_instruments = QLabel(self.scrollAreaWidgetRecommendation)
+        self.labelRecommendation_no_instruments.setObjectName(u"labelRecommendation_no_instruments")
+        self.labelRecommendation_no_instruments.setGeometry(QRect(20, 120, 281, 21))
+        self.labelRecommendation_no_instruments.setLayoutDirection(Qt.LeftToRight)
+        self.labelRecommendation_no_instruments.setStyleSheet(u"font-size : 23px; \n"
+"font-family : Open Sans;\n"
+"color: #F9F9FB;")
+        self.labelRecommendation_no_instruments.setAlignment(Qt.AlignCenter)
         self.recommendation_text_scroll.setWidget(self.scrollAreaWidgetRecommendation)
         self.recommendation_frame = QFrame(self.page_analytics)
         self.recommendation_frame.setObjectName(u"recommendation_frame")
@@ -743,7 +759,9 @@ class Ui_MainWindowBig(object):
         self.label_2 = QLabel(self.scrollAreaWidgetAllInstrumentsAPage)
         self.label_2.setObjectName(u"label_2")
         self.label_2.setGeometry(QRect(270, 110, 341, 21))
-        self.label_2.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color: #2A2A2C;")
+        self.label_2.setStyleSheet(u"font-size : 23px; \n"
+"font-family : Open Sans;\n"
+"color: #F9F9FB;")
         self.label_2.setAlignment(Qt.AlignCenter)
         self.scroll_area_all_instruments_analytic_page.setWidget(self.scrollAreaWidgetAllInstrumentsAPage)
         self.stackedWidget.addWidget(self.page_analytics)
@@ -896,7 +914,7 @@ class Ui_MainWindowBig(object):
 
         self.retranslateUi(MainWindowBig)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(3)
 
 
         QMetaObject.connectSlotsByName(MainWindowBig)
@@ -936,6 +954,8 @@ class Ui_MainWindowBig(object):
         self.btn_countries.setText(QCoreApplication.translate("MainWindowBig", u"\u0421\u0442\u0440\u0430\u043d\u044b", None))
         self.btn_instruments_type.setText(QCoreApplication.translate("MainWindowBig", u"\u041a\u043b\u0430\u0441\u0441\u044b", None))
         self.analytic_graph_text_if_have_no_instr.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0442\u0430\u043a\u043e\u0433\u043e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u0430 \u0432 \u043f\u043e\u0440\u0442\u0444\u0435\u043b\u0435", None))
+        self.labelgraphs_no_instruments_2.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))
+        self.labelRecommendation_no_instruments.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))
         self.recommendation_title.setText(QCoreApplication.translate("MainWindowBig", u"\u0420\u0435\u043a\u043e\u043c\u0435\u043d\u0434\u0430\u0446\u0438\u0438", None))
         self.btn_currencies_all.setText(QCoreApplication.translate("MainWindowBig", u"\u0412\u0430\u043b\u044e\u0442\u044b", None))
         self.label_2.setText(QCoreApplication.translate("MainWindowBig", u"\u041d\u0435\u0442 \u0430\u043a\u0442\u0438\u0432\u043e\u0432", None))

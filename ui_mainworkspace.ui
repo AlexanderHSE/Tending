@@ -274,7 +274,7 @@ QPushButton:hover {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="btn_currency">
+                    <widget class="QPushButton" name="btn_training">
                      <property name="enabled">
                       <bool>true</bool>
                      </property>
@@ -464,7 +464,7 @@ QPushButton:hover {
           </size>
          </property>
          <property name="currentIndex">
-          <number>2</number>
+          <number>3</number>
          </property>
          <widget class="QWidget" name="page_casebig">
           <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -479,7 +479,7 @@ QPushButton:hover {
                 <x>0</x>
                 <y>0</y>
                 <width>881</width>
-                <height>601</height>
+                <height>346</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -969,7 +969,7 @@ QPushButton:hover {
                           <x>0</x>
                           <y>0</y>
                           <width>403</width>
-                          <height>340</height>
+                          <height>85</height>
                          </rect>
                         </property>
                         <widget class="QLabel" name="label">
@@ -1385,6 +1385,30 @@ QPushButton:hover {
              </property>
             </widget>
            </widget>
+           <widget class="QLabel" name="labelgraphs_no_instruments_2">
+            <property name="geometry">
+             <rect>
+              <x>-10</x>
+              <y>10</y>
+              <width>541</width>
+              <height>301</height>
+             </rect>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">font-size : 23px; 
+font-family : Open Sans;
+color: #F9F9FB;</string>
+            </property>
+            <property name="text">
+             <string>Нет активов</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
           </widget>
           <widget class="QFrame" name="recommendation_text_area">
            <property name="geometry">
@@ -1425,6 +1449,30 @@ QPushButton:hover {
                <height>281</height>
               </rect>
              </property>
+             <widget class="QLabel" name="labelRecommendation_no_instruments">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>120</y>
+                <width>281</width>
+                <height>21</height>
+               </rect>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">font-size : 23px; 
+font-family : Open Sans;
+color: #F9F9FB;</string>
+              </property>
+              <property name="text">
+               <string>Нет активов</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
             </widget>
            </widget>
           </widget>
@@ -1577,7 +1625,9 @@ QPushButton:hover {
                </rect>
               </property>
               <property name="styleSheet">
-               <string notr="true">font-size : 24px; font-family : Open Sans; color: #2A2A2C;</string>
+               <string notr="true">font-size : 23px; 
+font-family : Open Sans;
+color: #F9F9FB;</string>
               </property>
               <property name="text">
                <string>Нет активов</string>

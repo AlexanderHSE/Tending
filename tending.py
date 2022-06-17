@@ -10,7 +10,7 @@ from Instr import Instr
 from help_func import generate_random_color, add_column_percantages
 from numpy import arange
 
-#   t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
+#    t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 #   t.r3D-SJY-s37p965fw1Co_UvACNdtrcxUW7rq_xIU4GP5d2Ni2XSLB3NlrHSx21ck6eLoenkmV0LXiIx0_uldUw
 #   t.6l6UT2g6HYDf_PNb8BIO4PuWeGajBgfQGPHgtTi-bEIgfiSdTKsyVuN17Yv0T0Umxw-TzPnrVTUIe8g3LkL8bg
 #   t.NGGbyn3u0IqCmwDZmjD_uOOjoC1bY3iNdhENnfRO0qGF9O9t0hKRoZbl2Hb-os1gnNwVZ8aZxfgnr4OpC82dlA
