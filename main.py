@@ -441,6 +441,10 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.position_pie_chart_based_list.count())):
             self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
+    def clear_recommendations(self):
+        for i in reversed(range(self.recommendation_analytic_page_list.count())):
+            self.recommendation_analytic_page_list.takeAt(i).widget().setParent(None)
+
     def create_main_portfolio_pie_chart(self, list_positions, portfolio):
         df = DataFrame(list_positions)
         if df.empty:
@@ -786,6 +790,8 @@ class MainWindow(QMainWindow):
     request_from_etfs = False
 
     def fill_analyt_page(self, list_positions):
+        print("ljikb")
+        self.clear_recommendations()
         if len(list_positions) == 0:
             return
         # Графики на странице аналитики.
@@ -817,8 +823,6 @@ class MainWindow(QMainWindow):
         else:
             self.ui.btn_etfs.setEnabled(False)
         self.grouping_by_currencies_pie_chart_analytical_page()
-        # Рекомендации.
-
         # Все инструменты.
         self.fill_all_instruments_on_analytic_page()
 
