@@ -132,11 +132,11 @@ class Ui_MainWindowBig(object):
 
         self.horizontalLayout_7.addWidget(self.btn_analtics)
 
-        self.btn_currency = QPushButton(self.frame_tagLine)
-        self.btn_currency.setObjectName(u"btn_currency")
-        self.btn_currency.setEnabled(True)
-        self.btn_currency.setMaximumSize(QSize(80, 16777215))
-        self.btn_currency.setStyleSheet(u"QPushButton {\n"
+        self.btn_training = QPushButton(self.frame_tagLine)
+        self.btn_training.setObjectName(u"btn_training")
+        self.btn_training.setEnabled(True)
+        self.btn_training.setMaximumSize(QSize(80, 16777215))
+        self.btn_training.setStyleSheet(u"QPushButton {\n"
 "	border: none;\n"
 "	color: rgb(155, 156, 151);\n"
 "	font-family: Open Sans;\n"
@@ -145,9 +145,9 @@ class Ui_MainWindowBig(object):
 "QPushButton:hover {\n"
 "	color: rgb(234, 234, 234);\n"
 "}")
-        self.btn_currency.setFlat(True)
+        self.btn_training.setFlat(True)
 
-        self.horizontalLayout_7.addWidget(self.btn_currency)
+        self.horizontalLayout_7.addWidget(self.btn_training)
 
         self.btn_case = QPushButton(self.frame_tagLine)
         self.btn_case.setObjectName(u"btn_case")
@@ -241,7 +241,7 @@ class Ui_MainWindowBig(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 346))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 881, 601))
         self.verticalLayout_10 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
         self.frame_2 = QFrame(self.scrollAreaWidgetContents)
@@ -493,11 +493,13 @@ class Ui_MainWindowBig(object):
         self.instruments_cpa_scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents_4 = QWidget()
         self.scrollAreaWidgetContents_4.setObjectName(u"scrollAreaWidgetContents_4")
-        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 85))
+        self.scrollAreaWidgetContents_4.setGeometry(QRect(0, 0, 403, 340))
         self.label = QLabel(self.scrollAreaWidgetContents_4)
         self.label.setObjectName(u"label")
         self.label.setGeometry(QRect(30, 160, 341, 21))
-        self.label.setStyleSheet(u"font-size : 24px; font-family : Open Sans; color: #2A2A2C;")
+        self.label.setStyleSheet(u"font-size : 23px; \n"
+"font-family : Open Sans;\n"
+"color: #F9F9FB;")
         self.label.setAlignment(Qt.AlignCenter)
         self.instruments_cpa_scrollArea.setWidget(self.scrollAreaWidgetContents_4)
 
@@ -678,7 +680,7 @@ class Ui_MainWindowBig(object):
         self.legeng_analytic_pie_chart.setWidget(self.scrollAreaWidgetContents_2)
         self.labelgraphs_no_instruments_2 = QLabel(self.analytics_graphs)
         self.labelgraphs_no_instruments_2.setObjectName(u"labelgraphs_no_instruments_2")
-        self.labelgraphs_no_instruments_2.setGeometry(QRect(20, 10, 511, 301))
+        self.labelgraphs_no_instruments_2.setGeometry(QRect(-10, 10, 541, 301))
         self.labelgraphs_no_instruments_2.setLayoutDirection(Qt.LeftToRight)
         self.labelgraphs_no_instruments_2.setStyleSheet(u"font-size : 23px; \n"
 "font-family : Open Sans;\n"
@@ -925,7 +927,7 @@ class Ui_MainWindowBig(object):
         self.label_4.setText("")
         self.btn_casemain.setText(QCoreApplication.translate("MainWindowBig", u"\u041f\u043e\u0440\u0442\u0444\u0435\u043b\u044c", None))
         self.btn_analtics.setText(QCoreApplication.translate("MainWindowBig", u"\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430", None))
-        self.btn_currency.setText(QCoreApplication.translate("MainWindowBig", u"\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435", None))
+        self.btn_training.setText(QCoreApplication.translate("MainWindowBig", u"\u041e\u0431\u0443\u0447\u0435\u043d\u0438\u0435", None))
         self.btn_case.setText("")
         self.btn_minimize_2.setText(QCoreApplication.translate("MainWindowBig", u"\u2013", None))
         self.btn_close_2.setText(QCoreApplication.translate("MainWindowBig", u"\u00d7", None))

@@ -479,7 +479,7 @@ QPushButton:hover {
                 <x>0</x>
                 <y>0</y>
                 <width>881</width>
-                <height>346</height>
+                <height>601</height>
                </rect>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -969,7 +969,7 @@ QPushButton:hover {
                           <x>0</x>
                           <y>0</y>
                           <width>403</width>
-                          <height>85</height>
+                          <height>340</height>
                          </rect>
                         </property>
                         <widget class="QLabel" name="label">
@@ -982,7 +982,9 @@ QPushButton:hover {
                           </rect>
                          </property>
                          <property name="styleSheet">
-                          <string notr="true">font-size : 24px; font-family : Open Sans; color: #2A2A2C;</string>
+                          <string notr="true">font-size : 23px; 
+font-family : Open Sans;
+color: #F9F9FB;</string>
                          </property>
                          <property name="text">
                           <string>Нет активов</string>

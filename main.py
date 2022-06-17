@@ -126,7 +126,7 @@ class MainWindow(QMainWindow):
                 # print("Ошибка, введите токен заново!")
                 self.ui.edit_token.setPlaceholderText('Ошибка, введите токен заново!')
                 pal = self.ui.edit_token.palette()
-                text_color = pal.color(QtGui.QPalette.Text)
+                text_color =  "#D4CE26" #pal.color(QtGui.QPalette.Text)
                 pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
                 self.ui.edit_token.setPalette(pal)
                 self.ui.edit_token.setText('')
@@ -372,7 +372,6 @@ class MainWindow(QMainWindow):
         self.fill_analyt_page(list_pos)
 
     def create_recommendation(self, df):
-        print("fefef")
         self.recommendation_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
         frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
         # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
@@ -463,11 +462,6 @@ class MainWindow(QMainWindow):
             self.ui.widget.hide()
             self.fill_total_stats(df, portfolio)
             self.ui.analytic_graph_text_if_have_no_instr.setText("Нет инструментов")
-            self.ui.label.setStyleSheet('''
-                font-size : 23px; 
-                font-family : Open Sans;
-                color: #F9F9FB;
-            ''')
             self.ui.label_2.show()
             self.ui.labelRecommendation_no_instruments.show()
             self.ui.labelgraphs_no_instruments_2.show()
@@ -789,7 +783,6 @@ class MainWindow(QMainWindow):
     request_from_etfs = False
 
     def fill_analyt_page(self, list_positions):
-        print("ljikb")
         self.clear_recommendations()
         if len(list_positions) == 0:
             return
