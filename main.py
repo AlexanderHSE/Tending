@@ -29,6 +29,7 @@ from frame_creating import create_shares_frame_on_analytic_page, create_bonds_fr
     create_sectors_label_recommendation, create_countries_label_recommendation
 
 from re import search
+from GuideWindow import GuideWindow
 
 minus_profit = "#FAA2A2"  # hex red color
 zero_porfit = "#F9F9FB"  # hex white color
@@ -40,6 +41,8 @@ class MainWindow(QMainWindow):
         QFontDatabase.addApplicationFont('fonts/Ubuntu-Regular.ttf')
         QFontDatabase.addApplicationFont('fonts/OpenSans-Regular.ttf')
         QMainWindow.__init__(self)
+        # Окно обучения
+        self.window_guide = None
         self.dragPos = None
         self.ui = Ui_MainWindowBig()
         self.ui.setupUi(self)
@@ -59,7 +62,10 @@ class MainWindow(QMainWindow):
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
         self.ui.widget.hide()
-        self.ui.frame_tagLine.setEnabled(False)
+        # self.ui.frame_tagLine.setEnabled(False)
+        self.ui.btn_casemain.setEnabled(False)
+        self.ui.btn_analtics.setEnabled(False)
+        self.ui.btn_case.setEnabled(False)
 
         def moveWindow(event):
             # If left click - move window
@@ -89,6 +95,14 @@ class MainWindow(QMainWindow):
 
         # Portfolio page
         self.ui.btn_casemain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
+
+        # Guide
+        self.ui.btn_training.clicked.connect(self.show_guide_window)
+
+    def show_guide_window(self):
+        if self.window_guide is None:
+            self.window_guide = GuideWindow()
+        self.window_guide.show()
 
     def toggle_visibility(self):
         """
@@ -138,7 +152,10 @@ class MainWindow(QMainWindow):
     # Создание кнопок-полей счетов
     def create_new_widget(self, token, accounts):
         self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
-        self.ui.frame_tagLine.setEnabled(True)
+        # self.ui.frame_tagLine.setEnabled(True)
+        self.ui.btn_casemain.setEnabled(True)
+        self.ui.btn_analtics.setEnabled(True)
+        self.ui.btn_case.setEnabled(True)
         for i in range(len(accounts.accounts)):
             if accounts.accounts[i].access_level != 3:
                 btn_text = accounts.accounts[i].name
