@@ -1,3 +1,5 @@
+import os
+import sys
 from PySide2.QtWidgets import (QDialog, QLabel, QVBoxLayout, QFrame)
 from PySide2.QtGui import (QFontDatabase, QMovie, QPixmap)
 from PySide2.QtCore import (Qt, QRect)
@@ -6,10 +8,21 @@ from ui_guide import Ui_Dialog
 import ui_functions
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 class GuideWindow(QDialog):
     def __init__(self):
-        QFontDatabase.addApplicationFont('fonts/Ubuntu-Regular.ttf')
-        QFontDatabase.addApplicationFont('fonts/OpenSans-Regular.ttf')
+        QFontDatabase.addApplicationFont(resource_path('fonts/Ubuntu-Regular.ttf'))
+        QFontDatabase.addApplicationFont(resource_path('fonts/OpenSans-Regular.ttf'))
         QDialog.__init__(self)
         self.dragPos = None
         self.ui = Ui_Dialog()
@@ -20,10 +33,10 @@ class GuideWindow(QDialog):
         self.label_gif_portfolio = QLabel()
         self.label_gif_analytics = QLabel()
 
-        self.gif = QMovie('images/get_token (2).gif')
-        self.gif_input_token = QMovie('images/input_token (2).gif')
-        self.gif_portfolio = QMovie('images/portfolio.gif')
-        self.gif_analytics = QMovie('images/gif_analytics.gif')
+        self.gif = QMovie(resource_path('images/get_token (2).gif'))
+        self.gif_input_token = QMovie(resource_path('images/input_token (2).gif'))
+        self.gif_portfolio = QMovie(resource_path('images/portfolio.gif'))
+        self.gif_analytics = QMovie(resource_path('images/gif_analytics.gif'))
 
         self.items_scroll_area = QVBoxLayout(self.ui.scrollAreaWidgetContents)
         self.ui.scrollArea.verticalScrollBar().setStyleSheet('QScrollBar {width:0px;}')
@@ -141,7 +154,7 @@ class GuideWindow(QDialog):
         self.label_gif.setAlignment(Qt.AlignCenter)
         self.label_gif.adjustSize()
         label_container_layout.addWidget(self.label_gif)
-        icon = QPixmap('images/placeholder_gif.png')
+        icon = QPixmap(resource_path('images/placeholder_gif.png'))
         self.label_gif.setPixmap(icon)
         self.gif.setSpeed(70)
         self.label_gif.setMovie(self.gif)

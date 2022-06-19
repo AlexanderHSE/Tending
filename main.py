@@ -1,4 +1,5 @@
 import sys
+import os
 from PySide2 import QtGui, QtWebEngineWidgets
 from PySide2.QtCore import (QRect, QSize, Qt)
 from PySide2.QtGui import (QFontDatabase, QIcon, QPixmap)
@@ -36,10 +37,21 @@ zero_porfit = "#F9F9FB"  # hex white color
 plus_profit = "#47F19F "  # hex green color
 
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
-        QFontDatabase.addApplicationFont('fonts/Ubuntu-Regular.ttf')
-        QFontDatabase.addApplicationFont('fonts/OpenSans-Regular.ttf')
+        QFontDatabase.addApplicationFont(resource_path('fonts/Ubuntu-Regular.ttf'))
+        QFontDatabase.addApplicationFont(resource_path('fonts/OpenSans-Regular.ttf'))
         QMainWindow.__init__(self)
         # Окно обучения
         self.window_guide = None
@@ -110,11 +122,11 @@ class MainWindow(QMainWindow):
         """
         if self.ui.edit_token.echoMode() == QLineEdit.Normal:
             self.ui.edit_token.setEchoMode(QLineEdit.Password)
-            new_icon = QPixmap('images/closedEyeChanged.png')
+            new_icon = QPixmap(resource_path('images/closedEyeChanged.png'))
             self.ui.pushButton.setIcon(QIcon(new_icon))
         else:
             self.ui.edit_token.setEchoMode(QLineEdit.Normal)
-            new_icon = QPixmap('images/openedEye.png')
+            new_icon = QPixmap(resource_path('images/openedEye.png'))
             self.ui.pushButton.setIcon(QIcon(new_icon))
 
     # Движение окна

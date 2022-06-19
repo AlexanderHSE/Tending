@@ -8,9 +8,22 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
+import os
+import sys
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 class Ui_MainWindowBig(object):
@@ -85,7 +98,7 @@ class Ui_MainWindowBig(object):
         self.label_4 = QLabel(self.frame_head)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setMinimumSize(QSize(300, 41))
-        self.label_4.setPixmap(QPixmap(u"images/Frame_13.jpg"))
+        self.label_4.setPixmap(QPixmap(resource_path("images/Frame_13.jpg")))
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
@@ -164,7 +177,7 @@ class Ui_MainWindowBig(object):
 "	color: rgb(234, 234, 234);\n"
 "}")
         icon = QIcon()
-        icon.addFile(u"images/briefcase (1).png", QSize(), QIcon.Normal, QIcon.Off)
+        icon.addFile(resource_path("images/briefcase (1).png"), QSize(), QIcon.Normal, QIcon.Off)
         self.btn_case.setIcon(icon)
         self.btn_case.setIconSize(QSize(20, 20))
         self.btn_case.setCheckable(False)
@@ -805,7 +818,7 @@ class Ui_MainWindowBig(object):
         self.btn_addCase = QPushButton(self.frame_addCase)
         self.btn_addCase.setObjectName(u"btn_addCase")
         icon1 = QIcon()
-        icon1.addFile(u"images/plus-square_1.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(resource_path("images/plus-square_1.png"), QSize(), QIcon.Normal, QIcon.Off)
         self.btn_addCase.setIcon(icon1)
         self.btn_addCase.setIconSize(QSize(50, 50))
         self.btn_addCase.setCheckable(False)
@@ -868,7 +881,7 @@ class Ui_MainWindowBig(object):
         self.pushButton.setGeometry(QRect(715, 22, 31, 28))
         self.pushButton.setStyleSheet(u"border: none; background-color: rgb(73, 73, 77);")
         icon2 = QIcon()
-        icon2.addFile(u"images/closedEyeChanged.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon2.addFile(resource_path("images/closedEyeChanged.png"), QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton.setIcon(icon2)
         self.pushButton.setIconSize(QSize(25, 25))
         self.pushButton.setFlat(True)

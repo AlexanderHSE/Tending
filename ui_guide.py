@@ -8,9 +8,22 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
+import sys
+import os
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 class Ui_Dialog(object):
@@ -61,7 +74,7 @@ class Ui_Dialog(object):
         self.label_4.setObjectName(u"label_4")
         self.label_4.setGeometry(QRect(20, 10, 300, 41))
         self.label_4.setMinimumSize(QSize(300, 41))
-        self.label_4.setPixmap(QPixmap(u"images/Frame_13.jpg"))
+        self.label_4.setPixmap(QPixmap(resource_path("images/Frame_13.jpg")))
         self.btn_close_3 = QPushButton(self.frame_logo_2)
         self.btn_close_3.setObjectName(u"btn_close_3")
         self.btn_close_3.setGeometry(QRect(790, 10, 40, 40))
