@@ -1,19 +1,16 @@
 import pandas as pd
-from pandas import (DataFrame, Series)
-from tinkoff.invest import Client, MoneyValue, GetAccountsResponse, RequestError
-import ApiParsing
-import AllPortfolio
-import Portfolio
-from tinkoff.invest.services import Services
+from tinkoff.invest import Client, MoneyValue
 from tinkoff.invest.schemas import PortfolioResponse, Quotation, PortfolioPosition
 from Instr import Instr
-from help_func import generate_random_color, add_column_percantages
-from numpy import arange
+from help_func import generate_random_color
+
 
 #    t.o0Ddqkri-Cf1Xmm6JsYSPdWFrA50JCU0Jy0HJXN_d1ZTAt3TiQopmfyxI3Rbmg8ltHmwx9GXh9Q1fAGBi8Xu7A
 #   t.r3D-SJY-s37p965fw1Co_UvACNdtrcxUW7rq_xIU4GP5d2Ni2XSLB3NlrHSx21ck6eLoenkmV0LXiIx0_uldUw
 #   t.6l6UT2g6HYDf_PNb8BIO4PuWeGajBgfQGPHgtTi-bEIgfiSdTKsyVuN17Yv0T0Umxw-TzPnrVTUIe8g3LkL8bg
 #   t.NGGbyn3u0IqCmwDZmjD_uOOjoC1bY3iNdhENnfRO0qGF9O9t0hKRoZbl2Hb-os1gnNwVZ8aZxfgnr4OpC82dlA
+
+# Словарь секторов экономики
 dict_sector = dict(government="Государтсвенные бумаги", energy="Энергетика", ecomaterials="Промышленность",
                    green_energy="Зелёная энергетика", financial="Финансы", utilities="Коммунальные услуги",
                    materials="Материалы", green_buildings="Промышленность", municipal="Муниципальные бумаги",
@@ -22,6 +19,7 @@ dict_sector = dict(government="Государтсвенные бумаги", ene
                    real_estate="Недвижимость", electrocars="Промышленность", currency="Валюта", etf="ETF",
                    bond="Облигация", )
 
+# Словарь классов активов
 dict_instrument_type = dict(share="Акция", bond="Облигация", etf="Фонд", currency="Валюта", future="Фьючерс")
 
 dict_focus_type = dict(equity="Акции", fixed_income="Облигация", mixed_allocation="Смешанные",
@@ -30,19 +28,19 @@ dict_focus_type = dict(equity="Акции", fixed_income="Облигация", m
                        alternative_investment="Альтернативные инвестиции")
 
 dict_countries_correct_names = {'Германия': "Германию", 'Греция': "Грецию", 'Нидерланды': "Нидерланды", 'Швейцария': "Швейцарию",
-                        'Дания': "Данию", 'Италия': "Италию", 'Швеция': "Швецию", 'Испания': "Испанию", 'Австрия': "Австрию",
-                        'Виргинские Острова, Британские': "Британские Виргинские Острова", 'Камерун': "Камерун",
-                        'Гонконг': "Гонконг", 'Казахстан': "Казахстан", 'Финляндия': "Финляндию", 'Словения': "Словению",
-                        'Сингапур': "Сингапур", 'Маврикий': "Маврикий", 'Монако': "Монако", 'Маршалловы Острова': "Маршалловы Острова",
-                        'Филиппины': "Филиппины", 'Польша': "Польшу", 'Португалия': "Португалию",  'Норвегия': "Норвегию",
-                        'Франция': "Францию", 'Индонезия': "Индонезию", 'Китай': "Китай", 'Бразилия': "Бразилию",
-                        'Бельгия': "Бельгию", 'Люксембург': "Люксембург", 'Израиль': "Израиль", 'Турция': "Турцию",
-                        'Таиланд': "Таиланд", 'Индия': "Индию", 'Корея, Республика': "Республику Корея", 'Чили': "Чили",
-                        'Мексика': "Мексику", 'Аргентина': "Аргентину", 'Перу': "Перу", 'Соединенные Штаты': "Соединенные Штаты",
-                        'Колумбия': "Колумбию", 'Южная Африка': "Южную Африку", 'Россия': "Россию", 'Уругвай': "Уругвай",
-                        'Соединенное Королевство': "Соединенное Королевство"}
+                                'Дания': "Данию", 'Италия': "Италию", 'Швеция': "Швецию", 'Испания': "Испанию", 'Австрия': "Австрию",
+                                'Виргинские Острова, Британские': "Британские Виргинские Острова", 'Камерун': "Камерун",
+                                'Гонконг': "Гонконг", 'Казахстан': "Казахстан", 'Финляндия': "Финляндию", 'Словения': "Словению",
+                                'Сингапур': "Сингапур", 'Маврикий': "Маврикий", 'Монако': "Монако", 'Маршалловы Острова': "Маршалловы Острова",
+                                'Филиппины': "Филиппины", 'Польша': "Польшу", 'Португалия': "Португалию",  'Норвегия': "Норвегию",
+                                'Франция': "Францию", 'Индонезия': "Индонезию", 'Китай': "Китай", 'Бразилия': "Бразилию",
+                                'Бельгия': "Бельгию", 'Люксембург': "Люксембург", 'Израиль': "Израиль", 'Турция': "Турцию",
+                                'Таиланд': "Таиланд", 'Индия': "Индию", 'Корея, Республика': "Республику Корея", 'Чили': "Чили",
+                                'Мексика': "Мексику", 'Аргентина': "Аргентину", 'Перу': "Перу", 'Соединенные Штаты': "Соединенные Штаты",
+                                'Колумбия': "Колумбию", 'Южная Африка': "Южную Африку", 'Россия': "Россию", 'Уругвай': "Уругвай",
+                                'Соединенное Королевство': "Соединенное Королевство"}
 
-dict_sectors_correct_names = {"Государтсвенные бумаги": "государтсвенных бумагах", 'Энергетика': "энергетике",
+dict_sectors_correct_names = {"Государственные бумаги": "государственных бумагах", 'Энергетика': "энергетике",
                               'Промышленность': "промышленности", 'Зелёная энергетика': "зелёной энергетике",
                               'Финансы': 'финансах', 'Коммунальные услуги': 'коммунальных услугах',
                               'Материалы': 'материалах', 'Муниципальные бумаги': 'муниципальных бумагах',
@@ -52,10 +50,12 @@ dict_sectors_correct_names = {"Государтсвенные бумаги": "г
                               'ETF': 'ETF', 'Облигация': 'облигациях'}
 
 
+# Преобразование числового значения для дальнейшего использования в программе
 def cast_money(money_value: MoneyValue):
     return money_value.units + money_value.nano / 1e9
 
 
+# Преобразование числового значения типа Quotation для дальнейшего использования в программе
 def cast_yield(quotation: Quotation):
     return quotation.units + quotation.nano / 1e9
 
@@ -361,35 +361,7 @@ if __name__ == "__main__":
     choice_parsing()
     choice = int(input())
     if choice == 1:
-        # pars with api
-        # получение всех аккаунтов
-        api = ApiParsing.ApiParsing()
-        api.get_accounts()
-        # Получение одного аккаунта
-        print(api.accounts.accounts)
-        port = Portfolio.Portfolio(api.accounts.accounts, api.token)
-        print(port)
-        print(1)
-        print(type(port))
-        print('get_one_acc')
-        port.get_one_acc()
-        print('port.account')
-        print(port.account)
-        print(type(port.account))
-        print(1)
-        # Добавление аккаунта в список аккаунтов
-        all_ports = AllPortfolio.AllPortfolio()
-
-        all_ports.add(port.account)
-        # Добавление еще одного портфеля
-        # Получение одного аккаунта
-        port1 = Portfolio.Portfolio(api.accounts.accounts, api.token)
-        print(port1)
-        print('port1')
-        port1.get_one_acc()
-        # Добавление аккаунта в список аккаунтов
-        all_ports.add(port1.account)
-        port.get_analytics()
+        pass
     else:
         # pars with xlsx
         pass

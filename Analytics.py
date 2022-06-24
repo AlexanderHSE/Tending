@@ -1,4 +1,4 @@
-from tinkoff.invest import Client, PortfolioPosition, InstrumentIdType, InstrumentStatus
+from tinkoff.invest import Client, PortfolioPosition
 import pandas as pd
 import Instr
 
@@ -8,6 +8,9 @@ pd.set_option('display.width', 1000)
 
 
 class Analytics:
+    """
+    Класс, реализующий анализ данных портфеля
+    """
     __slots__ = (
         '__account', '__token', '__portfolio', '__opened_date', '__dt', '__usdrur', '__client', '__instruments')
 
@@ -49,8 +52,7 @@ class Analytics:
     def token(self, _token):
         self.__token = _token
 
-        # Получаем client
-
+    # Получаем instruments
     @property
     def instruments(self):
         return self.__instruments
@@ -95,8 +97,6 @@ class Analytics:
     def df(self, _dt):
         self.__dt = _dt
 
-        # Получаем дату открытия
-
     @property
     def usdrur(self):
         return self.__usdrur
@@ -105,17 +105,12 @@ class Analytics:
     def usdrur(self, _usdrur):
         self.__usdrur = _usdrur
 
-    # @staticmethod
-    # def get_name(figi, instrument_type):
-    #     if instrument_type == 'bond':
-    #     elif instrument_type == 'share':
-    #     elif instrument_type == 'currency':
-    #     elif instrument_type == 'etf':
-
+    # Получение инструментов портфеля
     def get_instrument(self, p):
         ins = Instr.Instr(self.token, p.figi, p.instrument_type)
         return ins.instr
 
+    # Добавление позиции портфеля в словарь
     def portfolio_pose_todict(self, p: PortfolioPosition, usdrur):
         instr = self.get_instrument(p)
         r = {
@@ -152,25 +147,17 @@ class Analytics:
             r['average_buy_price'] *= usdrur
             r['nkd'] *= usdrur
         r['currency'] = 'Рубль'
-        r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
-        r['comissixon'] = r['sell_sum'] * 0.003
-        r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
         if len(r['sector']) != 0:
             r['sector'] = Analytics.dict_sector[r['sector']]
-        r['instrument_type']  =  Analytics.dict_instrument_type[r['instrument_type']]
+        r['instrument_type'] = Analytics.dict_instrument_type[r['instrument_type']]
         return r
 
+    # Преобразование числовых данных, для дальнейшего их использования
     @staticmethod
     def cast_money(v):
         return v.units + v.nano / 1e9
 
+    # Создание DataFrame по позициям портфеля, в соответствии с данными словаря с позициями портфеля
     def create_df(self):
         self.df = pd.DataFrame(
             [Analytics.portfolio_pose_todict(self, p, self.usdrur) for p in self.portfolio.positions])
-        print(self.df.head(100))
-        print("bonds", Analytics.cast_money(self.portfolio.total_amount_bonds),
-              self.df.query("instrument_type == 'bond'")['sell_sum'].sum(),
-              sep=" : ")
-        print("etfs", Analytics.cast_money(self.portfolio.total_amount_etf),
-              self.df.query("instrument_type == 'etf'")['sell_sum'].sum(), sep=" : ")
-        print(self.df['comission'].sum())

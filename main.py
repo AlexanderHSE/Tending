@@ -1,25 +1,21 @@
 import sys
 import os
+import plotly.express as px
 from PySide2 import QtGui, QtWebEngineWidgets
 from PySide2.QtCore import (QRect, QSize, Qt)
 from PySide2.QtGui import (QFontDatabase, QIcon, QPixmap)
-# from PySide2.QtWidgets import *
 from PySide2.QtWidgets import (QMainWindow, QVBoxLayout, QLineEdit, QPushButton, QFrame, QHBoxLayout, QLabel,
                                QApplication)
-# from PySide2.QtWebEngineWidgets import QWebEngineView
+
 from ui_mainworkspace import Ui_MainWindowBig
 
 from ui_functions import *
-from tinkoff.invest import Client, RequestError, PortfolioPosition
+from tinkoff.invest import Client, RequestError
 from tinkoff.invest.schemas import PortfolioResponse
 
 from tending import get_total_cost_portfolio, cast_yield, get_total_profit, get_set_positions
-
-# import pandas as pd
 from pandas import (DataFrame, Series)
 from numpy import arange
-
-import plotly.express as px
 
 from help_func import write_html, check_dt_is_empty, generate_color_column, add_column_percantages, \
     generate_color_by_sectors_column_not_etfs, generate_color_by_sectors_column_etfs, check_float

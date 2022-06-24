@@ -13,7 +13,7 @@ def resource_path(relative_path):
     Получает абсолютный путь к ресурсу, используется PyInstaller
     """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        # PyInstaller создаёт временную папку и сохраняет путь в _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
