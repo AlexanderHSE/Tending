@@ -9,9 +9,11 @@ import ui_functions
 
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """
+    Получает абсолютный путь к ресурсу, используется PyInstaller
+    """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        # PyInstaller создаёт временную папку и сохраняет путь в _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -20,6 +22,9 @@ def resource_path(relative_path):
 
 
 class GuideWindow(QDialog):
+    """
+    Класс, создающий окно обучения
+    """
     def __init__(self):
         QFontDatabase.addApplicationFont(resource_path('fonts/Ubuntu-Regular.ttf'))
         QFontDatabase.addApplicationFont(resource_path('fonts/OpenSans-Regular.ttf'))
@@ -33,6 +38,7 @@ class GuideWindow(QDialog):
         self.label_gif_portfolio = QLabel()
         self.label_gif_analytics = QLabel()
 
+        # Подключение GIF
         self.gif = QMovie(resource_path('images/get_token (2).gif'))
         self.gif_input_token = QMovie(resource_path('images/input_token (2).gif'))
         self.gif_portfolio = QMovie(resource_path('images/portfolio.gif'))
@@ -46,7 +52,6 @@ class GuideWindow(QDialog):
         self.createAnalyticsInstruction()
 
         def moveWindow(event):
-            # If left click - move window
             if event.buttons() == Qt.LeftButton:
                 self.move(self.pos() + event.globalPos() - self.dragPos)
                 self.dragPos = event.globalPos()
@@ -59,15 +64,21 @@ class GuideWindow(QDialog):
     def mousePressEvent(self, event):
         self.dragPos = event.globalPos()
 
+    # Переопределение события ввода курсора в область
     def enterEvent(self, e):
-        # QtWidgets.QLabel.enterEvent(self, e)
         super().enterEvent(e)
 
+    # Переопределение события выхода курсора из области
     def leaveEvent(self, e):
-        # QtWidgets.QLabel.leaveEvent(self, e)
         super().leaveEvent(e)
 
+    # Переопределение фильтра событий
     def eventFilter(self, obj, event: QEvent):
+        """
+        При попадании курсора в одно из четырёх GIF-изображений, запускается соответствующая функция запуска воспроизведения GIF
+
+        При перемещении курсора с GIF-изображения, запускается функция, выполняющая остановку воспроизведения GIF
+        """
         if obj == self.label_gif and event.type() == QEvent.Enter:
             self.gif_starter()
             return False
@@ -95,27 +106,35 @@ class GuideWindow(QDialog):
             return False
         return super().eventFilter(obj, event)
 
+    # Функция запуска GIF-изображения get_token (2).gif
     def gif_starter(self):
         self.gif.start()
 
+    # Функция запуска GIF-изображения input_token (2).gif
     def gif_starter_input_token(self):
         self.gif_input_token.start()
 
+    # Функция запуска GIF-изображения portfolio.gif
     def gif_starter_portfolio(self):
         self.gif_portfolio.start()
 
+    # Функция запуска GIF-изображения gif_analytics.gif
     def gif_starter_analytics(self):
         self.gif_analytics.start()
 
+    # Функция остановки GIF-изображения get_token (2).gif
     def gif_stopper(self):
         self.gif.stop()
 
+    # Функция остановки GIF-изображения input_token (2).gif
     def gif_stopper_input_token(self):
         self.gif_input_token.stop()
 
+    # Функция остановки GIF-изображения portfolio.gif
     def gif_stopper_portfolio(self):
         self.gif_portfolio.stop()
 
+    # Функция остановки GIF-изображения gif_analytics.gif
     def gif_stopper_analytics(self):
         self.gif_analytics.stop()
 
@@ -159,10 +178,16 @@ class GuideWindow(QDialog):
         self.gif.setSpeed(70)
         self.label_gif.setMovie(self.gif)
         self.label_gif.installEventFilter(self)
+        # Вызывается для начальной отрисовки GIF
         self.gif.start()
         self.gif.stop()
 
     def createInputTokenInstruction(self):
+        """
+        Создание заголовка 'Ввод токена и выбор счёта': QLabel
+
+        Создание блока с гиф-инструкцией по вводу токена и получению счёта: QLabel
+        """
         self.items_scroll_area.setAlignment(Qt.AlignTop)
         about_token_input_container = QFrame(self.ui.scrollAreaWidgetContents)
         about_token_input_container.setObjectName('about_token_input_container')
@@ -197,11 +222,16 @@ class GuideWindow(QDialog):
         self.label_gif_input_token.setMovie(self.gif_input_token)
         self.label_gif_input_token.installEventFilter(self)
         about_layout.addWidget(self.label_gif_input_token)
+        # Вызывается для начальной отрисовки GIF
         self.gif_input_token.start()
         self.gif_input_token.stop()
 
     def createMainPortfolioInstruction(self):
+        """
+        Создание заголовка 'Обзор страницы Портфель': QLabel
 
+        Создание блока с гиф-инструкцией по действиям, выполняемым на странице Портфель: QLabel
+        """
         self.items_scroll_area.setAlignment(Qt.AlignTop)
         label_container_portfolio = QFrame(self.ui.scrollAreaWidgetContents)
         label_container_portfolio.setObjectName('portfolio_label_container')
@@ -215,7 +245,7 @@ class GuideWindow(QDialog):
             padding-left: 0px;
         ''')
 
-        label_portfolio = QLabel('Текст1')
+        label_portfolio = QLabel('Обзор страницы "Портфель"')
         label_portfolio.setGeometry(QRect(0, 0, 150, 200))
         label_portfolio.setObjectName('label_portfolio')
         label_portfolio.setStyleSheet('''
@@ -229,17 +259,23 @@ class GuideWindow(QDialog):
         self.label_gif_portfolio.setObjectName('label_gif_portfolio')
         self.label_gif_portfolio.setAlignment(Qt.AlignCenter)
         self.label_gif_portfolio.adjustSize()
-        self.label_gif_portfolio.setFixedSize(670, 370)
+        self.label_gif_portfolio.setFixedSize(470, 370)
         self.gif_portfolio.setSpeed(200)
         self.label_gif_portfolio.setMovie(self.gif_portfolio)
         self.label_gif_portfolio.installEventFilter(self)
         portfolio_layout.addWidget(self.label_gif_portfolio)
+        # Вызывается для начальной отрисовки GIF
         self.gif_portfolio.start()
         self.gif_portfolio.stop()
 
         self.items_scroll_area.addWidget(label_container_portfolio)
 
     def createAnalyticsInstruction(self):
+        """
+        Создание заголовка 'Обзор страницы Аналитика': QLabel
+
+        Создание блока с гиф-инструкцией по действиям, выполняемым на странице Аналитика: QLabel
+        """
         self.items_scroll_area.setAlignment(Qt.AlignTop)
         label_analytics_container = QFrame(self.ui.scrollAreaWidgetContents)
         label_analytics_container.setObjectName('analytics_container')
@@ -252,7 +288,7 @@ class GuideWindow(QDialog):
             background-color: #222226;
             padding-left: 0px;
         ''')
-        label_an = QLabel('Текст 2')
+        label_an = QLabel('Обзор страницы "Аналитика"')
         label_an.setObjectName('label_analytics')
         label_an.setGeometry(QRect(0, 0, 150, 20))
         label_an.setStyleSheet('''
@@ -272,5 +308,6 @@ class GuideWindow(QDialog):
         self.gif_analytics.setSpeed(150)
         self.label_gif_analytics.setMovie(self.gif_analytics)
         self.label_gif_analytics.installEventFilter(self)
+        # Вызывается для начальной отрисовки GIF
         self.gif_analytics.start()
         self.gif_analytics.stop()
