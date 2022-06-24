@@ -235,13 +235,13 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.takeAt(i).widget().setParent(None)
 
-    # Стоимость
+    # Заполнение раздела стоимости портфеля
     def fill_total_cost(self, df, portfolio: PortfolioResponse):
         total_cost = str(get_total_cost_portfolio(df, portfolio)) + "₽"
         self.ui.cost_number_all.setText(total_cost)
         self.ui.cost_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {zero_porfit}")
 
-    # Доходность
+    # Заполнение раздела доходности портфеля
     def fill_total_yield(self, portfolio: PortfolioResponse):
         total_yield = portfolio.expected_yield
         total_yield_percentage = cast_yield(total_yield)
@@ -254,7 +254,7 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.yield_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {plus_profit}")
 
-    # Прибыль
+    # Заполнение раздела прибыли портфеля
     def fill_total_profit(self, df, portfolio: PortfolioResponse):
         total_yield = portfolio.expected_yield
         total_yield_percentage = cast_yield(total_yield)
@@ -407,6 +407,7 @@ class MainWindow(QMainWindow):
 
     # Сортировка по имени актива
     def sort_main_page_by_name(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('name', ascending=True)
@@ -415,6 +416,7 @@ class MainWindow(QMainWindow):
 
     # Сортировка по типу актива
     def sort_main_page_by_type(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('instrument_type', ascending=True)
@@ -423,70 +425,88 @@ class MainWindow(QMainWindow):
 
     # Сортировка по количеству активов
     def sort_main_page_by_quantity(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('quantity', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
-    # Сортировка по
+    # Сортировка по текущей цене активов
     def sort_main_page_by_currency_price(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('current_buy_price', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по средней цене активов в портфеле
     def sort_main_page_by_average_price(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('average_buy_price', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по прибыли активов в портфеле
     def sort_main_page_by_profit(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('expected_yield', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по доходности активов в портфеле
     def sort_main_page_by_yield(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('expected_yield_percentage', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по доле активов в портфеле
     def sort_main_page_by_percentages(self):
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
         all_instruments_df = all_instruments_df.sort_values('portfolio_share', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Формирование таблицы активов на странице "Портфель"
     def fill_area_pie_based(self, token, client, portfolio):
         list_pos = get_set_positions(token, client, portfolio)
         df = DataFrame(list_pos)
+        # Заполнение общей информации о портфеле
         self.fill_total_stats(df, portfolio)
+        # Создание диаграммы по активам портфеля
         self.create_main_portfolio_pie_chart(df)
-        self.clear_pos_in_area_pie()
         global all_instruments_df
         all_instruments_df = DataFrame()
+        # Если у пользователя нет активов, таблицу не создаем
         if len(list_pos) == 0:
             all_instruments_df['cost'] = Series()
-            self.clear_all_instruments_on_analytic_page()
+        # Если у пользователя есть активы, создаем таблицу
         else:
-            self.clear_all_instruments_on_analytic_page()
             all_instruments_df = DataFrame(list_pos)
+        # Очищение области аналитики
+        self.clear_all_instruments_on_analytic_page()
         all_instruments_df = all_instruments_df.sort_values('cost', ascending=False)
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
+        # Очищение таблицы на странице "Портфель"
         self.clear_all_instruments_on_main_page()
+        # Добавление активов в таблицу активов
         self.add_pos_in_area_pie_based(all_instruments_df)
-        print(all_instruments_df)
+        # Связка заголовков-кнопок на сортировку
         self.link_main_page_titles_buttons()
+        # Заполнение страницы аналитики
         self.fill_analyt_page(list_pos)
 
+    # Заполнение блока рекомендаций
     def create_recommendation(self, df):
         self.recommendation_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
         frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
@@ -509,6 +529,7 @@ class MainWindow(QMainWindow):
         share_total_percentage = 0
         bonds_total_percentage = 0
         etfs_total_percentage = 0
+        # Получение значения доли классов инструментов в портфеле
         try:
             share_total_percentage = \
                 df_instruments_type.loc[df_instruments_type['types'] == 'Акция']["total_cost_percentage"].values[0]
@@ -524,10 +545,13 @@ class MainWindow(QMainWindow):
                 df_instruments_type.loc[df_instruments_type['types'] == 'Фонд']["total_cost_percentage"].values[0]
         except:
             etfs_total_percentage = 0
+        # Создание блока рекомендаций, основанного на акциях
         shares_label = create_shares_label_recommendation(share_total_percentage)
         frame_inst_layout.addWidget(shares_label)
+        # Создание блока рекомендаций, основанного на облигациях
         bonds_label = create_bonds_label_recommendation(bonds_total_percentage)
         frame_inst_layout.addWidget(bonds_label)
+        # Создание блока рекомендаций, основанного на фондах
         if etfs_total_percentage >= 20:
             etf_label_total = create_etfs_total_label_recommendation(etfs_total_percentage)
             frame_inst_layout.addWidget(etf_label_total)
@@ -537,12 +561,14 @@ class MainWindow(QMainWindow):
             df_etfs_by_types['types'] = Series(etf_types)
             etf_label_types = create_etfs_types_label_recommendation(df_etfs_by_types)
             frame_inst_layout.addWidget(etf_label_types)
+        # Создание блока рекомендаций, основанного на секторах экономики
         df_sectors = df.groupby('sector').agg('sum')
         sectors = list(df_sectors.index)
         df_sectors = df_sectors.set_index(arange(0, len(df_sectors.index), 1))
         df_sectors['sectors'] = Series(sectors)
         frame_sectors = create_sectors_label_recommendation(df_sectors)
         frame_inst_layout.addWidget(frame_sectors)
+        # Создание блока рекомендаций, основанного на странах
         df_countries = df.groupby('short_country_name').agg('sum')
         short_country_names = list(df_countries.index)
         df_countries = df_countries.set_index(arange(0, len(df_countries.index), 1))
@@ -551,15 +577,19 @@ class MainWindow(QMainWindow):
         frame_inst_layout.addWidget(frame_countries)
         self.recommendation_analytic_page_list.addWidget(frame_inst)
 
+    # Очищение таблицы активов на странице "Портфель"
     def clear_pos_in_area_pie(self):
         for i in reversed(range(self.position_pie_chart_based_list.count())):
             self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
+    # Очищение блока рекомендаций
     def clear_recommendations(self):
         for i in reversed(range(self.recommendation_analytic_page_list.count())):
             self.recommendation_analytic_page_list.takeAt(i).widget().setParent(None)
 
+    # Создание диаграммы на странице "Портфель"
     def create_main_portfolio_pie_chart(self, df):
+        # Если нет активов, то не создаем диаграмму
         if df.empty:
             self.clear_legend_analytics_pie_chart()
             self.ui.analytics_graps_widget.hide()
@@ -579,6 +609,7 @@ class MainWindow(QMainWindow):
             self.ui.labelRecommendation_no_instruments.show()
             self.ui.labelgraphs_no_instruments_2.show()
             self.ui.label.show()
+        # Если есть активы, то создаем диаграмму
         else:
             self.ui.label.hide()
             self.ui.label_2.hide()
@@ -596,18 +627,18 @@ class MainWindow(QMainWindow):
             pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                     uniformtext_mode='hide')
 
-            # plotly.offline.plot(pie_chart, filename="MainPieChart.html")
+            # Записываем график в файл формата html
             write_html(pie_chart, "MainPortfolioPieChart.html")
+            # Отображает график в приложении
             self.show_graph()
 
+    # Отображаем график на странице "Портфель"
     def show_graph(self):
         with open("MainPortfolioPieChart.html", 'r') as pie_char_html:
             self.main_pie_chart.setHtml(pie_char_html.read())
             self.main_pie_chart.setMinimumSize(390, 400)
 
-    def fill_main_page(self, portfolio, token, client):
-        self.fill_area_pie_based(token, client, portfolio)
-
+    # Связывание кнопок на странице аналитики
     def link_analytic_buttons(self):
         self.ui.btn_all_instruments.clicked.connect(lambda: self.give_all_instruments_to_charts())
         self.ui.btn_shares.clicked.connect(lambda: self.give_all_shares_to_charts())
@@ -624,7 +655,9 @@ class MainWindow(QMainWindow):
     # Нажимаем на кнопку "Все инструменты" и передаем все инструменты для графиков.
     def give_all_instruments_to_charts(self):
         global current_df
-        if not current_df.empty:
+        global full_df
+        # Если у пользователя есть активыы, то работаем с кнопкой
+        if not full_df.empty:
             current_df = full_df
             self.ui.btn_countries.show()
             self.ui.btn_instruments_type.show()
@@ -633,12 +666,15 @@ class MainWindow(QMainWindow):
             request_from_currencies = False
             global request_from_etfs
             request_from_etfs = False
+            # Строим график разделения активов по валюте
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Акции" и передаем только все акции для графиков.
     def give_all_shares_to_charts(self):
         global current_df
-        if not current_df.empty:
+        global full_df
+        # Если у пользователя есть активыы, то работаем с кнопкой
+        if not full_df.empty:
             current_df = full_df[full_df['instrument_type'] == 'Акция']
             self.ui.btn_countries.show()
             self.ui.btn_instruments_type.hide()
@@ -647,12 +683,15 @@ class MainWindow(QMainWindow):
             request_from_currencies = False
             global request_from_etfs
             request_from_etfs = False
+            # Строим график разделения активов по валюте
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Облигации" и передаем только все облигации для графиков.
     def give_all_bonds_to_charts(self):
         global current_df
-        if not current_df.empty:
+        global full_df
+        # Если у пользователя есть активыы, то работаем с кнопкой
+        if not full_df.empty:
             current_df = full_df[full_df['instrument_type'] == 'Облигация']
             self.ui.btn_countries.show()
             self.ui.btn_instruments_type.hide()
@@ -661,12 +700,15 @@ class MainWindow(QMainWindow):
             request_from_currencies = False
             global request_from_etfs
             request_from_etfs = False
+            # Строим график разделения активов по валюте
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Фонды" и передаем только все фонды для графиков.
     def give_all_etf_to_charts(self):
         global current_df
-        if not current_df.empty:
+        global full_df
+        # Если у пользователя есть активыы, то работаем с кнопкой
+        if not full_df.empty:
             current_df = full_df[full_df['instrument_type'] == 'Фонд']
             self.ui.btn_countries.show()
             self.ui.btn_instruments_type.hide()
@@ -675,12 +717,15 @@ class MainWindow(QMainWindow):
             request_from_currencies = False
             global request_from_etfs
             request_from_etfs = True
+            # Строим график разделения активов по валюте
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюты" и передаем только все валюты для графиков.
     def give_all_currencies_to_charts(self):
         global current_df
-        if not current_df.empty:
+        global full_df
+        # Если у пользователя есть активыы, то работаем с кнопкой
+        if not full_df.empty:
             current_df = full_df[full_df['instrument_type'] == 'Валюта']
             self.ui.btn_countries.hide()
             self.ui.btn_instruments_type.hide()
@@ -689,25 +734,33 @@ class MainWindow(QMainWindow):
             request_from_currencies = True
             global request_from_etfs
             request_from_etfs = False
+            # Строим график разделения активов по валюте
             self.grouping_by_currencies_pie_chart_analytical_page()
 
     # Нажимаем на кнопку "Валюта" и строим график валют на основе переданных данных.
     def grouping_by_currencies_pie_chart_analytical_page(self):
         global request_from_currencies
+        # Если есть активы, строим график
         if not current_df.empty:
+            # Группировка активов по валюте
             if request_from_currencies:
                 data = current_df.groupby('name').agg('sum')
             else:
                 data = current_df.groupby('original_currency').agg('sum')
+            # Если данные можно сгруппировать
             if not check_dt_is_empty(data):
+                # Включает область с графиками
                 self.ui.analytics_graps_widget.show()
+                # Убираем надписи, которые сообщают об отсутсвии активов
                 self.disactivate_text_on_analytic_pie_chart()
+                # Обработка данных для построения графика
                 currencies = list(data.index)
                 data = data.set_index(arange(0, len(data.index), 1))
                 data['currencies'] = Series(currencies)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
+                # Создание графика
                 pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='currencies',
                                    color='currencies',
                                    color_discrete_sequence=list(data['color']),
@@ -719,17 +772,23 @@ class MainWindow(QMainWindow):
                 pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                         uniformtext_mode='hide', )
                 name_graph = "AnalyticByCurrenciesPieChart.html"
+                # Изображение графики в приложении
                 write_html(pie_chart, name_graph)
                 self.show_analytic_pie_chart(name_graph, data, 'currencies')
+            # Если нет активов, не строим график
             else:
+                # Убираем графики
                 self.ui.analytics_graps_widget.hide()
+                # Активируем надписи, которые сообщают об отсутсвии активов
                 self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Сектора" и строим график секторов на основе переданных данных.
     def grouping_by_sectors_pie_chart_analytical_page(self):
         global request_from_etf
+        # Если есть активы, строим график
         if not current_df.empty:
             data_is_empty = True
+            # Группировка активов по секторам
             if request_from_etfs:
                 data = current_df.groupby('focus_type').agg('sum')
                 if not check_dt_is_empty(data):
@@ -737,7 +796,9 @@ class MainWindow(QMainWindow):
                     sectors = list(data.index)
                     data = data.set_index(arange(0, len(data.index), 1))
                     data['sector'] = Series(sectors)
+                    # Включает область с графиками
                     self.ui.analytics_graps_widget.show()
+                    # Убираем надписи, которые сообщают об отсутсвии активов
                     self.disactivate_text_on_analytic_pie_chart()
                     generate_color_by_sectors_column_etfs(data)
             else:
@@ -747,11 +808,16 @@ class MainWindow(QMainWindow):
                     data_is_empty = False
                     data = data.set_index(arange(0, len(data.index), 1))
                     data['sector'] = Series(sectors)
+                    # Включает область с графиками
                     self.ui.analytics_graps_widget.show()
+                    # Убираем надписи, которые сообщают об отсутсвии активов
                     self.disactivate_text_on_analytic_pie_chart()
                     generate_color_by_sectors_column_not_etfs(data)
+            # Если данные можно сгруппировать
             if not data_is_empty:
+                # Обработка данных для построения графика
                 add_column_percantages(data)
+                # Создание графика
                 data = data.sort_values('total_cost_percentage', ascending=False)
                 pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='sector', color='sector',
                                    color_discrete_sequence=list(data['color']),
@@ -763,25 +829,36 @@ class MainWindow(QMainWindow):
                 pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                         uniformtext_mode='hide', )
                 name_graph = "AnalyticBySectorsPieChart.html"
+                # Изображение графики в приложении
                 write_html(pie_chart, name_graph)
                 self.show_analytic_pie_chart(name_graph, data, 'sector')
+            # Если нет активов, не строим график
             else:
+                # Убираем графики
                 self.ui.analytics_graps_widget.hide()
+                # Активируем надписи, которые сообщают об отсутсвии активов
                 self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Страны" и строим график стран на основе переданных данных.
     def grouping_by_countries_pie_chart_analytical_page(self):
+        # Если есть активы, строим график
         if not current_df.empty:
+            # Группировка активов по странам
             data = current_df.groupby('short_country_name').agg('sum')
+            # Если данные можно сгруппировать
             if not check_dt_is_empty(data):
+                # Включает область с графиками
                 self.ui.analytics_graps_widget.show()
+                # Убираем надписи, которые сообщают об отсутсвии активов
                 self.disactivate_text_on_analytic_pie_chart()
+                # Обработка данных для построения графика
                 countries = list(data.index)
                 data = data.set_index(arange(0, len(data.index), 1))
                 data['short_country_name'] = Series(countries)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
+                # Создание графика
                 pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='short_country_name',
                                    color='short_country_name', color_discrete_sequence=list(data['color']),
                                    hole=0.3)
@@ -792,25 +869,35 @@ class MainWindow(QMainWindow):
                 pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                         uniformtext_mode='hide', )
                 name_graph = "AnalyticByCountriesPieChart.html"
+                # Изображение графики в приложении
                 write_html(pie_chart, name_graph)
                 self.show_analytic_pie_chart(name_graph, data, 'short_country_name')
+            # Если нет активов, не строим график
             else:
+                # Убираем графики
                 self.ui.analytics_graps_widget.hide()
+                # Активируем надписи, которые сообщают об отсутсвии активов
                 self.activate_text_on_analytic_pie_chart()
 
     # Нажимаем на кнопку "Классы" и строим график классов на основе переданных данных.
     def grouping_by_instruments_type_pie_chart_analytical_page(self):
+        # Если есть активы, строим график
         if not current_df.empty:
             data = current_df.groupby('instrument_type').agg('sum')
+            # Если данные можно сгруппировать
             if not check_dt_is_empty(data):
+                # Включает область с графиками
                 self.ui.analytics_graps_widget.show()
+                # Убираем надписи, которые сообщают об отсутсвии активов
                 self.disactivate_text_on_analytic_pie_chart()
+                # Обработка данных для построения графика
                 sectors = list(data.index)
                 data = data.set_index(arange(0, len(data.index), 1))
                 data['instrument_type'] = Series(sectors)
                 add_column_percantages(data)
                 generate_color_column(data)
                 data = data.sort_values('total_cost_percentage', ascending=False)
+                # Создание графика
                 pie_chart = px.pie(data_frame=data, values='total_cost_percentage', names='instrument_type',
                                    color='instrument_type', color_discrete_sequence=list(data['color']), hole=0.3)
                 hovertemp = "%{label} "
@@ -820,26 +907,35 @@ class MainWindow(QMainWindow):
                 pie_chart.update_layout(paper_bgcolor='#2A2A2C', plot_bgcolor='#2A2A2C', uniformtext_minsize=12,
                                         uniformtext_mode='hide', )
                 name_graph = "AnalyticByInstrumentTypePieChart.html"
+                # Изображение графики в приложении
                 write_html(pie_chart, name_graph)
                 self.show_analytic_pie_chart(name_graph, data, 'instrument_type')
+            # Если нет активов, не строим график
             else:
+                # Убираем графики
                 self.ui.analytics_graps_widget.hide()
+                # Активируем надписи, которые сообщают об отсутсвии активов
                 self.activate_text_on_analytic_pie_chart()
 
-    # Строим график на основе данных.
+    # Строим график на странице аналитики на основе переданных данных.
     def show_analytic_pie_chart(self, name_graph, dt, condition):
         with open(name_graph, 'r') as pie_char_html:
+            # Изображение графика
             self.analytic_pie_chart.setHtml(pie_char_html.read())
             self.analytic_pie_chart.setMinimumSize(335, 310)
+            # Очищение области легенды к графику
             self.clear_legend_analytics_pie_chart()
+            # Добавление легенды к графику
             self.add_legend_analytic_pie_chart(dt, condition)
 
+    # Добавление легенды к графику на странице аналитики
     def add_legend_analytic_pie_chart(self, df, condition):
         self.position_analytic_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
         colors = df['color'].tolist()
         costs = df['cost'].tolist()
         total_cost_pecentage = df['total_cost_percentage'].tolist()
         condition = df[condition].tolist()
+        # Добавление элемента легенды графика
         for i in range(len(colors)):
             frame_inst_1 = QFrame(self.ui.scrollAreaWidgetContents_2)
             # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
@@ -853,6 +949,7 @@ class MainWindow(QMainWindow):
                    padding-left: 0px;
                ''')
 
+            # Создание фрейма с цветом объекта диаграммы
             inst_color_1 = QFrame()
             inst_color_1.setObjectName("inst_color" + str(i))
             inst_color_1.setGeometry(QRect(10, 0, 16, 21))
@@ -864,6 +961,7 @@ class MainWindow(QMainWindow):
             inst_color_1.setContentsMargins(0, 0, 0, 0)
             frame_inst_layout_1.addWidget(inst_color_1)
 
+            # Добавление текста в объект легенды диаграммы
             inst_name_1 = QLabel()
             inst_name_1.setText(
                 condition[i] + "\n" + str(total_cost_pecentage[i]) + "%" + " " + str(round(costs[i], 2)) + "₽")
@@ -877,28 +975,38 @@ class MainWindow(QMainWindow):
             frame_inst_layout_1.addWidget(inst_name_1)
             self.position_analytic_pie_chart_based_list.addWidget(frame_inst_1)
 
-    # Удаление фреймов из легенды
+    # Удаление фреймов из легенды на странице аналитики
     def clear_legend_analytics_pie_chart(self):
         for i in reversed(range(self.position_analytic_pie_chart_based_list.count())):
             self.position_analytic_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
+    # Если есть активы в портфеле, то убираем надписи, которые сообщают об отсутсвии активов
     def disactivate_text_on_analytic_pie_chart(self):
         self.ui.analytic_graph_text_if_have_no_instr.setStyleSheet('color: #2A2A2C')
 
+    # Если нет активов в портфеле, то активируем надписи, которые сообщают об отсутсвии активов
     def activate_text_on_analytic_pie_chart(self):
         self.ui.analytic_graph_text_if_have_no_instr.setStyleSheet('color: #F9F9FB')
 
+    # Все активы портфеля
     full_df = DataFrame()
+    # Активы, которые рассматриваются для текущего анализа
     current_df = DataFrame()
+    # Все активы портфеля
     all_instruments_df = DataFrame()
+    # Флаги для получения запросов
     request_from_currencies = False
     request_from_etfs = False
 
+    # Заполнение страницы аналитики
     def fill_analyt_page(self, list_positions):
+        # Очищение области рекомендаций
         self.clear_recommendations()
+        # Если нет активов, то ничего не заполняем
         if len(list_positions) == 0:
             return
-        # Графики на странице аналитики.
+        # Заполнение страницы
+        # Формируем графики на странице аналитики.
         global full_df
         full_df = DataFrame(list_positions)
         global current_df
@@ -910,6 +1018,7 @@ class MainWindow(QMainWindow):
         request_from_etfs = False
         data_type = current_df.groupby('instrument_type').agg('sum')
         types = list(data_type.index)
+        # Активируем и дизактивируем кнопки в зависимости от наличия классов активов в портфеле
         if "Акция" in types:
             self.ui.btn_shares.setEnabled(True)
         else:
@@ -926,15 +1035,20 @@ class MainWindow(QMainWindow):
             self.ui.btn_etfs.setEnabled(True)
         else:
             self.ui.btn_etfs.setEnabled(False)
+        # Строим первоначальный график
         self.grouping_by_currencies_pie_chart_analytical_page()
-        # Все инструменты.
+        # Заполняем таблицы со всеми инструментами на странице аналитики.
         self.fill_all_instruments_on_analytic_page()
 
+    # Заполняем таблицы со всеми иснтрументами на странице аналитики
     def fill_all_instruments_on_analytic_page(self):
         global full_df
         full_df = full_df.sort_values('cost', ascending=False)
+        # Создаем рекомендации на странице аналитики
         self.create_recommendation(full_df)
+        # Если есть активы, то строим таблицы
         if not full_df.empty:
+            # Построение таблицы с акциями, если в портфеле есть акции
             self.all_instruments_analytic_page_list.setAlignment(QtCore.Qt.AlignTop)
             shares_df = full_df[full_df['instrument_type'] == 'Акция']
             if not shares_df.empty:
@@ -943,7 +1057,7 @@ class MainWindow(QMainWindow):
                 self.all_instruments_analytic_page_list.addWidget(frame_shares)
             else:
                 pass
-
+            # Построение таблицы с облигациями, если в портфеле есть облигации
             bonds_df = full_df[full_df['instrument_type'] == 'Облигация']
             if not bonds_df.empty:
                 bonds_df = bonds_df.set_index(arange(0, len(bonds_df.index), 1))
@@ -951,6 +1065,7 @@ class MainWindow(QMainWindow):
                 self.all_instruments_analytic_page_list.addWidget(frame_bonds)
             else:
                 pass
+            # Построение таблицы с фондами, если в портфеле есть фонды
             etf_df = full_df[full_df['instrument_type'] == 'Фонд']
             if not etf_df.empty:
                 etf_df = etf_df.set_index(arange(0, len(etf_df.index), 1))
@@ -958,6 +1073,7 @@ class MainWindow(QMainWindow):
                 self.all_instruments_analytic_page_list.addWidget(frame_shares)
             else:
                 pass
+            # Построение таблицы с валютами, если в портфеле есть валюты
             currencies_df = full_df[full_df['instrument_type'] == 'Валюта']
             if not etf_df.empty:
                 currencies_df = currencies_df.set_index(arange(0, len(currencies_df.index), 1))
@@ -966,19 +1082,23 @@ class MainWindow(QMainWindow):
             else:
                 pass
 
+    # Очищение области аналитики
     def clear_all_instruments_on_analytic_page(self):
         for i in reversed(range(self.all_instruments_analytic_page_list.count())):
             self.all_instruments_analytic_page_list.takeAt(i).widget().setParent(None)
 
+    # Очищение таблицы на странице "Портфель"
     def clear_all_instruments_on_main_page(self):
         for i in reversed(range(self.position_pie_chart_based_list.count())):
             self.position_pie_chart_based_list.takeAt(i).widget().setParent(None)
 
+
+    # Заполнение страницы "Портфель"
     def fill_portfolio(self, token, account):
         sender = self.sender()
         with Client(token) as client:
             portfolio = client.operations.get_portfolio(account_id=account.id)
-            self.fill_main_page(portfolio, token, client)
+            self.fill_area_pie_based(token, client, portfolio)
 
 
 if __name__ == "__main__":
