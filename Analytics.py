@@ -79,23 +79,6 @@ class Analytics:
     def portfolio(self, _portfolio):
         self.__portfolio = _portfolio
 
-    # Получаем дату открытия
-    @property
-    def opened_date(self):
-        return self.__opened_date
-
-    @opened_date.setter
-    def opened_date(self, _opened_date):
-        self.__opened_date = _opened_date
-
-    # Получаем дата фрэйм
-    @property
-    def df(self):
-        return self.__dt
-
-    @df.setter
-    def df(self, _dt):
-        self.__dt = _dt
 
     @property
     def usdrur(self):
@@ -110,54 +93,3 @@ class Analytics:
         ins = Instr.Instr(self.token, p.figi, p.instrument_type)
         return ins.instr
 
-    # Добавление позиции портфеля в словарь
-    def portfolio_pose_todict(self, p: PortfolioPosition, usdrur):
-        instr = self.get_instrument(p)
-        r = {
-            'name': instr.name,
-            'trading_status': instr.trading_status,
-            'buy_available_flag': instr.buy_available_flag,
-            "sell_available_flag": instr.sell_available_flag,
-            'ticker': "",
-            'country': instr.country_of_risk_name,
-            'sector': "",
-            'quantity': Analytics.cast_money(p.quantity),
-            'expected_yield': Analytics.cast_money(p.expected_yield),
-            'instrument_type': p.instrument_type,
-            'average_buy_price': Analytics.cast_money(p.average_position_price),
-            'currency': p.average_position_price.currency,
-            'nkd': Analytics.cast_money(p.current_nkd),
-        }
-        if p.instrument_type == 'currency' or p.instrument_type == 'bond':
-            r['ticker'] = ""
-            if p.instrument_type == 'currency':
-                r['sector'] = "currency"
-            else:
-                r['sector'] = "bond"
-        elif p.instrument_type == 'etf':
-            r['sector'] = 'etf'
-            r['ticker'] = instr.ticker
-        else:
-            r['ticker'] = instr.ticker
-            r['sector'] = instr.sector
-        if r['currency'] != 'rub':
-            # если бы expected_yield быk бы тоже MoneyValue,
-            # то конвертацию валюты можно было бы вынести в cast_money
-            r['expected_yield'] *= usdrur
-            r['average_buy_price'] *= usdrur
-            r['nkd'] *= usdrur
-        r['currency'] = 'Рубль'
-        if len(r['sector']) != 0:
-            r['sector'] = Analytics.dict_sector[r['sector']]
-        r['instrument_type'] = Analytics.dict_instrument_type[r['instrument_type']]
-        return r
-
-    # Преобразование числовых данных, для дальнейшего их использования
-    @staticmethod
-    def cast_money(v):
-        return v.units + v.nano / 1e9
-
-    # Создание DataFrame по позициям портфеля, в соответствии с данными словаря с позициями портфеля
-    def create_df(self):
-        self.df = pd.DataFrame(
-            [Analytics.portfolio_pose_todict(self, p, self.usdrur) for p in self.portfolio.positions])
