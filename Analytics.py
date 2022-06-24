@@ -152,9 +152,6 @@ class Analytics:
             r['average_buy_price'] *= usdrur
             r['nkd'] *= usdrur
         r['currency'] = 'Рубль'
-        r['sell_sum'] = (r['average_buy_price'] * r['quantity']) + r['expected_yield'] + (r['nkd'] * r['quantity'])
-        r['comissixon'] = r['sell_sum'] * 0.003
-        r['tax'] = r['expected_yield'] * 0.013 if r['expected_yield'] > 0 else 0
         if len(r['sector']) != 0:
             r['sector'] = Analytics.dict_sector[r['sector']]
         r['instrument_type']  =  Analytics.dict_instrument_type[r['instrument_type']]

@@ -531,7 +531,7 @@ class MainWindow(QMainWindow):
         df_countries = df.groupby('short_country_name').agg('sum')
         short_country_names = list(df_countries.index)
         df_countries = df_countries.set_index(arange(0, len(df_countries.index), 1))
-        df_countries['sectors'] = Series(short_country_names)
+        df_countries['countries'] = Series(short_country_names)
         frame_countries = create_countries_label_recommendation(df_countries)
         frame_inst_layout.addWidget(frame_countries)
         self.recommendation_analytic_page_list.addWidget(frame_inst)

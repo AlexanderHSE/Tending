@@ -98,7 +98,7 @@ class Ui_MainWindowBig(object):
         self.label_4 = QLabel(self.frame_head)
         self.label_4.setObjectName(u"label_4")
         self.label_4.setMinimumSize(QSize(300, 41))
-        self.label_4.setPixmap(QPixmap(resource_path("images/Frame_13.jpg")))
+        self.label_4.setPixmap(QPixmap(resource_path("images/logo.jpg")))
 
         self.horizontalLayout_3.addWidget(self.label_4)
 
