@@ -34,9 +34,9 @@ plus_profit = "#47F19F "  # hex green color
 
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """ Получает абсолютный путь к ресурсу, используется PyInstaller """
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        # PyInstaller создаёт временную папку и сохраняет путь в _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
@@ -46,12 +46,14 @@ def resource_path(relative_path):
 
 class MainWindow(QMainWindow):
     def __init__(self):
+        # Загрузка шрифтов
         QFontDatabase.addApplicationFont(resource_path('fonts/Ubuntu-Regular.ttf'))
         QFontDatabase.addApplicationFont(resource_path('fonts/OpenSans-Regular.ttf'))
         QMainWindow.__init__(self)
         # Окно обучения
         self.window_guide = None
         self.dragPos = None
+        # Загрузка UI
         self.ui = Ui_MainWindowBig()
         self.ui.setupUi(self)
         # ScrollArea страницы добавления
@@ -70,7 +72,9 @@ class MainWindow(QMainWindow):
         self.main_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.widget)
         self.analytic_pie_chart = QtWebEngineWidgets.QWebEngineView(self.ui.analytics_graps_widget)
         self.ui.widget.hide()
-        # self.ui.frame_tagLine.setEnabled(False)
+
+        # При запуске кнопки "Портфель", "Аналитика", кнопка с изображением портфеля (кейса) отключены, до нажатия кнопки готово,
+        # То есть до ввода токена
         self.ui.btn_casemain.setEnabled(False)
         self.ui.btn_analtics.setEnabled(False)
         self.ui.btn_case.setEnabled(False)
@@ -92,21 +96,22 @@ class MainWindow(QMainWindow):
 
         # Смена окон в MainWindow Login
 
-        # Adding list
+        # Страница добавления
         self.ui.btn_addCase.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_add_case))
 
-        # List of portfolios
+        # Страница со списком портфелей
         self.ui.btn_case.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_caseList))
 
-        # Analytics page
+        # Страница аналитики
         self.ui.btn_analtics.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_analytics))
 
-        # Portfolio page
+        # Страница "Портфель"
         self.ui.btn_casemain.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
 
-        # Guide
+        # Окно "Обучение"
         self.ui.btn_training.clicked.connect(self.show_guide_window)
 
+    # Выполняет вызов окна Обучения
     def show_guide_window(self):
         if self.window_guide is None:
             self.window_guide = GuideWindow()
@@ -146,10 +151,9 @@ class MainWindow(QMainWindow):
                     accounts = client.users.get_accounts()
                     break
             except (RequestError, ValueError):
-                # print("Ошибка, введите токен заново!")
                 self.ui.edit_token.setPlaceholderText('Ошибка, введите токен заново!')
                 pal = self.ui.edit_token.palette()
-                text_color = "#D4CE26"  # pal.color(QtGui.QPalette.Text)
+                text_color = "#D4CE26"
                 pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
                 self.ui.edit_token.setPalette(pal)
                 self.ui.edit_token.setText('')
@@ -160,11 +164,12 @@ class MainWindow(QMainWindow):
     # Создание кнопок-полей счетов
     def create_new_widget(self, token, accounts):
         self.scroll_layout.setAlignment(QtCore.Qt.AlignTop)
-        # self.ui.frame_tagLine.setEnabled(True)
         self.ui.btn_casemain.setEnabled(True)
         self.ui.btn_analtics.setEnabled(True)
         self.ui.btn_case.setEnabled(True)
+        # Количество кнопок равно количеству портфелей
         for i in range(len(accounts.accounts)):
+            # Проверка уровня доступа - допускается только токен ReadOnly
             if accounts.accounts[i].access_level != 3:
                 btn_text = accounts.accounts[i].name
                 btn = QPushButton(btn_text, self.ui.scrollAreaWidgetContents_3)
@@ -180,16 +185,13 @@ class MainWindow(QMainWindow):
                         add_new_port, tok, acc))
                 btn.clicked.connect(
                     lambda *args, tok=token, acc=accounts.accounts[i]: self.fill_portfolio(tok, acc))
-                # btn.clicked.connect(self.add_portfolio_to_list(accounts.accounts[i]))
                 btn.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
-                # btn.clicked.connect(self.fill_portfolio(accounts.accounts[i]))
                 self.scroll_layout.addWidget(btn)
 
     # Добавление портфеля в список портфелей
     def add_portfolio_to_list(self, add_new_port=False, token=None, acc=None):
         sender = self.sender()
         self.scroll_layout_list.setAlignment(QtCore.Qt.AlignTop)
-        # btn_text_list = sender.text()
         btn_text_list = acc.name + ' ' + ' id ' + acc.id
         btn_list = QPushButton(btn_text_list, self.ui.scrollAreaWidgetContents_caseList)
         btn_list.setObjectName(btn_text_list)
@@ -199,12 +201,13 @@ class MainWindow(QMainWindow):
                                "QPushButton:hover {\n"
                                "	background-color:rgb(234, 234, 234);}\n")
         btn_list.setFlat(True)
+        # Связка кнопки-портфеля с функцией проверки существования
         btn_list.clicked.connect(lambda *args, acc_=acc: self.check_presence(acc_))
+        # Если такого кнопки-портфеля ещё нет, то добавляем
         if self.check_presence(acc):
             self.scroll_layout_list.addWidget(btn_list)
         else:
             btn_list.setParent(None)
-        # Надо как то убрать двойное выполнение функции
         btn_list.clicked.connect(lambda *args, acc_=acc: self.fill_portfolio(token, acc_))
         btn_list.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.page_casebig))
 
@@ -232,15 +235,18 @@ class MainWindow(QMainWindow):
         for i in reversed(range(self.scroll_layout.count())):
             self.scroll_layout.takeAt(i).widget().setParent(None)
 
+    # Стоимость
     def fill_total_cost(self, df, portfolio: PortfolioResponse):
         total_cost = str(get_total_cost_portfolio(df, portfolio)) + "₽"
         self.ui.cost_number_all.setText(total_cost)
         self.ui.cost_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {zero_porfit}")
 
+    # Доходность
     def fill_total_yield(self, portfolio: PortfolioResponse):
         total_yield = portfolio.expected_yield
         total_yield_percentage = cast_yield(total_yield)
         self.ui.yield_number_all.setText(str(total_yield_percentage) + "%")
+        # Изменение цвета в соответствии со знаком значения
         if total_yield_percentage < 0:
             self.ui.yield_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {minus_profit}")
         elif total_yield_percentage == 0:
@@ -248,12 +254,14 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.yield_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {plus_profit}")
 
+    # Прибыль
     def fill_total_profit(self, df, portfolio: PortfolioResponse):
         total_yield = portfolio.expected_yield
         total_yield_percentage = cast_yield(total_yield)
         total_cost = get_total_cost_portfolio(df, portfolio)
         total_profit = get_total_profit(total_yield_percentage, total_cost)
         self.ui.profit_number_all.setText(str(total_profit) + "₽")
+        # Изменение цвета в соответствии со знаком значения
         if total_yield_percentage < 0:
             self.ui.profit_number_all.setStyleSheet(
                 f"font-size : 20px; font-family : Open Sans; color : {minus_profit}")
@@ -262,19 +270,22 @@ class MainWindow(QMainWindow):
         elif total_yield_percentage > 0:
             self.ui.profit_number_all.setStyleSheet(f"font-size : 20px; font-family : Open Sans; color : {plus_profit}")
 
+    # Заполнить полей Стоимость, Прибыль, Доходность
     def fill_total_stats(self, df, portfolio):
         self.fill_total_yield(portfolio)
         self.fill_total_profit(df, portfolio)
         self.fill_total_cost(df, portfolio)
 
+    # Вывод всех активов портфеля
+    # Тикер, Тип, Количество, Тек. Цена, Ср. Цена, Прибыль, Доходность, Доля
     def add_pos_in_area_pie_based(self, positions):
         self.position_pie_chart_based_list.setAlignment(QtCore.Qt.AlignTop)
         c = 0
+        # Динамическое создание фреймов, содержащих информацию актива
         for indexRow in range(len(positions.index)):
             row = positions.iloc[indexRow]
             c += 1
             frame_inst = QFrame(self.ui.scrollAreaWidgetContents_4)
-            # frame_inst = QFrame(self.scrollAreaWidgetContents_4)
             frame_inst.setObjectName("inst_1" + str(c))
             frame_inst.setGeometry(QRect(0, 0, 401, 41))
             frame_inst.setFrameShape(QFrame.StyledPanel)
@@ -285,17 +296,18 @@ class MainWindow(QMainWindow):
                 padding-left: 0px;
             ''')
 
+            # Цветовой идентификатор актива
             inst_color = QFrame()
             inst_color.setObjectName("inst_color" + str(c))
             inst_color.setGeometry(QRect(0, 0, 5, 51))
             inst_color.setStyleSheet(f"font-size : 20px; font-family : Open Sans; background-color : {row['color']};")
-            # inst_color.setStyleSheet("font-size : 16px; font-family : Open Sans; background-color : #47F19F")
             inst_color.setFrameShape(QFrame.StyledPanel)
             inst_color.setFrameShadow(QFrame.Raised)
             inst_color.setMaximumSize(QSize(5, 16777215))
             inst_color.setContentsMargins(0, 0, 0, 0)
             frame_inst_layout.addWidget(inst_color)
 
+            # Тикер актива (имя, если тикера нет)
             inst_name = QLabel()
             if row['ticker'] != "":
                 inst_name.setText(row['ticker'])
@@ -303,70 +315,70 @@ class MainWindow(QMainWindow):
                 inst_name.setText(row['name'])
             inst_name.setObjectName("inst_name" + str(c))
             inst_name.setGeometry(QRect(10, -10, 51, 61))
-            # inst_name.setMaximumSize(QSize(80, 16777215))
             inst_name.adjustSize()
             inst_name.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_name.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_name)
 
+            # Тип актива
             inst_type = QLabel()
             inst_type.setText(row['instrument_type'])
             inst_type.setObjectName("inst_type" + str(c))
             inst_type.setGeometry(QRect(80, -10, 21, 61))
-            # inst_type.setMaximumSize(QSize(65, 16777215))
             inst_type.adjustSize()
             inst_type.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_type.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_type)
 
+            # Количество активов
             inst_quan = QLabel()
+            # Если количество - целое число, то приводится к целому типу, чтобы убрать незначащий 0
             if check_float(row['quantity']):
                 inst_quan.setText(str(int(row['quantity'])))
             else:
                 inst_quan.setText(str(row['quantity']))
             inst_quan.setObjectName("inst_quan" + str(c))
             inst_quan.setGeometry(QRect(130, -10, 21, 61))
-            # inst_quan.setMaximumSize(QSize(56, 16777215))
             inst_quan.adjustSize()
             inst_quan.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_quan.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_quan)
 
+            # Текущая цена покупки и средняя цена покупки
             inst_cost = QLabel()
             inst_cost.setText(str(round(row['current_buy_price'], 2)) + "\n" + str(round(row['average_buy_price'], 2)))
             inst_cost.setObjectName("inst_cost" + str(c))
             inst_cost.setGeometry(QRect(190, -10, 51, 61))
-            # inst_cost.setMaximumSize(QSize(56, 16777215))
             inst_cost.adjustSize()
             inst_cost.setStyleSheet(u"font-size : 13px; font-family : Open Sans; color : #F9F9FB\n"
                                     "")
             inst_cost.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_cost)
 
+            # Прибыль и доходность
+            # Если < 0 - красный цвет
+            # > 0 - зелёный
+            # = 0 - белый
             inst_profit = QLabel()
             if row['expected_yield'] < 0:
                 inst_profit.setStyleSheet(u"color:  # FAA2A2")
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {minus_profit}")
-            # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {minus_profit}")
             elif row['expected_yield'] == 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {zero_porfit}")
-            # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {zero_porfit}")
             elif row['expected_yield'] > 0:
                 inst_profit.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color : {plus_profit}")
-                # inst_percent.setStyleSheet(f"font-size : 13px; font-family : Open Sans; color :  {plus_profit}")
             inst_profit.setText(str(round(row['expected_yield'], 2)) + "₽\n" +
                                 str(round(row['expected_yield_percentage'], 2)) + "%")
             inst_profit.setObjectName("inst_profit" + str(c))
             inst_profit.setGeometry(QRect(270, -20, 56, 61))
-            # inst_profit.setMaximumSize(QSize(56, 16777215))
             inst_profit.adjustSize()
-            # inst_profit.setStyleSheet(u"font-size : 13px; font-family : Open Sans");
             inst_profit.setAlignment(Qt.AlignCenter)
             frame_inst_layout.addWidget(inst_profit)
 
+            # Доля актива во всём портфеле
             inst_percent = QLabel()
             inst_percent.setText(str(round(row['portfolio_share'], 2)) + "%")
             inst_percent.setObjectName("inst_percent" + str(c))
@@ -380,7 +392,10 @@ class MainWindow(QMainWindow):
 
             self.position_pie_chart_based_list.addWidget(frame_inst)
 
+    # Связка кнопок
     def link_main_page_titles_buttons(self):
+        # Сортировка данных при нажатии на кнопки
+        # # Название, Тип, Количество, Тек. Цена, Ср. Цена, Прибыль, Доходность, Доля
         self.ui.btn_sortByTitlteName.clicked.connect(lambda: self.sort_main_page_by_name())
         self.ui.btn_sortByTitlteType.clicked.connect(lambda: self.sort_main_page_by_type())
         self.ui.btn_sortByTitlteQuantity.clicked.connect(lambda: self.sort_main_page_by_quantity())
@@ -390,6 +405,7 @@ class MainWindow(QMainWindow):
         self.ui.btn_sortByTitlteYield.clicked.connect(lambda: self.sort_main_page_by_yield())
         self.ui.btn_sortByTitltePercentages.clicked.connect(lambda: self.sort_main_page_by_percentages())
 
+    # Сортировка по имени актива
     def sort_main_page_by_name(self):
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
@@ -397,6 +413,7 @@ class MainWindow(QMainWindow):
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по типу актива
     def sort_main_page_by_type(self):
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
@@ -404,6 +421,7 @@ class MainWindow(QMainWindow):
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по количеству активов
     def sort_main_page_by_quantity(self):
         self.clear_all_instruments_on_main_page()
         global all_instruments_df
@@ -411,6 +429,7 @@ class MainWindow(QMainWindow):
         all_instruments_df = all_instruments_df.set_index(arange(0, len(all_instruments_df.index), 1))
         self.add_pos_in_area_pie_based(all_instruments_df)
 
+    # Сортировка по
     def sort_main_page_by_currency_price(self):
         self.clear_all_instruments_on_main_page()
         global all_instruments_df

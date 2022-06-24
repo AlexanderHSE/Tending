@@ -1,12 +1,17 @@
 from tinkoff.invest import Client,InstrumentIdType
 from tinkoff.invest.exceptions import RequestError
 
+
 class Instr:
+    """
+    Класс, получает данные инструмента по figi
+    """
     __slots__ = ('__client', '__figi', '__instrument')
 
     def __init__(self, token, figi, instr_type):
         with Client(token) as client:
             try:
+                # Получение данных по активу, в зависимости от актива
                 if instr_type == 'bond':
                     self.instr = client.instruments.bond_by(id_type=InstrumentIdType.INSTRUMENT_ID_TYPE_FIGI,
                                                             id=figi).instrument

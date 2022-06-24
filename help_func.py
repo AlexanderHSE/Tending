@@ -1,7 +1,7 @@
 import random
 import pandas as pd
 
-dict_sector_color_not_etfs = {"Государтсвенные бумаги": "#D4CE26", 'Энергетика': "#0B73AD", 'Промышленность': "#42418C",
+dict_sector_color_not_etfs = {"Государственные бумаги": "#D4CE26", 'Энергетика': "#0B73AD", 'Промышленность': "#42418C",
                               'Зелёная энергетика': "#3A6234", 'Финансы': '#48BB36', 'Коммунальные услуги': '#DBD496',
                               'Материалы': '#387975',
                               'Муниципальные бумаги': '#5B7512', 'Другое': '#190E27', 'IT': '#89C7EA',
@@ -14,11 +14,13 @@ dict_sector_color_etfs = {"Акции": "#C58019", 'Облигации': "#D4CE2
                           'Специальный': '#AF2A32', 'PE-фонд': '#DBD496', 'Альтернативные инвестиции': '#532469'}
 
 
+# Проверка - является ли число целым
 def check_float(number):
     return int(number) - number == 0
 
 
-def generate_random_color(set_colors: set()):
+# Генерация случайных цветов
+def generate_random_color(set_colors):
     while True:
         color = "#"
         for i in range(6):
@@ -28,6 +30,7 @@ def generate_random_color(set_colors: set()):
             return color
 
 
+# Генерация цветов для активов
 def generate_color_column(df):
     len_col = len(df.index)
     set_colors = set()
@@ -37,6 +40,7 @@ def generate_color_column(df):
     df['color'] = color_column
 
 
+# Генерация цветов для секторов - акции
 def generate_color_by_sectors_column_not_etfs(df):
     sectors_sequence = df['sector'].tolist()
     secotrs_colors = list()
@@ -45,6 +49,7 @@ def generate_color_by_sectors_column_not_etfs(df):
     df['color'] = pd.Series(secotrs_colors)
 
 
+# Генерация цветов для секторов - Фонды
 def generate_color_by_sectors_column_etfs(df):
     sectors_sequence = df['sector'].tolist()
     secotrs_colors = list()
@@ -53,6 +58,7 @@ def generate_color_by_sectors_column_etfs(df):
     df['color'] = pd.Series(secotrs_colors)
 
 
+# Доля активов
 def add_column_percantages(df):
     total_cost_all = df['cost'].sum()
     total_cost_by_condition = df['cost'].tolist()
@@ -62,6 +68,7 @@ def add_column_percantages(df):
     df['total_cost_percentage'] = pd.Series(total_cost_percentage)
 
 
+# Запись диаграммы в HTML-файл
 def write_html(graph, file_name):
     graph_html = graph.to_html(include_plotlyjs='cdn')
     style = " <style> body{ margin: 0; background-color: #2A2A2C;} </style>"
@@ -71,5 +78,6 @@ def write_html(graph, file_name):
         file_graph_html.write(new_html)
 
 
+# Проверка того, что данные присутствуют
 def check_dt_is_empty(dt):
     return len(dt.index) == 0
