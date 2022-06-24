@@ -9,7 +9,9 @@ import ui_functions
 
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
+    """
+    Получает абсолютный путь к ресурсу, используется PyInstaller
+    """
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
@@ -215,7 +217,7 @@ class GuideWindow(QDialog):
             padding-left: 0px;
         ''')
 
-        label_portfolio = QLabel('Текст1')
+        label_portfolio = QLabel('Обзор страницы "Портфель"')
         label_portfolio.setGeometry(QRect(0, 0, 150, 200))
         label_portfolio.setObjectName('label_portfolio')
         label_portfolio.setStyleSheet('''
@@ -229,7 +231,7 @@ class GuideWindow(QDialog):
         self.label_gif_portfolio.setObjectName('label_gif_portfolio')
         self.label_gif_portfolio.setAlignment(Qt.AlignCenter)
         self.label_gif_portfolio.adjustSize()
-        self.label_gif_portfolio.setFixedSize(670, 370)
+        self.label_gif_portfolio.setFixedSize(470, 370)
         self.gif_portfolio.setSpeed(200)
         self.label_gif_portfolio.setMovie(self.gif_portfolio)
         self.label_gif_portfolio.installEventFilter(self)
@@ -252,7 +254,7 @@ class GuideWindow(QDialog):
             background-color: #222226;
             padding-left: 0px;
         ''')
-        label_an = QLabel('Текст 2')
+        label_an = QLabel('Обзор страницы "Аналитика"')
         label_an.setObjectName('label_analytics')
         label_an.setGeometry(QRect(0, 0, 150, 20))
         label_an.setStyleSheet('''
